@@ -26463,8 +26463,8 @@ File: Icons Css File
 }
 
 .mdi-rotate-45:before {
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .mdi-rotate-90 {
@@ -26487,8 +26487,8 @@ File: Icons Css File
 }
 
 .mdi-rotate-90:before {
-  -webkit-transform: rotate(-90deg);
-  transform: rotate(-90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .mdi-rotate-135 {
@@ -26511,8 +26511,8 @@ File: Icons Css File
 }
 
 .mdi-rotate-135:before {
-  -webkit-transform: rotate(-135deg);
-  transform: rotate(-135deg);
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
 }
 
 .mdi-rotate-180 {
@@ -26535,8 +26535,8 @@ File: Icons Css File
 }
 
 .mdi-rotate-180:before {
-  -webkit-transform: rotate(-180deg);
-  transform: rotate(-180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .mdi-rotate-225 {
@@ -26559,8 +26559,8 @@ File: Icons Css File
 }
 
 .mdi-rotate-225:before {
-  -webkit-transform: rotate(-225deg);
-  transform: rotate(-225deg);
+  -webkit-transform: rotate(225deg);
+  transform: rotate(225deg);
 }
 
 .mdi-rotate-270 {
@@ -26583,8 +26583,8 @@ File: Icons Css File
 }
 
 .mdi-rotate-270:before {
-  -webkit-transform: rotate(-270deg);
-  transform: rotate(-270deg);
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
 }
 
 .mdi-rotate-315 {
@@ -26607,8 +26607,8 @@ File: Icons Css File
 }
 
 .mdi-rotate-315:before {
-  -webkit-transform: rotate(-315deg);
-  transform: rotate(-315deg);
+  -webkit-transform: rotate(315deg);
+  transform: rotate(315deg);
 }
 
 .mdi-flip-h:before {
@@ -26638,8 +26638,8 @@ File: Icons Css File
     transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(-359deg);
-    transform: rotate(-359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
   }
 }
 @keyframes mdi-spin {
@@ -26648,16 +26648,17 @@ File: Icons Css File
     transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(-359deg);
-    transform: rotate(-359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
   }
 }
+/*# sourceMappingURL=materialdesignicons.css.map */
 @font-face {
   font-family: "boxicons";
   font-weight: normal;
   font-style: normal;
   src: url("../fonts/boxicons-df063418cf1776c5aca595994d094980.eot");
-  src: url("../fonts/boxicons-df063418cf1776c5aca595994d094980.eot") format("embedded-opentype"), url("../fonts/boxicons-e739bdca113e4924fcbd70257848f6fe.woff2") format("woff2"), url("../fonts/boxicons-1744fe79e8b84ea1112b99ddc0765c51.woff") format("woff"), url("../fonts/boxicons-287d180277d59ce1049115ec8a96c643.ttf") format("truetype"), url("../fonts/boxicons-d1a5c48adaf401f08171e10a8ccff1af.svg") format("svg");
+  src: url("../fonts/boxicons-df063418cf1776c5aca595994d094980.eot") format("embedded-opentype"), url("../fonts/boxicons-e739bdca113e4924fcbd70257848f6fe.woff2") format("woff2"), url("../fonts/boxicons-1744fe79e8b84ea1112b99ddc0765c51.woff") format("woff"), url("../fonts/boxicons-287d180277d59ce1049115ec8a96c643.ttf") format("truetype"), url("../fonts/boxicons-4f976c4c2dba2c75e995a3a4159ec804.svg") format("svg");
 }
 .bx {
   font-family: "boxicons" !important;
@@ -26673,8 +26674,8 @@ File: Icons Css File
 }
 
 .bx-ul {
-  margin-right: 2em;
-  padding-right: 0;
+  margin-left: 2em;
+  padding-left: 0;
   list-style: none;
 }
 
@@ -26686,7 +26687,7 @@ File: Icons Css File
   font-size: inherit;
   line-height: inherit;
   position: absolute;
-  right: -2em;
+  left: -2em;
   width: 2em;
   text-align: center;
 }
@@ -26697,8 +26698,8 @@ File: Icons Css File
     transform: rotate(0);
   }
   100% {
-    -webkit-transform: rotate(-359deg);
-    transform: rotate(-359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
   }
 }
 @keyframes spin {
@@ -26707,8 +26708,8 @@ File: Icons Css File
     transform: rotate(0);
   }
   100% {
-    -webkit-transform: rotate(-359deg);
-    transform: rotate(-359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
   }
 }
 @-webkit-keyframes burst {
@@ -26764,8 +26765,8 @@ File: Icons Css File
     opacity: 1;
   }
   75% {
-    -webkit-transform: translateX(20px);
-    transform: translateX(20px);
+    -webkit-transform: translateX(-20px);
+    transform: translateX(-20px);
     opacity: 0;
   }
 }
@@ -26776,8 +26777,8 @@ File: Icons Css File
     opacity: 1;
   }
   75% {
-    -webkit-transform: translateX(20px);
-    transform: translateX(20px);
+    -webkit-transform: translateX(-20px);
+    transform: translateX(-20px);
     opacity: 0;
   }
 }
@@ -26788,8 +26789,8 @@ File: Icons Css File
     opacity: 1;
   }
   75% {
-    -webkit-transform: translateX(-20px);
-    transform: translateX(-20px);
+    -webkit-transform: translateX(20px);
+    transform: translateX(20px);
     opacity: 0;
   }
 }
@@ -26800,8 +26801,8 @@ File: Icons Css File
     opacity: 1;
   }
   75% {
-    -webkit-transform: translateX(-20px);
-    transform: translateX(-20px);
+    -webkit-transform: translateX(20px);
+    transform: translateX(20px);
     opacity: 0;
   }
 }
@@ -26859,16 +26860,16 @@ File: Icons Css File
     transform: scale3d(1, 1, 1);
   }
   10%, 20% {
-    -webkit-transform: scale3d(0.95, 0.95, 0.95) rotate3d(0, 0, 1, 10deg);
-    transform: scale3d(0.95, 0.95, 0.95) rotate3d(0, 0, 1, 10deg);
+    -webkit-transform: scale3d(0.95, 0.95, 0.95) rotate3d(0, 0, 1, -10deg);
+    transform: scale3d(0.95, 0.95, 0.95) rotate3d(0, 0, 1, -10deg);
   }
   30%, 50%, 70%, 90% {
-    -webkit-transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, -10deg);
-    transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, -10deg);
-  }
-  40%, 60%, 80% {
     -webkit-transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 10deg);
     transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 10deg);
+  }
+  40%, 60%, 80% {
+    -webkit-transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, -10deg);
+    transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, -10deg);
   }
   to {
     -webkit-transform: scale3d(1, 1, 1);
@@ -26881,16 +26882,16 @@ File: Icons Css File
     transform: scale3d(1, 1, 1);
   }
   10%, 20% {
-    -webkit-transform: scale3d(0.95, 0.95, 0.95) rotate3d(0, 0, 1, 10deg);
-    transform: scale3d(0.95, 0.95, 0.95) rotate3d(0, 0, 1, 10deg);
+    -webkit-transform: scale3d(0.95, 0.95, 0.95) rotate3d(0, 0, 1, -10deg);
+    transform: scale3d(0.95, 0.95, 0.95) rotate3d(0, 0, 1, -10deg);
   }
   30%, 50%, 70%, 90% {
-    -webkit-transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, -10deg);
-    transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, -10deg);
+    -webkit-transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 10deg);
+    transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 10deg);
   }
   40%, 60%, 80% {
-    -webkit-transform: rotate3d(0, 0, 1, 10deg);
-    transform: rotate3d(0, 0, 1, 10deg);
+    -webkit-transform: rotate3d(0, 0, 1, -10deg);
+    transform: rotate3d(0, 0, 1, -10deg);
   }
   to {
     -webkit-transform: scale3d(1, 1, 1);
@@ -27003,30 +27004,30 @@ File: Icons Css File
 }
 
 .bx-pull-left {
-  float: right;
-  margin-left: 0.3em !important;
-}
-
-.bx-pull-right {
   float: left;
   margin-right: 0.3em !important;
 }
 
+.bx-pull-right {
+  float: right;
+  margin-left: 0.3em !important;
+}
+
 .bx-rotate-90 {
-  -webkit-transform: rotate(-90deg);
-          transform: rotate(-90deg);
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
 }
 
 .bx-rotate-180 {
-  -webkit-transform: rotate(-180deg);
-          transform: rotate(-180deg);
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
 }
 
 .bx-rotate-270 {
-  -webkit-transform: rotate(-270deg);
-          transform: rotate(-270deg);
+  -webkit-transform: rotate(270deg);
+          transform: rotate(270deg);
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
 }
 
@@ -33134,8 +33135,8 @@ File: Icons Css File
 
 .fa-ul {
   list-style-type: none;
-  margin-right: 2.5em;
-  padding-right: 0;
+  margin-left: 2.5em;
+  padding-left: 0;
 }
 
 .fa-ul > li {
@@ -33143,7 +33144,7 @@ File: Icons Css File
 }
 
 .fa-li {
-  right: -2em;
+  left: -2em;
   position: absolute;
   text-align: center;
   width: 2em;
@@ -33157,11 +33158,11 @@ File: Icons Css File
 }
 
 .fa-pull-left {
-  float: right;
+  float: left;
 }
 
 .fa-pull-right {
-  float: left;
+  float: right;
 }
 
 .fa.fa-pull-left,
@@ -33169,7 +33170,7 @@ File: Icons Css File
 .far.fa-pull-left,
 .fal.fa-pull-left,
 .fab.fa-pull-left {
-  margin-left: 0.3em;
+  margin-right: 0.3em;
 }
 
 .fa.fa-pull-right,
@@ -33177,7 +33178,7 @@ File: Icons Css File
 .far.fa-pull-right,
 .fal.fa-pull-right,
 .fab.fa-pull-right {
-  margin-right: 0.3em;
+  margin-left: 0.3em;
 }
 
 .fa-spin {
@@ -33196,8 +33197,8 @@ File: Icons Css File
     transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(-360deg);
-    transform: rotate(-360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 @keyframes fa-spin {
@@ -33206,26 +33207,26 @@ File: Icons Css File
     transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(-360deg);
-    transform: rotate(-360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 .fa-rotate-90 {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
-  -webkit-transform: rotate(-90deg);
-  transform: rotate(-90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .fa-rotate-180 {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
-  -webkit-transform: rotate(-180deg);
-  transform: rotate(-180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .fa-rotate-270 {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
-  -webkit-transform: rotate(-270deg);
-  transform: rotate(-270deg);
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
 }
 
 .fa-flip-horizontal {
@@ -33267,7 +33268,7 @@ File: Icons Css File
 
 .fa-stack-1x,
 .fa-stack-2x {
-  right: 0;
+  left: 0;
   position: absolute;
   text-align: center;
   width: 100%;
@@ -39065,7 +39066,7 @@ readers do not read off random characters that represent icons */
   font-weight: 400;
   font-display: block;
   src: url("../fonts/fa-brands-400-daf98d82f441b35580063cd78cbcf94f.eot");
-  src: url("../fonts/fa-brands-400-daf98d82f441b35580063cd78cbcf94f.eot") format("embedded-opentype"), url("../fonts/fa-brands-400-451929d76e5449301050d500ccd4367d.woff2") format("woff2"), url("../fonts/fa-brands-400-b1b351b987f2c14b281d914a42a366ea.woff") format("woff"), url("../fonts/fa-brands-400-4f06b87bd2e7cc7d4a696c2e07f7396f.ttf") format("truetype"), url("../fonts/fa-brands-400-5c31995f2703daff3192255fcffa62b0.svg") format("svg");
+  src: url("../fonts/fa-brands-400-daf98d82f441b35580063cd78cbcf94f.eot") format("embedded-opentype"), url("../fonts/fa-brands-400-451929d76e5449301050d500ccd4367d.woff2") format("woff2"), url("../fonts/fa-brands-400-b1b351b987f2c14b281d914a42a366ea.woff") format("woff"), url("../fonts/fa-brands-400-4f06b87bd2e7cc7d4a696c2e07f7396f.ttf") format("truetype"), url("../fonts/fa-brands-400-89478de696938d6b46daf159048a2306.svg") format("svg");
 }
 .fab {
   font-family: "Font Awesome 5 Brands";
@@ -39078,7 +39079,7 @@ readers do not read off random characters that represent icons */
   font-weight: 400;
   font-display: block;
   src: url("../fonts/fa-regular-400-ec4a51f5bfe7a685a6666a0f205b19bc.eot");
-  src: url("../fonts/fa-regular-400-ec4a51f5bfe7a685a6666a0f205b19bc.eot") format("embedded-opentype"), url("../fonts/fa-regular-400-005a2388c2a15b64a1cf32f6d2526071.woff2") format("woff2"), url("../fonts/fa-regular-400-0286b987ff59bccbef0353aa8ac56b9e.woff") format("woff"), url("../fonts/fa-regular-400-ee84c4b615bffac4cd284433787d5e9c.ttf") format("truetype"), url("../fonts/fa-regular-400-54b77374085f523bc8610a286cf04bd8.svg") format("svg");
+  src: url("../fonts/fa-regular-400-ec4a51f5bfe7a685a6666a0f205b19bc.eot") format("embedded-opentype"), url("../fonts/fa-regular-400-005a2388c2a15b64a1cf32f6d2526071.woff2") format("woff2"), url("../fonts/fa-regular-400-0286b987ff59bccbef0353aa8ac56b9e.woff") format("woff"), url("../fonts/fa-regular-400-ee84c4b615bffac4cd284433787d5e9c.ttf") format("truetype"), url("../fonts/fa-regular-400-8297c47eb0636f6dfe45003362403456.svg") format("svg");
 }
 .far {
   font-family: "Font Awesome 5 Free";
@@ -39091,7 +39092,7 @@ readers do not read off random characters that represent icons */
   font-weight: 900;
   font-display: block;
   src: url("../fonts/fa-solid-900-db34eb1e02bd47fe37bade0f56a336d1.eot");
-  src: url("../fonts/fa-solid-900-db34eb1e02bd47fe37bade0f56a336d1.eot") format("embedded-opentype"), url("../fonts/fa-solid-900-72b8c078f8180474adbbbfcc2dd19dd0.woff2") format("woff2"), url("../fonts/fa-solid-900-262ce5a038c99a61e17842dec7a67308.woff") format("woff"), url("../fonts/fa-solid-900-566d28e243986758bd71f402d4e0ff2f.ttf") format("truetype"), url("../fonts/fa-solid-900-25827ec2aabb211f55c2be86c85f4f10.svg") format("svg");
+  src: url("../fonts/fa-solid-900-db34eb1e02bd47fe37bade0f56a336d1.eot") format("embedded-opentype"), url("../fonts/fa-solid-900-72b8c078f8180474adbbbfcc2dd19dd0.woff2") format("woff2"), url("../fonts/fa-solid-900-262ce5a038c99a61e17842dec7a67308.woff") format("woff"), url("../fonts/fa-solid-900-566d28e243986758bd71f402d4e0ff2f.ttf") format("truetype"), url("../fonts/fa-solid-900-103893db436c26f7639b7b928697b6a2.svg") format("svg");
 }
 .fa,
 .fas {
@@ -39102,7 +39103,7 @@ readers do not read off random characters that represent icons */
 @font-face {
   font-family: "dripicons-v2";
   src: url("../fonts/dripicons-v2-421dced2188d2198fe6b335bc676bec5.eot");
-  src: url("../fonts/dripicons-v2-421dced2188d2198fe6b335bc676bec5.eot") format("embedded-opentype"), url("../fonts/dripicons-v2-5f83b3a703748fd8f2c848b0e98d67d1.woff") format("woff"), url("../fonts/dripicons-v2-61825f6cadae23f9d695883bf6e0990e.ttf") format("truetype"), url("../fonts/dripicons-v2-feabd065b0e745b1a119455d4e7bc1cb.svg") format("svg");
+  src: url("../fonts/dripicons-v2-421dced2188d2198fe6b335bc676bec5.eot") format("embedded-opentype"), url("../fonts/dripicons-v2-5f83b3a703748fd8f2c848b0e98d67d1.woff") format("woff"), url("../fonts/dripicons-v2-61825f6cadae23f9d695883bf6e0990e.ttf") format("truetype"), url("../fonts/dripicons-v2-33a2d589a08d3359fdc239ff3107e499.svg") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -39931,4 +39932,3 @@ readers do not read off random characters that represent icons */
 .dripicons-zoom-out:before {
   content: "\e069";
 }
-/*# sourceMappingURL=icons-rtl.min.css-c91d72ef0c827c3f8f90384af4c6f68a.map */
