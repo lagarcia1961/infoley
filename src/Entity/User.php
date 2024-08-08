@@ -39,9 +39,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Auditoria::class, mappedBy: 'user')]
     private Collection $auditorias;
 
+    /**
+     * @var Collection<int, UsuarioTipoNorma>
+     */
+    #[ORM\OneToMany(targetEntity: UsuarioTipoNorma::class, mappedBy: 'user')]
+    private Collection $usuarioTipoNormas;
+
     public function __construct()
     {
         $this->auditorias = new ArrayCollection();
+        $this->usuarioTipoNormas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,6 +150,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($auditoria->getUser() === $this) {
                 $auditoria->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UsuarioTipoNorma>
+     */
+    public function getUsuarioTipoNormas(): Collection
+    {
+        return $this->usuarioTipoNormas;
+    }
+
+    public function addUsuarioTipoNorma(UsuarioTipoNorma $usuarioTipoNorma): static
+    {
+        if (!$this->usuarioTipoNormas->contains($usuarioTipoNorma)) {
+            $this->usuarioTipoNormas->add($usuarioTipoNorma);
+            $usuarioTipoNorma->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsuarioTipoNorma(UsuarioTipoNorma $usuarioTipoNorma): static
+    {
+        if ($this->usuarioTipoNormas->removeElement($usuarioTipoNorma)) {
+            // set the owning side to null (unless already changed)
+            if ($usuarioTipoNorma->getUser() === $this) {
+                $usuarioTipoNorma->setUser(null);
             }
         }
 

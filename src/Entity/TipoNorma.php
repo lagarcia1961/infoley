@@ -24,9 +24,16 @@ class TipoNorma
     #[ORM\OneToMany(mappedBy: 'tipoNorma', targetEntity: Norma::class)]
     private Collection $normas;
 
+    /**
+     * @var Collection<int, UsuarioTipoNorma>
+     */
+    #[ORM\OneToMany(targetEntity: UsuarioTipoNorma::class, mappedBy: 'TipoNorma')]
+    private Collection $usuarioTipoNormas;
+
     public function __construct()
     {
         $this->normas = new ArrayCollection();
+        $this->usuarioTipoNormas = new ArrayCollection();
     }
 
     // Getters y setters
@@ -83,6 +90,36 @@ class TipoNorma
             // set the owning side to null (unless already changed)
             if ($norma->getTipoNorma() === $this) {
                 $norma->setTipoNorma(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UsuarioTipoNorma>
+     */
+    public function getUsuarioTipoNormas(): Collection
+    {
+        return $this->usuarioTipoNormas;
+    }
+
+    public function addUsuarioTipoNorma(UsuarioTipoNorma $usuarioTipoNorma): static
+    {
+        if (!$this->usuarioTipoNormas->contains($usuarioTipoNorma)) {
+            $this->usuarioTipoNormas->add($usuarioTipoNorma);
+            $usuarioTipoNorma->setTipoNorma($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsuarioTipoNorma(UsuarioTipoNorma $usuarioTipoNorma): static
+    {
+        if ($this->usuarioTipoNormas->removeElement($usuarioTipoNorma)) {
+            // set the owning side to null (unless already changed)
+            if ($usuarioTipoNorma->getTipoNorma() === $this) {
+                $usuarioTipoNorma->setTipoNorma(null);
             }
         }
 
