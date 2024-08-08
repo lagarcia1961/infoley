@@ -16,7 +16,7 @@ class Auditoria
 
     #[ORM\ManyToOne(inversedBy: 'auditorias')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?tipoAuditoria $tipoAuditoria = null;
+    private ?TipoAuditoria $tipoAuditoria = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -30,12 +30,12 @@ class Auditoria
         return $this->id;
     }
 
-    public function getTipoAuditoria(): ?tipoAuditoria
+    public function getTipoAuditoria(): ?TipoAuditoria
     {
         return $this->tipoAuditoria;
     }
 
-    public function setTipoAuditoria(?tipoAuditoria $tipoAuditoria): static
+    public function setTipoAuditoria(?TipoAuditoria $tipoAuditoria): static
     {
         $this->tipoAuditoria = $tipoAuditoria;
 
