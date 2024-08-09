@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email','usuario'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -44,6 +44,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: UsuarioTipoNorma::class, mappedBy: 'user')]
     private Collection $usuarioTipoNormas;
+
+    #[ORM\Column(length: 100)]
+    private ?string $nombre = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $usuario = null;
 
     public function __construct()
     {
@@ -182,6 +188,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $usuarioTipoNorma->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(?string $nombre): static
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getUsuario(): ?string
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?string $usuario): static
+    {
+        $this->usuario = $usuario;
 
         return $this;
     }
