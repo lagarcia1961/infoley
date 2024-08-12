@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="page-content">
+    <div class="container">
+        {{ form_start (form) }}
+        <div class="row">
+            <div class="col-3">
+                {{ form_label (form.email) }}
+                {{ form_widget (form.email) }}
+                {{ form_errors (form.email)}}
+            </div>
+            <div class="col-3">
+                {{ form_label (form.nombre) }}
+                {{ form_widget (form.nombre) }}
+                {{ form_errors (form.nombre)}}
+            </div>
+            <div class="col-3">
+                {{ form_label (form.usuario) }}
+                {{ form_widget (form.usuario) }}
+                {{ form_errors (form.usuario)}}
+            </div>
+            <div class="col-3">
+                {{ form_label (form.password) }}
+                {{ form_widget (form.password) }}
+                {{ form_errors (form.password)}}
+            </div>
+            <div class="col-12 mt-4 text-end">
+                {{ form_widget (form.guardar) }}
+
+            </div>
+        </div>
+        {{ form_end (form) }}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<div class="page-content">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 text-end my-4">
+					<a href="{{ path('app_insertar_usuario')}}" class="btn btn-primary">
+						Nuevo usuario
+					</a>
+				</div>
+				<div class="col-xs-12">
+					<table class="table table-sm table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>
+									Id
+								</th>
+								<th>
+									nombre
+								</th>
+								<th>
+									Acción
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for usuario in usuarios %}
+								<tr>
+									<td>{{ usuario.id }}</td>
+									<td>{{ usuario.nombre }}</td>
+									<td class="text-center">
+                                        <a class="btn" href="{{ path('app_editar_usuario', {'usuario_id': usuario.id}) }}" title="Editar operador">
+                                            <i class="fas fa-edit text-warning"></i>
+                                        </a>
+                                    </td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
