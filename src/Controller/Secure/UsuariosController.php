@@ -18,7 +18,7 @@ class UsuariosController extends AbstractController
     public function index(UserRepository $userRepository): Response
     {
         $data['usuarios'] = $userRepository->findAll();
-        return $this->render('usuarios/abm_usuario.html.twig', $data);
+        return $this->render('secure/usuarios/abm_usuario.html.twig', $data);
     }
 
     #[Route('/insertar', name: 'app_insertar_usuario')]
@@ -36,27 +36,27 @@ class UsuariosController extends AbstractController
 
             return $this->redirectToRoute('app_usuarios');
         }
-        return $this->render('usuarios/form_usuario.html.twig', $data);
+        return $this->render('secure/usuarios/form_usuario.html.twig', $data);
     }
 
     #[Route('/editar/{usuario_id}', name: 'app_editar_usuario')]
-    public function editar($usuario_id,UserRepository $userRepository, Request $request, EntityManagerInterface $em): Response
+    public function editar($usuario_id, UserRepository $userRepository, Request $request, EntityManagerInterface $em): Response
     {
-        $usuario =  $userRepository->findOneBy(['id'=>$usuario_id]);
-        if(!$usuario){
+        $data['usuario'] =  $userRepository->findOneBy(['id' => $usuario_id]);
+        if (!$data['usuario']) {
             return $this->redirectToRoute('app_usuarios');
         }
-        $data['form'] = $this->createForm(UsuarioType::class, $usuario);
+        $data['form'] = $this->createForm(UsuarioType::class, $data['usuario']);
         $data['form']->handleRequest($request);
         if ($data['form']->isSubmitted() && $data['form']->isValid()) {
             // $data['form']->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
-            $em->persist($usuario);
+            $em->persist($data['usuario']);
             $em->flush();
             // ... perform some action, such as saving the task to the database
 
             return $this->redirectToRoute('app_usuarios');
         }
-        return $this->render('usuarios/form_usuario.html.twig', $data);
+        return $this->render('secure/usuarios/form_usuario.html.twig', $data);
     }
 }

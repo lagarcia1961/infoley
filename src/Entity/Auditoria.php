@@ -18,12 +18,29 @@ class Auditoria
     #[ORM\JoinColumn(nullable: false)]
     private ?TipoAuditoria $tipoAuditoria = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
-
     #[ORM\ManyToOne(inversedBy: 'auditorias')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $entidad = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $registroAnterior = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $registroNuevo = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $fecha = null;
+
+    #[ORM\Column]
+    private ?int $entidadId = null;
+
+    public function __construct()
+    {
+        $this->fecha = new \DateTime(); // Establece la fecha y hora actual
+    }
 
     public function getId(): ?int
     {
@@ -42,18 +59,6 @@ class Auditoria
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -62,6 +67,66 @@ class Auditoria
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getEntidad(): ?string
+    {
+        return $this->entidad;
+    }
+
+    public function setEntidad(string $entidad): static
+    {
+        $this->entidad = $entidad;
+
+        return $this;
+    }
+
+    public function getRegistroAnterior(): ?array
+    {
+        return $this->registroAnterior;
+    }
+
+    public function setRegistroAnterior(?array $registroAnterior): static
+    {
+        $this->registroAnterior = $registroAnterior;
+
+        return $this;
+    }
+
+    public function getRegistroNuevo(): ?array
+    {
+        return $this->registroNuevo;
+    }
+
+    public function setRegistroNuevo(?array $registroNuevo): static
+    {
+        $this->registroNuevo = $registroNuevo;
+
+        return $this;
+    }
+
+    public function getFecha(): ?\DateTimeInterface
+    {
+        return $this->fecha;
+    }
+
+    public function setFecha(\DateTimeInterface $fecha): static
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    public function getEntidadId(): ?int
+    {
+        return $this->entidadId;
+    }
+
+    public function setEntidadId(int $entidadId): static
+    {
+        $this->entidadId = $entidadId;
 
         return $this;
     }
