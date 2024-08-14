@@ -2,6 +2,7 @@
 
 {% block body %}
 <div class="main-content">
+
 	<div class="page-content">
 		<div class="container-fluid">
 			<div class="row">
@@ -10,9 +11,9 @@
 						<div class="page-title-left">
 							<ol class="breadcrumb m-0">
 								<li class="breadcrumb-item">
-									<a href="javascript: void(0);">Usuarios</a>
+									<a href="javascript: void(0);">Auditoria</a>
 								</li>
-								<li class="breadcrumb-item active">Lista de usuarios</li>
+								<li class="breadcrumb-item active">Lista de registros</li>
 							</ol>
 						</div>
 
@@ -21,14 +22,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<h1>Usuarios</h1>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12 text-end my-4">
-					<a href="{{ path('app_insertar_usuario')}}" class="btn btn-primary">
-						Nuevo usuario
-					</a>
+					<h1>Auditoria</h1>
 				</div>
 			</div>
 			<div class="row">
@@ -40,6 +34,12 @@
 									Id
 								</th>
 								<th>
+									Fecha
+								</th>
+								<th>
+									Acción
+								</th>
+								<th>
 									Nombre
 								</th>
 								<th>
@@ -48,23 +48,33 @@
 								<th>
 									Email
 								</th>
-								<th class="text-center">
-									Acción
+								<th>
+									Entidad
+								</th>
+								<th>
+									Entidad Id
+								</th>
+								<th>
+									Registro anterior
+								</th>
+								<th>
+									Registro Nuevo
 								</th>
 							</tr>
 						</thead>
 						<tbody>
-							{% for usuario in usuarios %}
+							{% for auditoria in auditorias %}
 								<tr>
-									<td>{{ usuario.id }}</td>
-									<td>{{ usuario.nombre }}</td>
-									<td>{{ usuario.usuario }}</td>
-									<td>{{ usuario.email }}</td>
-									<td class="text-center">
-										<a class="btn" href="{{ path('app_editar_usuario', {'usuario_id': usuario.id}) }}" title="Editar operador">
-											<i class="fas fa-edit text-warning"></i>
-										</a>
-									</td>
+									<td>{{ auditoria.id }}</td>
+									<td>{{ auditoria.fecha | date('d/m/Y H:i:s') }}</td>
+									<td>{{ auditoria.user.nombre }}</td>
+									<td>{{ auditoria.user.usuario }}</td>
+									<td>{{ auditoria.user.email }}</td>
+									<td>{{ auditoria.tipoAuditoria.descripcion }}</td>
+									<td>{{ auditoria.entidad }}</td>
+									<td>{{ auditoria.entidadId }}</td>
+									<td>{{ auditoria.registroAnterior|json_encode(constant('JSON_PRETTY_PRINT')) }}</td>
+									<td>{{ auditoria.registroNuevo|json_encode(constant('JSON_PRETTY_PRINT')) }}</td>
 								</tr>
 							{% endfor %}
 						</tbody>

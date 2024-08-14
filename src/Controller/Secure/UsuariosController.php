@@ -27,6 +27,7 @@ class UsuariosController extends AbstractController
         $usuario =  new User();
         $data['form'] = $this->createForm(UsuarioType::class, $usuario);
         $data['form']->handleRequest($request);
+        $data['titulo']='Insertar usuario';
         if ($data['form']->isSubmitted() && $data['form']->isValid()) {
             // $data['form']->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
@@ -48,6 +49,7 @@ class UsuariosController extends AbstractController
         }
         $data['form'] = $this->createForm(UsuarioType::class, $data['usuario']);
         $data['form']->handleRequest($request);
+        $data['titulo']='Editar usuario';
         if ($data['form']->isSubmitted() && $data['form']->isValid()) {
             // $data['form']->getData() holds the submitted values
             // but, the original `$task` variable has also been updated

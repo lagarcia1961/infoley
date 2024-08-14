@@ -1,0 +1,42 @@
+<!--- Sidemenu -->
+<div
+	id="sidebar-menu">
+	<!-- Left Menu Start -->
+	<ul class="metismenu list-unstyled" id="side-menu">
+		<li class="menu-title" data-key="t-menu">Menu</li>
+
+		<li>
+			<a href="{{ path('app_secure_home') }}">
+				<i data-feather="home"></i>
+				<span data-key="t-dashboard">Dashboard</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="javascript: void(0);" class="has-arrow">
+				<i data-feather="users"></i>
+				<span>Usuarios</span>
+			</a>
+			<ul class="sub-menu" aria-expanded="false">
+				<li>
+					<a href="{{ path('app_usuarios')}}">
+						<span>Lista de usuarios</span>
+					</a>
+				</li>
+
+				<li>
+					<a href="{{ path('app_insertar_usuario')}}">
+						<span>Alta de usuario</span>
+					</a>
+				</li>
+			</ul>
+		</li>
+
+		<li>
+			<a href="{{ path('app_secure_auditoria') }}">
+				<i data-feather="book"></i>
+				<span>Auditoría</span>
+			</a>
+		</li>
+	</div>
+	<!-- Sidebar -->
