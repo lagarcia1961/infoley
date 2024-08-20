@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Norma
+{% endblock %}
+
+{% block body %}
+	<div class="main-content">
+		<div class="page-content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<h1>Norma</h1>
+
+						<table class="table">
+							<tbody>
+								<tr>
+									<th>Id</th>
+									<td>{{ norma.id }}</td>
+								</tr>
+								<tr>
+									<th>Numero</th>
+									<td>{{ norma.numero }}</td>
+								</tr>
+								<tr>
+									<th>Anio</th>
+									<td>{{ norma.anio }}</td>
+								</tr>
+								<tr>
+									<th>Titulo</th>
+									<td>{{ norma.titulo }}</td>
+								</tr>
+								<tr>
+									<th>FechaPublicacion</th>
+									<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('Y-m-d') : '' }}</td>
+								</tr>
+								<tr>
+									<th>TextoCompleto</th>
+									<td>{{ norma.textoCompleto }}</td>
+								</tr>
+								<tr>
+									<th>UrlPdf</th>
+									<td>{{ norma.urlPdf }}</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<a href="{{ path('app_norma_index') }}">back to list</a>
+
+						<a href="{{ path('app_norma_edit', {'id': norma.id}) }}">edit</a>
+
+						{{ include('secure/norma/_delete_form.html.twig') }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

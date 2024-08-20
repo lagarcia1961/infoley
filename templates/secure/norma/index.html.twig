@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Norma index
+{% endblock %}
+
+{% block body %}
+	<div class="main-content">
+		<div class="page-content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<h1>Norma index</h1>
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Numero</th>
+									<th>Anio</th>
+									<th>Titulo</th>
+									<th>FechaPublicacion</th>
+									<th>TextoCompleto</th>
+									<th>UrlPdf</th>
+									<th>actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for norma in normas %}
+									<tr>
+										<td>{{ norma.id }}</td>
+										<td>{{ norma.numero }}</td>
+										<td>{{ norma.anio }}</td>
+										<td>{{ norma.titulo }}</td>
+										<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('Y-m-d') : '' }}</td>
+										<td>{{ norma.textoCompleto }}</td>
+										<td>{{ norma.urlPdf }}</td>
+										<td>
+											<a href="{{ path('app_norma_show', {'id': norma.id}) }}">show</a>
+											<a href="{{ path('app_norma_edit', {'id': norma.id}) }}">edit</a>
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="8">no records found</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+
+						<a href="{{ path('app_norma_new') }}">Create new</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
