@@ -1,27 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Norma index
-{% endblock %}
-
 {% block body %}
 	<div class="main-content">
 		<div class="page-content">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12">
-						<h1>Norma index</h1>
+						<h1>Listado de Normas</h1>
+					</div>
+				</div>
 
-						<table class="table">
+				<div class="row">
+					<div class="col-xs-12 text-end my-4">
+						<a href="{{ path('app_norma_new')}}" class="btn btn-primary">
+							Nueva norma
+						</a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<table id="datatable-buttons" class="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
 									<th>Id</th>
 									<th>Numero</th>
 									<th>Anio</th>
 									<th>Titulo</th>
-									<th>FechaPublicacion</th>
-									<th>TextoCompleto</th>
+									<th>Fecha Publicación</th>
+									<th>Texto Completo</th>
 									<th>UrlPdf</th>
-									<th>actions</th>
+									<th>Acciones</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -31,26 +39,23 @@
 										<td>{{ norma.numero }}</td>
 										<td>{{ norma.anio }}</td>
 										<td>{{ norma.titulo }}</td>
-										<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('Y-m-d') : '' }}</td>
+										<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('d-m-Y') : '' }}</td>
 										<td>{{ norma.textoCompleto }}</td>
 										<td>{{ norma.urlPdf }}</td>
 										<td>
-											<a href="{{ path('app_norma_show', {'id': norma.id}) }}">show</a>
-											<a href="{{ path('app_norma_edit', {'id': norma.id}) }}">edit</a>
+											<a class="btn" href="{{ path('app_norma_edit', {'id': norma.id}) }}" title="Editar norma">
+												<i class="fas fa-edit text-warning"></i>
+											</a>
 										</td>
-									</tr>
-								{% else %}
-									<tr>
-										<td colspan="8">no records found</td>
 									</tr>
 								{% endfor %}
 							</tbody>
 						</table>
-
-						<a href="{{ path('app_norma_new') }}">Create new</a>
 					</div>
 				</div>
+
+
 			</div>
 		</div>
 	</div>
-{% endblock %}
+</div></div>{% endblock %}

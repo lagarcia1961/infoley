@@ -17,7 +17,7 @@ class NormaController extends AbstractController
     #[Route('/', name: 'app_norma_index', methods: ['GET'])]
     public function index(NormaRepository $normaRepository): Response
     {
-        return $this->render('secure/norma/index.html.twig', [
+        return $this->render('secure/norma/abm_norma.html.twig', [
             'normas' => $normaRepository->findAll(),
         ]);
     }
@@ -36,19 +36,12 @@ class NormaController extends AbstractController
             return $this->redirectToRoute('app_norma_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('secure/norma/new.html.twig', [
+        return $this->render('secure/norma/form_norma.html.twig', [
             'norma' => $norma,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_norma_show', methods: ['GET'])]
-    public function show(Norma $norma): Response
-    {
-        return $this->render('secure/norma/show.html.twig', [
-            'norma' => $norma,
-        ]);
-    }
 
     #[Route('/{id}/edit', name: 'app_norma_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Norma $norma, EntityManagerInterface $entityManager): Response
