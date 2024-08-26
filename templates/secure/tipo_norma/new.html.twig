@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nueva Norma
+{% block title %}Nuevo Tipo de Norma
 {% endblock %}
 
 {% block body %}
@@ -9,11 +9,12 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12">
-						<h1>Create new Norma</h1>
 
-						{{ include('secure/norma/_form.html.twig') }}
+						<h1>Nuevo Tipo de Norma</h1>
 
-						<a href="{{ path('app_norma_index') }}">back to list</a>
+						{{ include('secure/tipo_norma/_form.html.twig') }}
+
+						<a href="{{ path('app_tipo_norma_index') }}">Volver a Tipos de Normas</a>
 					</div>
 				</div>
 			</div>

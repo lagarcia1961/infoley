@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TipoNorma index
+{% endblock %}
+
+{% block body %}
+	<div class="main-content">
+		<div class="page-content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<h1>Listado de tipo de Normas</h1>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12 text-end my-4">
+						<a href="{{ path('app_tipo_norma_new')}}" class="btn btn-primary">
+							Nuevo Tipo de Norma
+						</a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<table id="datatable-buttons" class="table table-sm table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Nombre</th>
+									<th>Descripcion</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for tipo_norma in tipo_normas %}
+									<tr>
+										<td>{{ tipo_norma.id }}</td>
+										<td>{{ tipo_norma.nombre }}</td>
+										<td>{{ tipo_norma.descripcion }}</td>
+										<td>
+											<a class="btn" href="{{ path('app_tipo_norma_edit', {'id': tipo_norma.id}) }}" title="Editar Tipo de Norma">
+											<i class="fas fa-edit text-warning"></i>
+										</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div></div>{% endblock %}
