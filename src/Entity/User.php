@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email','usuario'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email', 'usuario'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -51,10 +51,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 100)]
     private ?string $usuario = null;
 
+    #[ORM\Column(options: ["default" => 1])]
+    private ?bool $isActive = null;
+
     public function __construct()
     {
         $this->auditorias = new ArrayCollection();
         $this->usuarioTipoNormas = new ArrayCollection();
+        $this->isActive = true;
     }
 
     public function getId(): ?int
@@ -211,6 +215,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsuario(?string $usuario): static
     {
         $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }
