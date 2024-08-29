@@ -61,8 +61,11 @@
 									<td>{{ usuario.usuario }}</td>
 									<td>{{ usuario.email }}</td>
 									<td class="text-center">
-										<a class="btn" href="{{ path('app_editar_usuario', {'usuario_id': usuario.id}) }}" title="Editar operador">
+										<a class="btn" href="{{ path('app_editar_usuario', {'usuario_id': usuario.id}) }}" title="Editar usuario">
 											<i class="fas fa-edit text-warning"></i>
+										</a>
+										<a class="btn" href="{{ path('app_editar_usuario', {'usuario_id': usuario.id}) }}" title="Eliminar usuario">
+											<i class="fas fa-trash text-danger"></i>
 										</a>
 									</td>
 								</tr>
