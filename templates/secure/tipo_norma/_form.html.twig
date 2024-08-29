@@ -3,6 +3,9 @@
 <div class="row">
 	<div class="col-xs-12 text-end">
 		<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+		<a href="{{ path('app_tipo_norma_index') }}" class="btn btn-primary" style="margin-left: 10px;">
+			Volver al listado de Tipos de Normas
+		</a>
 	</div>
 </div>
 {{ form_end(form) }}
