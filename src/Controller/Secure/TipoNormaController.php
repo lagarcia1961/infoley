@@ -17,8 +17,10 @@ class TipoNormaController extends AbstractController
     #[Route('/', name: 'app_tipo_norma_index', methods: ['GET'])]
     public function index(TipoNormaRepository $tipoNormaRepository): Response
     {
+        $tipoNormasActivas = $tipoNormaRepository->findBy(['is_active' => 1]);
+    
         return $this->render('secure/tipo_norma/index.html.twig', [
-            'tipo_normas' => $tipoNormaRepository->findAll(),
+            'tipo_normas' => $tipoNormasActivas,
         ]);
     }
 
@@ -26,6 +28,7 @@ class TipoNormaController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $tipoNorma = new TipoNorma();
+        $tipoNorma->setIsActive(true);
         $form = $this->createForm(TipoNormaType::class, $tipoNorma);
         $form->handleRequest($request);
 
@@ -42,15 +45,7 @@ class TipoNormaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_tipo_norma_show', methods: ['GET'])]
-    public function show(TipoNorma $tipoNorma): Response
-    {
-        return $this->render('secure/tipo_norma/show.html.twig', [
-            'tipo_norma' => $tipoNorma,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_tipo_norma_edit', methods: ['GET', 'POST'])]
+     #[Route('/{id}/edit', name: 'app_tipo_norma_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, TipoNorma $tipoNorma, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TipoNormaType::class, $tipoNorma);
@@ -71,11 +66,15 @@ class TipoNormaController extends AbstractController
     #[Route('/{id}', name: 'app_tipo_norma_delete', methods: ['POST'])]
     public function delete(Request $request, TipoNorma $tipoNorma, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$tipoNorma->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($tipoNorma);
+        if ($this->isCsrfTokenValid('delete'.$tipoNorma->getId(), $request->request->get('_token'))) {
+            $tipoNorma->setIsActive(false);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_tipo_norma_index', [], Response::HTTP_SEE_OTHER);
     }
+        
+
+
+
 }

@@ -1,11 +1,22 @@
-{{ form_start(form) }}
-{{ form_widget(form) }}
+{{ form_start (form) }}
 <div class="row">
-	<div class="col-xs-12 text-end">
-		<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-		<a href="{{ path('app_tipo_norma_index') }}" class="btn btn-primary" style="margin-left: 10px;">
-			Volver al listado de Tipos de Normas
-		</a>
+	<div class="col-6">
+		{{ form_label (form.nombre) }}
+		{{ form_widget (form.nombre) }}
+		{{ form_errors (form.nombre)}}
 	</div>
 </div>
-{{ form_end(form) }}
+<div class="row">
+	<div class="col-12">
+		{{ form_label (form.descripcion) }}
+		{{ form_widget (form.descripcion) }}
+		{{ form_errors (form.descripcion)}}
+	</div>
+
+	<div class="col-12 mt-4 text-end">
+		{{ form_widget (form.guardar) }}
+		<a href="{{ path('app_tipo_norma_index') }}" class="btn btn-secondary">Volver</a>
+	</div>
+
+</div>
+{{ form_end (form) }}

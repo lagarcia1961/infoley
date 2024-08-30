@@ -30,6 +30,9 @@ class TipoNorma
     #[ORM\OneToMany(targetEntity: UsuarioTipoNorma::class, mappedBy: 'TipoNorma')]
     private Collection $usuarioTipoNormas;
 
+    #[ORM\Column]
+    private ?bool $is_active = null;
+
     public function __construct()
     {
         $this->normas = new ArrayCollection();
@@ -122,6 +125,25 @@ class TipoNorma
                 $usuarioTipoNorma->setTipoNorma(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->is_active;
+    }
+
+    public function setActive(bool $is_active): static
+    {
+        $this->is_active = $is_active;
+
+        return $this;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->is_active = $isActive;
 
         return $this;
     }
