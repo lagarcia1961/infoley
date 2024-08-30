@@ -5,8 +5,10 @@ namespace App\Controller\Secure;
 use App\Entity\User;
 use App\Form\UsuarioType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -60,5 +62,38 @@ class UsuariosController extends AbstractController
             return $this->redirectToRoute('app_usuarios');
         }
         return $this->render('secure/usuarios/form_usuario.html.twig', $data);
+    }
+
+    #[Route('/eliminar', name: 'app_eliminar_usuario', methods: ['POST'])]
+    public function eliminar(UserRepository $userRepository, Request $request, EntityManagerInterface $em): JsonResponse
+    { {
+            // Obtener el ID desde el cuerpo de la solicitud
+            $id = $request->request->get('id') ?? null;
+
+            // Verificar si se proporcionó un ID
+            if (!$id) {
+                return new JsonResponse(['success' => false, 'message' => 'ID no proporcionado.'], JsonResponse::HTTP_BAD_REQUEST);
+            }
+
+            // Buscar el usuario por ID
+            $user = $userRepository->findOneBy(['id' => $id, 'isActive' => true]);
+
+            // Verificar si el usuario existe
+            if (!$user) {
+                return new JsonResponse(['success' => false, 'message' => 'Usuario no encontrado.'], JsonResponse::HTTP_NOT_FOUND);
+            }
+
+            try {
+                // Eliminar el usuario
+                $user->setActive(false);
+                $em->persist($user);
+                $em->flush();
+
+                return new JsonResponse(['success' => true, 'message' => 'Usuario eliminado con éxito.', 'title' => 'Eliminado!']);
+            } catch (\Exception $e) {
+                // Manejo de errores
+                return new JsonResponse(['success' => false, 'message' => 'Error al eliminar el usuario.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        }
     }
 }

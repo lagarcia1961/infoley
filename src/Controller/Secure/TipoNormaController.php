@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Secure;
 
 use App\Entity\TipoNorma;
 use App\Form\TipoNormaType;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/tipo/norma')]
+#[Route('/secure/tipo-norma')]
 class TipoNormaController extends AbstractController
 {
     #[Route('/', name: 'app_tipo_norma_index', methods: ['GET'])]

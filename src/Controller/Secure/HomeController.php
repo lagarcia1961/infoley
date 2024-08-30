@@ -6,9 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/secure/home')]
 class HomeController extends AbstractController
 {
-    #[Route('/secure/home', name: 'app_secure_home')]
+    #[Route('/', name: 'app_secure_home')]
     public function index(): Response
     {
         return $this->render('secure/home/index.html.twig', [

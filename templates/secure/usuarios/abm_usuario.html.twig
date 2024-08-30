@@ -1,81 +1,76 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="main-content">
-	<div class="page-content">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-12">
-					<div class="page-title-box d-sm-flex align-items-center justify-content-between">
-						<div class="page-title-left">
-							<ol class="breadcrumb m-0">
-								<li class="breadcrumb-item">
-									<a href="javascript: void(0);">Usuarios</a>
-								</li>
-								<li class="breadcrumb-item active">Lista de usuarios</li>
-							</ol>
-						</div>
+<div class="row">
+	<div class="col-12">
+		<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+			<div class="page-title-left">
+				<ol class="breadcrumb m-0">
+					<li class="breadcrumb-item">
+						<a href="javascript: void(0);">Usuarios</a>
+					</li>
+					<li class="breadcrumb-item active">Lista de usuarios</li>
+				</ol>
+			</div>
 
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12">
-					<h1>Usuarios</h1>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12 text-end my-4">
-					<a href="{{ path('app_insertar_usuario')}}" class="btn btn-primary">
-						Nuevo usuario
-					</a>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12">
-					<table id="datatable-buttons" class="table table-sm table-bordered table-striped">
-						<thead>
-							<tr>
-								<th>
-									Id
-								</th>
-								<th>
-									Nombre
-								</th>
-								<th>
-									Usuario
-								</th>
-								<th>
-									Email
-								</th>
-								<th class="text-center">
-									Acción
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for usuario in usuarios %}
-								<tr>
-									<td>{{ usuario.id }}</td>
-									<td>{{ usuario.nombre }}</td>
-									<td>{{ usuario.usuario }}</td>
-									<td>{{ usuario.email }}</td>
-									<td class="text-center">
-										<a class="btn" href="{{ path('app_editar_usuario', {'usuario_id': usuario.id}) }}" title="Editar usuario">
-											<i class="fas fa-edit text-warning"></i>
-										</a>
-										<a class="btn" href="{{ path('app_editar_usuario', {'usuario_id': usuario.id}) }}" title="Eliminar usuario">
-											<i class="fas fa-trash text-danger"></i>
-										</a>
-									</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>
-
-{% endblock %}
+<div class="row">
+	<div class="col-xs-12">
+		<h1>Usuarios</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 text-end my-4">
+		<a href="{{ path('app_insertar_usuario')}}" class="btn btn-primary">
+			Nuevo usuario
+		</a>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<table id="datatable-buttons" data-url-eliminar="{{ path('app_eliminar_usuario') }}"
+			class="table table-sm table-bordered table-striped datatable-delete">
+			<thead>
+				<tr>
+					<th>
+						Id
+					</th>
+					<th>
+						Nombre
+					</th>
+					<th>
+						Usuario
+					</th>
+					<th>
+						Email
+					</th>
+					<th class="text-center">
+						Acción
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for usuario in usuarios %}
+				<tr>
+					<td>{{ usuario.id }}</td>
+					<td>{{ usuario.nombre }}</td>
+					<td>{{ usuario.usuario }}</td>
+					<td>{{ usuario.email }}</td>
+					<td class="text-center">
+						<a class="m-2" href="{{ path('app_editar_usuario', {'usuario_id': usuario.id}) }}"
+							title="Editar usuario">
+							<i class="fas fa-edit text-warning"></i>
+						</a>
+						<a href="javascript:void(0);" class="btn-delete m-2" data-id="{{ usuario.id }}"
+							title="Eliminar usuario">
+							<i class="fas fa-trash text-danger"></i>
+						</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% endblock %}
