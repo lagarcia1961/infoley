@@ -27,7 +27,7 @@
 								<tr>
 									<th>Id</th>
 									<th>Nombre</th>
-									<th>Descripcion</th>
+									<th>Descripción</th>
 									<th>Acciones</th>
 								</tr>
 							</thead>
@@ -39,8 +39,14 @@
 										<td>{{ tipo_norma.descripcion }}</td>
 										<td>
 											<a class="btn" href="{{ path('app_tipo_norma_edit', {'id': tipo_norma.id}) }}" title="Editar Tipo de Norma">
-											<i class="fas fa-edit text-warning"></i>
-										</a>
+												<i class="fas fa-edit text-warning"></i>
+											</a>
+											<a class="btn" href="{{ path('app_tipo_norma_delete', {'id': tipo_norma.id}) }}" onclick="event.preventDefault(); document.getElementById('delete-form-{{ tipo_norma.id }}').submit();" title="Eliminar Tipo de Norma">
+												<i class="fas fa-trash text-danger"></i>
+											</a>
+											<form id="delete-form-{{ tipo_norma.id }}" action="{{ path('app_tipo_norma_delete', {'id': tipo_norma.id}) }}" method="POST" style="display: none;">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tipo_norma.id) }}">
+											</form>	
 										</td>
 									</tr>
 								{% endfor %}
