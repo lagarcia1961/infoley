@@ -54,6 +54,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(options: ["default" => 1])]
     private ?bool $isActive = null;
 
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Rol $rol = null;
+
     public function __construct()
     {
         $this->auditorias = new ArrayCollection();
@@ -95,9 +99,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles[] = $this->rol->getNombre();
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -227,6 +231,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getRol(): ?Rol
+    {
+        return $this->rol;
+    }
+
+    public function setRol(?Rol $rol): static
+    {
+        $this->rol = $rol;
 
         return $this;
     }

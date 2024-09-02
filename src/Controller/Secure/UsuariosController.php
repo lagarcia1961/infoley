@@ -26,17 +26,14 @@ class UsuariosController extends AbstractController
     #[Route('/insertar', name: 'app_insertar_usuario')]
     public function insertar(Request $request, EntityManagerInterface $em): Response
     {
-        $usuario =  new User();
-        $data['form'] = $this->createForm(UsuarioType::class, $usuario);
+        $data['usuario'] =  new User();
+        $data['form'] = $this->createForm(UsuarioType::class, $data['usuario']);
         $data['form']->handleRequest($request);
         $data['titulo'] = 'Insertar usuario';
         if ($data['form']->isSubmitted() && $data['form']->isValid()) {
-            // $data['form']->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
-            $em->persist($usuario);
-            $em->flush();
-            // ... perform some action, such as saving the task to the database
 
+            $em->persist($data['usuario']);
+            $em->flush();
             return $this->redirectToRoute('app_usuarios');
         }
         return $this->render('secure/usuarios/form_usuario.html.twig', $data);
@@ -49,15 +46,17 @@ class UsuariosController extends AbstractController
         if (!$data['usuario']) {
             return $this->redirectToRoute('app_usuarios');
         }
-        $data['form'] = $this->createForm(UsuarioType::class, $data['usuario']);
+        $data['form'] = $this->createForm(UsuarioType::class, $data['usuario'], ['is_edit' => true]);
         $data['form']->handleRequest($request);
         $data['titulo'] = 'Editar usuario';
         if ($data['form']->isSubmitted() && $data['form']->isValid()) {
-            // $data['form']->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
+            $newPassword = $data['form']->get('password')->getData();
+
+            if ($newPassword) {
+                $data['usuario']->setPassword($newPassword);
+            }
             $em->persist($data['usuario']);
             $em->flush();
-            // ... perform some action, such as saving the task to the database
 
             return $this->redirectToRoute('app_usuarios');
         }
