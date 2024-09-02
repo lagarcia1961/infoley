@@ -1,0 +1,17 @@
+{% extends is_granted('IS_AUTHENTICATED_FULLY') ? 'base.html.twig' : 'base_frontend.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12 text-center">
+        <h1>Error</h1>
+        <p>
+            Hubo un error al cargar el sitio, por favor intente nuevamente o comuniquese con un administrador.
+        </p>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a class="btn btn-primary" href="{{ path('app_secure_home') }}" title="Volver al inicio">Volver al inicio</a>
+        {% else %}
+        <a class="btn btn-secondary" href="{{ path('app_home_front') }}" title="Volver al inicio">Volver al inicio</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
