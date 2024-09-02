@@ -7,6 +7,7 @@ use App\Form\TipoNormaType;
 use App\Repository\TipoNormaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,7 +18,7 @@ class TipoNormaController extends AbstractController
     #[Route('/', name: 'app_tipo_norma_index', methods: ['GET'])]
     public function index(TipoNormaRepository $tipoNormaRepository): Response
     {
-        $tipoNormasActivas = $tipoNormaRepository->findBy(['is_active' => 1]);
+        $tipoNormasActivas = $tipoNormaRepository->findBy(['isActive' => 1]);
     
         return $this->render('secure/tipo_norma/index.html.twig', [
             'tipo_normas' => $tipoNormasActivas,
@@ -28,7 +29,6 @@ class TipoNormaController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $tipoNorma = new TipoNorma();
-        $tipoNorma->setIsActive(true);
         $form = $this->createForm(TipoNormaType::class, $tipoNorma);
         $form->handleRequest($request);
 
@@ -63,17 +63,39 @@ class TipoNormaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_tipo_norma_delete', methods: ['POST'])]
-    public function delete(Request $request, TipoNorma $tipoNorma, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$tipoNorma->getId(), $request->request->get('_token'))) {
-            $tipoNorma->setIsActive(false);
-            $entityManager->flush();
+ 
+    #[Route('/eliminar', name: 'app_tipo_norma_delete', methods: ['POST'])]
+    public function eliminar(TipoNormaRepository $tipoNormaRepository, Request $request, EntityManagerInterface $em): JsonResponse
+    { {
+            // Obtener el ID desde el cuerpo de la solicitud
+            $id = $request->request->get('id') ?? null;
+
+            // Verificar si se proporcionó un ID
+            if (!$id) {
+                return new JsonResponse(['success' => false, 'message' => 'ID no proporcionado.'], JsonResponse::HTTP_BAD_REQUEST);
+            }
+
+            // Buscar el tipo de Norma por ID
+            $tipoNorma = $tipoNormaRepository->findOneBy(['id' => $id, 'isActive' => true]);
+
+            // Verificar si el tipo de norma existe
+            if (!$tipoNorma) {
+                return new JsonResponse(['success' => false, 'message' => 'Tipo de Norma no encontrada.'], JsonResponse::HTTP_NOT_FOUND);
+            }
+
+            try {
+                // Eliminar el Tipo de norma
+                $tipoNorma->setActive(false);
+                $em->persist($tipoNorma);
+                $em->flush();
+
+                return new JsonResponse(['success' => true, 'message' => 'Tipo de Norma eliminada con éxito.', 'title' => 'Eliminada!']);
+            } catch (\Exception $e) {
+                // Manejo de errores
+                return new JsonResponse(['success' => false, 'message' => 'Error al eliminar el Tipo de Norma.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
         }
-    
-        return $this->redirectToRoute('app_tipo_norma_index', [], Response::HTTP_SEE_OTHER);
-    }
-        
+    }        
 
 
 

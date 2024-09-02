@@ -30,13 +30,14 @@ class TipoNorma
     #[ORM\OneToMany(targetEntity: UsuarioTipoNorma::class, mappedBy: 'TipoNorma')]
     private Collection $usuarioTipoNormas;
 
-    #[ORM\Column]
-    private ?bool $is_active = null;
+    #[ORM\Column(options: ["default" => 1])]
+    private ?bool $isActive = null;
 
     public function __construct()
     {
         $this->normas = new ArrayCollection();
         $this->usuarioTipoNormas = new ArrayCollection();
+        $this->isActive = true;
     }
 
     // Getters y setters
@@ -131,19 +132,12 @@ class TipoNorma
 
     public function isActive(): ?bool
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setActive(bool $is_active): static
+    public function setActive(bool $isActive): static
     {
-        $this->is_active = $is_active;
-
-        return $this;
-    }
-
-    public function setIsActive(bool $isActive): self
-    {
-        $this->is_active = $isActive;
+        $this->isActive = $isActive;
 
         return $this;
     }

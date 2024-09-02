@@ -10,7 +10,7 @@
 				<span data-key="t-dashboard">Dashboard</span>
 			</a>
 		</li>
-
+		
 		{% if is_granted('ROLE_ADMIN') %}
 		<li>
 			<a href="javascript: void(0);" class="has-arrow">
@@ -20,13 +20,13 @@
 			<ul class="sub-menu" aria-expanded="false">
 				<li>
 					<a href="{{ path('app_usuarios')}}">
-						<span>Listado de usuarios</span>
+						<span>Listado de Usuarios</span>
 					</a>
 				</li>
 
 				<li>
 					<a href="{{ path('app_insertar_usuario')}}">
-						<span>Alta de usuario</span>
+						<span>Alta de Usuario</span>
 					</a>
 				</li>
 			</ul>
@@ -40,17 +40,39 @@
 			<ul class="sub-menu" aria-expanded="false">
 				<li>
 					<a href="{{ path('app_tipo_norma_index')}}">
-						<span>Listado de tipos de normas</span>
+						<span>Listado de Tipos de Normas</span>
 					</a>
 				</li>
 
 				<li>
 					<a href="{{ path('app_tipo_norma_new')}}">
-						<span>Alta de tipos de norma</span>
+						<span>Alta de Tipo de Norma</span>
 					</a>
 				</li>
 			</ul>
 		</li>
+
+		<li>
+			<a href="javascript: void(0);" class="has-arrow">
+				<i data-feather="users"></i>
+				<span>Temas</span>
+			</a>
+			<ul class="sub-menu" aria-expanded="false">
+				<li>
+					<a href="{{ path('app_tema_index')}}">
+						<span>Listado de Temas</span>
+					</a>
+				</li>
+
+				<li>
+					<a href="{{ path('app_tema_index')}}">
+						<span>Alta de Tema</span>
+					</a>
+				</li>
+			</ul>
+		</li>
+
+
 
 		<li>
 			<a href="javascript: void(0);" class="has-arrow">
@@ -60,13 +82,13 @@
 			<ul class="sub-menu" aria-expanded="false">
 				<li>
 					<a href="{{ path('app_norma_index')}}">
-						<span>Listado de normas</span>
+						<span>Listado de Normas</span>
 					</a>
 				</li>
 
 				<li>
 					<a href="{{ path('app_norma_new')}}">
-						<span>Alta de norma</span>
+						<span>Alta de Norma</span>
 					</a>
 				</li>
 			</ul>
