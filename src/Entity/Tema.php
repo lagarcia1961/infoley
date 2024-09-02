@@ -24,9 +24,13 @@ class Tema
     #[ORM\OneToMany(targetEntity: NormaTema::class, mappedBy: 'tema')]
     private Collection $normaTemas;
 
+    #[ORM\Column(options: ["default" => 1])]
+    private ?bool $isActive = null;
+
     public function __construct()
     {
         $this->normaTemas = new ArrayCollection();
+        $this->isActive = true;
     }
 
     // Getters y setters
@@ -73,6 +77,18 @@ class Tema
                 $normaTema->setTema(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }
