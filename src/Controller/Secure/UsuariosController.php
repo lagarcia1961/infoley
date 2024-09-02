@@ -12,7 +12,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN',message:'No tienes permisos para acceder a esta sección')]
 #[Route('secure/usuarios')]
 class UsuariosController extends AbstractController
 {
