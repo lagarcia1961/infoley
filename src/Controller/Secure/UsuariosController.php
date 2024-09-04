@@ -3,7 +3,9 @@
 namespace App\Controller\Secure;
 
 use App\Entity\User;
+use App\Entity\UsuarioTipoNorma;
 use App\Form\UsuarioType;
+use App\Repository\TipoNormaRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,11 +16,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_ADMIN',message:'No tienes permisos para acceder a esta sección')]
+#[IsGranted('ROLE_ADMIN', message: 'No tienes permisos para acceder a esta sección')]
 #[Route('secure/usuarios')]
 class UsuariosController extends AbstractController
 {
-    #[Route('/', name: 'app_usuarios')]
+    #[Route('/', name: 'app_usuarios_index')]
     public function index(UserRepository $userRepository): Response
     {
         $data['usuarios'] = $userRepository->findBy(['isActive' => 1]);
@@ -26,41 +28,95 @@ class UsuariosController extends AbstractController
     }
 
     #[Route('/insertar', name: 'app_insertar_usuario')]
-    public function insertar(Request $request, EntityManagerInterface $em): Response
+    public function insertar(Request $request, EntityManagerInterface $em, TipoNormaRepository $tipoNormaRepository): Response
     {
         $data['usuario'] =  new User();
         $data['form'] = $this->createForm(UsuarioType::class, $data['usuario']);
         $data['form']->handleRequest($request);
         $data['titulo'] = 'Insertar usuario';
+        $data['files_js'] = [
+            'usuarios/usuarios.js',
+        ];
         if ($data['form']->isSubmitted() && $data['form']->isValid()) {
+
+            $dataForm = $data['form']->getData();
+
+            $rol = $dataForm->getRol()->getNombre();
+            if ($rol === 'ROLE_ADMIN') {
+                $selectedTipoNormas = $tipoNormaRepository->findBy(['isActive' => true]);
+            } else {
+                $selectedTipoNormas = $data['form']->get('tipoNormas')->getData();
+            }
+            foreach ($selectedTipoNormas as $tipoNorma) {
+                $usuarioTipoNorma = new UsuarioTipoNorma();
+                $usuarioTipoNorma->setUser($data['usuario'])
+                    ->setTipoNorma($tipoNorma);
+                $em->persist($usuarioTipoNorma);
+            }
 
             $em->persist($data['usuario']);
             $em->flush();
-            return $this->redirectToRoute('app_usuarios');
+            return $this->redirectToRoute('app_usuarios_index');
         }
         return $this->render('secure/usuarios/form_usuario.html.twig', $data);
     }
 
     #[Route('/editar/{usuario_id}', name: 'app_editar_usuario')]
-    public function editar($usuario_id, UserRepository $userRepository, Request $request, EntityManagerInterface $em): Response
+    public function editar($usuario_id, UserRepository $userRepository, Request $request, EntityManagerInterface $em, TipoNormaRepository $tipoNormaRepository): Response
     {
         $data['usuario'] =  $userRepository->findOneBy(['id' => $usuario_id]);
         if (!$data['usuario']) {
-            return $this->redirectToRoute('app_usuarios');
+            return $this->redirectToRoute('app_usuarios_index');
         }
+
         $data['form'] = $this->createForm(UsuarioType::class, $data['usuario'], ['is_edit' => true]);
+
+        // Obtener todas las instancias de UsuarioTipoNorma asociadas al usuario
+        $usuarioTipoNormas = $data['usuario']->getUsuarioTipoNormas();
+
+        // Crear un array con los TipoNorma asociados
+        $tipoNormas = array_map(function ($usuarioTipoNorma) {
+            return $usuarioTipoNorma->getTipoNorma();
+        }, $usuarioTipoNormas->toArray());
+
+        if ($tipoNormas) {
+            $data['form']->get('tipoNormas')->setData($tipoNormas); // Establece las normas seleccionadas en el formulario
+        }
+
         $data['form']->handleRequest($request);
         $data['titulo'] = 'Editar usuario';
+        $data['files_js'] = [
+            'usuarios/usuarios.js',
+        ];
         if ($data['form']->isSubmitted() && $data['form']->isValid()) {
             $newPassword = $data['form']->get('password')->getData();
-
             if ($newPassword) {
                 $data['usuario']->setPassword($newPassword);
             }
+
+            foreach ($data['usuario']->getUsuarioTipoNormas() as $usuarioTipoNorma) {
+                $em->remove($usuarioTipoNorma);
+            }
+
+            $dataForm = $data['form']->getData();
+
+            $rol = $dataForm->getRol()->getNombre();
+            if ($rol === 'ROLE_ADMIN') {
+                $selectedTipoNormas = $tipoNormaRepository->findBy(['isActive' => true]);
+            } else {
+                $selectedTipoNormas = $data['form']->get('tipoNormas')->getData();
+            }
+            foreach ($selectedTipoNormas as $tipoNorma) {
+                $usuarioTipoNorma = new UsuarioTipoNorma();
+                $usuarioTipoNorma->setUser($data['usuario'])
+                    ->setTipoNorma($tipoNorma);
+                $em->persist($usuarioTipoNorma);
+            }
+
             $em->persist($data['usuario']);
             $em->flush();
 
-            return $this->redirectToRoute('app_usuarios');
+            return $this->redirectToRoute('app_usuarios_index');
         }
         return $this->render('secure/usuarios/form_usuario.html.twig', $data);
     }

@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Rol;
+use App\Entity\TipoNorma;
 use App\Entity\User;
+use App\Repository\TipoNormaRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -27,6 +29,7 @@ class UsuarioType extends AbstractType
             $builder->add('password', PasswordType::class, [
                 'label' => 'Contraseña',
                 'required' => false,
+                'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password']
             ]);
         } else {
@@ -69,6 +72,28 @@ class UsuarioType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'El campo Nombre es obligatorio.']),
+                ],
+            ])
+            ->add('tipoNormas', EntityType::class, [
+                'label' => 'Tipos de normas <span style="color:red">*</span>',
+                'label_html' => true,
+                'class' => TipoNorma::class,
+                'choice_label' => 'nombre',
+                'required'=>false,
+                'multiple' => true,
+                'expanded' => false, // Cambiar a false para usar select en lugar de checkboxes
+                'mapped' => false,
+                'query_builder' => function (TipoNormaRepository $tn) {
+                    return $tn->createQueryBuilder('tn')
+                        ->where('tn.isActive = :isActive')
+                        ->setParameter('isActive', true)
+                        ->orderBy('tn.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione uno o varios tipos de normas',
+                'attr' => [
+                    'class' => 'choice_multiple_default',
+                    'placeholder' => 'Seleccione uno o varios tipos de normas',
+                    'aria-label'=>'Seleccione uno o varios tipos de normas'
                 ],
             ])
             ->add('usuario', TextType::class, [
