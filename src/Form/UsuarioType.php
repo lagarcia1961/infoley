@@ -75,8 +75,7 @@ class UsuarioType extends AbstractType
                 ],
             ])
             ->add('tipoNormas', EntityType::class, [
-                'label' => 'Tipos de normas <span style="color:red">*</span>',
-                'label_html' => true,
+                'label' => 'Tipos de normas',
                 'class' => TipoNorma::class,
                 'choice_label' => 'nombre',
                 'required'=>false,
