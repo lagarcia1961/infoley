@@ -6,15 +6,15 @@
 
 		<li>
 			<a href="{{ path('app_secure_home') }}">
-				<i data-feather="home"></i>
+				<i class="fas fa-home"></i>
 				<span data-key="t-dashboard">Dashboard</span>
 			</a>
 		</li>
-		
+
 		{% if is_granted('ROLE_ADMIN') %}
 		<li>
 			<a href="javascript: void(0);" class="has-arrow">
-				<i data-feather="users"></i>
+				<i class="fas fa-users fa-xs" aria-hidden="true"></i>
 				<span>Usuarios</span>
 			</a>
 			<ul class="sub-menu" aria-expanded="false">
@@ -34,7 +34,7 @@
 		{% endif %}
 		<li>
 			<a href="javascript: void(0);" class="has-arrow">
-				<i data-feather="users"></i>
+				<i class="fa fa-list" aria-hidden="true"></i>
 				<span>Tipos de Normas</span>
 			</a>
 			<ul class="sub-menu" aria-expanded="false">
@@ -54,29 +54,7 @@
 
 		<li>
 			<a href="javascript: void(0);" class="has-arrow">
-				<i data-feather="users"></i>
-				<span>Temas</span>
-			</a>
-			<ul class="sub-menu" aria-expanded="false">
-				<li>
-					<a href="{{ path('app_tema_index')}}">
-						<span>Listado de Temas</span>
-					</a>
-				</li>
-
-				<li>
-					<a href="{{ path('app_tema_new')}}">
-						<span>Alta de Tema</span>
-					</a>
-				</li>
-			</ul>
-		</li>
-
-
-
-		<li>
-			<a href="javascript: void(0);" class="has-arrow">
-				<i data-feather="users"></i>
+				<i class="fas fa-scroll" aria-hidden="true"></i>
 				<span>Normas</span>
 			</a>
 			<ul class="sub-menu" aria-expanded="false">
@@ -94,11 +72,29 @@
 			</ul>
 		</li>
 
+		<li>
+			<a href="javascript: void(0);" class="has-arrow">
+				<i class="fa fa-file-alt"></i>
+				<span>Temas</span>
+			</a>
+			<ul class="sub-menu" aria-expanded="false">
+				<li>
+					<a href="{{ path('app_tema_index')}}">
+						<span>Listado de Temas</span>
+					</a>
+				</li>
 
+				<li>
+					<a href="{{ path('app_tema_new')}}">
+						<span>Alta de Tema</span>
+					</a>
+				</li>
+			</ul>
+		</li>
 
 		<li>
 			<a href="{{ path('app_secure_auditoria') }}">
-				<i data-feather="book"></i>
+				<i class="fas fa-feather-alt"></i>
 				<span>Auditoría</span>
 			</a>
 		</li>
