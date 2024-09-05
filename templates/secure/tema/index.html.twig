@@ -24,6 +24,7 @@
 					<tr>
 						<th>Id</th>
 						<th>Nombre</th>
+						<th>Descripción</th>
 						<th>Acciones</th>
 					</tr>
 				</thead>
@@ -32,6 +33,7 @@
 						<tr>
 							<td>{{ tema.id }}</td>
 							<td>{{ tema.nombre }}</td>
+							<td>{{ tema.descripcion }}</td>
 							<td>
 								<a class="btn" href="{{ path('app_tema_edit', {'id': tema.id}) }}" title="Editar Tema">
 									<i class="fas fa-edit text-warning"></i>

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('secure/norma')]
 class NormaController extends AbstractController
@@ -17,8 +18,10 @@ class NormaController extends AbstractController
     #[Route('/', name: 'app_norma_index', methods: ['GET'])]
     public function index(NormaRepository $normaRepository): Response
     {
+        $normasActivas = $normaRepository->findBy(['isActive' => 1]);
+    
         return $this->render('secure/norma/abm_norma.html.twig', [
-            'normas' => $normaRepository->findAll(),
+            'normas' => $normasActivas,
         ]);
     }
 
@@ -36,7 +39,7 @@ class NormaController extends AbstractController
             return $this->redirectToRoute('app_norma_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('secure/norma/form_norma.html.twig', [
+        return $this->render('secure/norma/new.html.twig', [
             'norma' => $norma,
             'form' => $form,
         ]);
@@ -61,14 +64,37 @@ class NormaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_norma_delete', methods: ['POST'])]
-    public function delete(Request $request, Norma $norma, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$norma->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($norma);
-            $entityManager->flush();
-        }
+    #[Route('/eliminar', name: 'app_norma_delete', methods: ['POST'])]
+    public function eliminar(NormaRepository $normaRepository, Request $request, EntityManagerInterface $em): JsonResponse
+    { {
+            // Obtener el ID desde el cuerpo de la solicitud
+            $id = $request->request->get('id') ?? null;
 
-        return $this->redirectToRoute('app_norma_index', [], Response::HTTP_SEE_OTHER);
-    }
+            // Verificar si se proporcionó un ID
+            if (!$id) {
+                return new JsonResponse(['success' => false, 'message' => 'ID no proporcionado.'], JsonResponse::HTTP_BAD_REQUEST);
+            }
+
+            // Buscar la norma por ID
+            $norma = $normaRepository->findOneBy(['id' => $id, 'isActive' => true]);
+
+            // Verificar si la norma existe
+            if (!$norma) {
+                return new JsonResponse(['success' => false, 'message' => 'Norma no encontrada.'], JsonResponse::HTTP_NOT_FOUND);
+            }
+
+            try {
+                // Eliminar la norma
+                $norma->setActive(false);
+                $em->persist($norma);
+                $em->flush();
+
+                return new JsonResponse(['success' => true, 'message' => 'Norma eliminada con éxito.', 'title' => 'Eliminada!']);
+            } catch (\Exception $e) {
+                // Manejo de errores
+                return new JsonResponse(['success' => false, 'message' => 'Error al eliminar la Norma.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        }
+    }        
+
 }
