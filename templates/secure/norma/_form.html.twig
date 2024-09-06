@@ -35,7 +35,12 @@
         {{ form_widget(form.textoCompleto, {'attr': {'rows': 12}}) }}
         {{ form_errors(form.textoCompleto) }}
     </div>
-    
+
+    <div class="mb-3">
+		{{ form_label (form.currentFile) }}
+		{{ form_widget (form.currentFile) }}
+		{{ form_errors (form.currentFile)}}
+	</div>
 
     <div class="mb-3">
 		{{ form_label (form.urlPdf) }}

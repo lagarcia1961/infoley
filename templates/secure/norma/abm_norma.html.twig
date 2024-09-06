@@ -24,7 +24,7 @@
 						<th>Anio</th>
 						<th>Titulo</th>
 						<th>Fecha Publicación</th>
-						<th>UrlPdf</th>
+						<th>Archivo Actual</th>
 						<th>Acciones</th>
 					</tr>
 				</thead>
@@ -36,7 +36,13 @@
 							<td>{{ norma.anio }}</td>
 							<td>{{ norma.titulo }}</td>
 							<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('d-m-Y') : '' }}</td>
-							<td>{{ norma.urlPdf }}</td>
+							<td>
+								{% if norma.urlPdf %}
+									<a href="{{ asset('uploads/normas/' ~ norma.urlPdf) }}" target="_blank">{{ norma.urlPdf }}</a>
+								{% else %}
+									Sin adjuntar documento
+								{% endif %}
+							</td>
 							<td>
 								<a class="btn" href="{{ path('app_norma_edit', {'id': norma.id}) }}" title="Editar Norma">
 									<i class="fas fa-edit text-warning"></i>
@@ -48,7 +54,7 @@
 						</tr>
 					{% endfor %}
 				</tbody>
-			</table>
+							</table>
 		</div>
 	</div>
 </div>{% endblock %}
