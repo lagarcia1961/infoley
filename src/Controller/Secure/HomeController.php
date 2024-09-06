@@ -12,8 +12,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_secure_home')]
     public function index(): Response
     {
-        return $this->render('secure/home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        $data['files_js'] = ['dashboard.init.js'];
+        return $this->render('secure/home/index.html.twig', $data);
     }
 }
