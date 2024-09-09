@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Norma;
 use App\Entity\Tema;
 use App\Entity\TipoNorma;
+use App\Repository\NormaRepository;
 use App\Repository\TemaRepository;
 use App\Repository\TipoNormaRepository;
 use App\Repository\UsuarioTipoNormaRepository;
@@ -107,7 +108,7 @@ class NormaType extends AbstractType
                 'label' => 'Temas',
                 'class' => Tema::class,
                 'choice_label' => 'nombre',
-                'required'=>false,
+                'required' => false,
                 'multiple' => true,
                 'expanded' => false, // Cambiar a false para usar select en lugar de checkboxes
                 'mapped' => false,
@@ -121,9 +122,35 @@ class NormaType extends AbstractType
                 'attr' => [
                     'class' => 'choice_multiple_default',
                     'placeholder' => 'Seleccione uno o varios temas',
-                    'aria-label'=>'Seleccione uno o varios temas'
+                    'aria-label' => 'Seleccione uno o varios temas'
                 ],
             ])
+
+            ->add('normaOrigen', EntityType::class, [
+                'class' => Norma::class,
+                'choice_label' => 'titulo',
+                'query_builder' => function (NormaRepository $n) {
+                    return $n->createQueryBuilder('n')
+                        ->where('n.isActive = :isActive')
+                        ->setParameter('isActive', true)
+                        ->orderBy('n.titulo', 'ASC');
+                },
+
+            ])
+            ->add('normaDestino', EntityType::class, [
+                'class' => Norma::class,
+                'choice_label' => 'titulo',
+                'query_builder' => function (NormaRepository $n) {
+                    return $n->createQueryBuilder('n')
+                        ->where('n.isActive = :isActive')
+                        ->setParameter('isActive', true)
+                        ->orderBy('n.titulo', 'ASC');
+                },
+
+            ])
+
+
+
             ->add('guardar', SubmitType::class, [
                 'label' => 'Guardar',
             ]);;;

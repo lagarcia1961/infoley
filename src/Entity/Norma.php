@@ -54,6 +54,12 @@ class Norma
 
     #[ORM\Column(options: ["default" => 1])]
     private ?bool $isActive = null;
+
+    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    private ?self $normaOrigen = null;
+
+    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    private ?self $normaDestino = null;
   
     public function __construct()
     {
@@ -282,6 +288,30 @@ class Norma
     public function setActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getNormaOrigen(): ?self
+    {
+        return $this->normaOrigen;
+    }
+
+    public function setNormaOrigen(?self $normaOrigen): static
+    {
+        $this->normaOrigen = $normaOrigen;
+
+        return $this;
+    }
+
+    public function getNormaDestino(): ?self
+    {
+        return $this->normaDestino;
+    }
+
+    public function setNormaDestino(?self $normaDestino): static
+    {
+        $this->normaDestino = $normaDestino;
 
         return $this;
     }

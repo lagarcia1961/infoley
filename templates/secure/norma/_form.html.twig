@@ -1,6 +1,6 @@
 {{ form_start (form) }}
 <div class="row">
-	<div class="col-md-8 mb-3">
+	<div class="col-md-12 mb-3">
 		{{ form_label (form.tipoNorma) }}
 		{{ form_widget (form.tipoNorma) }}
 		{{ form_errors (form.tipoNorma)}}
@@ -24,7 +24,7 @@
 		{{ form_errors (form.anio)}}
 	</div>
 
-    <div class="col-md-3 mb-3">
+    <div class="col-md-4 mb-3">
 		{{ form_label (form.fechaPublicacion) }}
 		{{ form_widget (form.fechaPublicacion) }}
 		{{ form_errors (form.fechaPublicacion)}}
@@ -52,6 +52,18 @@
 		{{ form_label (form.temas) }}
 		{{ form_widget (form.temas) }}
 		{{ form_errors (form.temas)}}
+	</div>
+
+    <div class="mb-3 col-md-6">
+		{{ form_label (form.normaOrigen) }}
+		{{ form_widget (form.normaOrigen) }}
+		{{ form_errors (form.normaOrigen)}}
+	</div>
+
+    <div class="mb-3 col-md-6">
+		{{ form_label (form.normaDestino) }}
+		{{ form_widget (form.normaDestino) }}
+		{{ form_errors (form.normaDestino)}}
 	</div>
 
 </div>
