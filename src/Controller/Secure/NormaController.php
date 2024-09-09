@@ -3,6 +3,7 @@
 namespace App\Controller\Secure;
 
 use App\Entity\Norma;
+use App\Entity\NormaTema;
 use App\Form\NormaType;
 use App\Repository\NormaRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,6 +35,18 @@ class NormaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $temas = $form->get('temas')->getData();
+
+            if ($temas) {
+                foreach ($temas as $tema) {
+                    $normaTema = new NormaTema();
+                    $normaTema->setNorma($norma);
+                    $normaTema->setTema($tema);
+                    $entityManager->persist($normaTema);
+                }
+            }
+
             $file = $form->get('urlPdf')->getData();
 
             if ($file) {
@@ -68,12 +81,39 @@ class NormaController extends AbstractController
     {
         // Crear el formulario con la entidad Norma
         $form = $this->createForm(NormaType::class, $norma);
+        // Obtener todas las instancias de UsuarioTipoNorma asociadas al usuario
+        $normaTemas = $norma->getNormaTemas();
+        
+        // Crear un array con los TipoNorma asociados
+        $temas = array_map(function ($normaTema) {
+            return $normaTema->getTema();
+        }, $normaTemas->toArray());
+        
+        if ($temas) {
+            $form->get('temas')->setData($temas); // Establece las normas seleccionadas en el formulario
+        }
+        
         $form->handleRequest($request);
 
         // Verificar si el formulario ha sido enviado y es válido
         if ($form->isSubmitted() && $form->isValid()) {
             // Obtener el archivo subido (si hay uno nuevo)
             $file = $form->get('urlPdf')->getData();
+
+            foreach ($norma->getNormaTemas() as $normaTema) {
+                $entityManager->remove($normaTema);
+            }
+            $temas = $form->get('temas')->getData();
+
+            if ($temas) {
+                foreach ($temas as $tema) {
+                    $normaTema = new NormaTema();
+                    $normaTema->setNorma($norma);
+                    $normaTema->setTema($tema);
+                    $entityManager->persist($normaTema);
+                }
+            }
+
 
             // Si se sube un nuevo archivo, procesarlo
             if ($file) {

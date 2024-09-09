@@ -3,24 +3,52 @@
 namespace App\Form;
 
 use App\Entity\Norma;
+use App\Entity\Tema;
 use App\Entity\TipoNorma;
+use App\Repository\TemaRepository;
+use App\Repository\TipoNormaRepository;
+use App\Repository\UsuarioTipoNormaRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class NormaType extends AbstractType
 {
+
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
+        $user = $this->security->getUser();
+
+
         $builder
             ->add('numero')
-            ->add('anio')
+            ->add('anio', IntegerType::class, [
+                'constraints' => [
+                    new Assert\Range([
+                        'min' => 1900,
+                        'max' => (int) date('Y'), // Año actual
+                        'notInRangeMessage' => 'El año debe estar entre {{ min }} y {{ max }}.',
+                    ]),
+                ],
+                'label' => 'Año',
+            ])
             ->add('titulo', TextType::class, [
                 'label' => 'Título',
                 'attr' => ['maxlength' => 255],
@@ -67,6 +95,34 @@ class NormaType extends AbstractType
             ->add('tipoNorma', EntityType::class, [
                 'class' => TipoNorma::class,
                 'choice_label' => 'nombre',
+                'query_builder' => function (TipoNormaRepository $tn) use ($user) {
+                    return $tn->createQueryBuilder('tn')
+                        ->join('tn.usuarioTipoNormas', 'utn')
+                        ->where('utn.user = :user')
+                        ->setParameter('user', $user)
+                        ->orderBy('tn.nombre', 'ASC');
+                },
+            ])
+            ->add('temas', EntityType::class, [
+                'label' => 'Temas',
+                'class' => Tema::class,
+                'choice_label' => 'nombre',
+                'required'=>false,
+                'multiple' => true,
+                'expanded' => false, // Cambiar a false para usar select en lugar de checkboxes
+                'mapped' => false,
+                'query_builder' => function (TemaRepository $t) {
+                    return $t->createQueryBuilder('t')
+                        ->where('t.isActive = :isActive')
+                        ->setParameter('isActive', true)
+                        ->orderBy('t.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione uno o varios temas',
+                'attr' => [
+                    'class' => 'choice_multiple_default',
+                    'placeholder' => 'Seleccione uno o varios temas',
+                    'aria-label'=>'Seleccione uno o varios temas'
+                ],
             ])
             ->add('guardar', SubmitType::class, [
                 'label' => 'Guardar',
