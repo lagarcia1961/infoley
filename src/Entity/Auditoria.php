@@ -15,11 +15,11 @@ class Auditoria
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'auditorias')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?TipoAuditoria $tipoAuditoria = null;
 
     #[ORM\ManyToOne(inversedBy: 'auditorias')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
     #[ORM\Column(length: 100)]

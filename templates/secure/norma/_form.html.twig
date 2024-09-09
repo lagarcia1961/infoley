@@ -1,8 +1,56 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <div class="row">
-        <div class="col-xs-12 text-end">
-            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-        </div>
+{{ form_start (form) }}
+<div class="row">
+	<div class="col-md-8 mb-3">
+		{{ form_label (form.tipoNorma) }}
+		{{ form_widget (form.tipoNorma) }}
+		{{ form_errors (form.tipoNorma)}}
+	</div>
+
+    <div class="mb-3">
+		{{ form_label (form.titulo) }}
+		{{ form_widget (form.titulo) }}
+		{{ form_errors (form.titulo)}}
+	</div>
+
+    <div <div class="col-md-4 mb-3">
+		{{ form_label (form.numero) }}
+		{{ form_widget (form.numero) }}
+		{{ form_errors (form.numero)}}
+	</div>
+
+	 <div class="col-md-4 mb-3">
+		{{ form_label (form.anio) }}
+		{{ form_widget (form.anio) }}
+		{{ form_errors (form.anio)}}
+	</div>
+
+    <div class="col-md-3 mb-3">
+		{{ form_label (form.fechaPublicacion) }}
+		{{ form_widget (form.fechaPublicacion) }}
+		{{ form_errors (form.fechaPublicacion)}}
+	</div>
+
+    <div class="mb-3">
+        {{ form_label(form.textoCompleto) }}
+        {{ form_widget(form.textoCompleto, {'attr': {'rows': 12}}) }}
+        {{ form_errors(form.textoCompleto) }}
     </div>
-{{ form_end(form) }}
+
+    <div class="mb-3">
+		{{ form_label (form.currentFile) }}
+		{{ form_widget (form.currentFile) }}
+		{{ form_errors (form.currentFile)}}
+	</div>
+
+    <div class="mb-3">
+		{{ form_label (form.urlPdf) }}
+		{{ form_widget (form.urlPdf) }}
+		{{ form_errors (form.urlPdf)}}
+	</div>
+
+</div>
+
+<div class="col-12 mt-4 text-end">
+	{{ form_widget (form.guardar) }}
+	<a href="{{ path('app_norma_index') }}" class="btn btn-secondary">Volver</a>
+</div></div>{{ form_end (form) }}

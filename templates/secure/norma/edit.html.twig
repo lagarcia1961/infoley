@@ -6,12 +6,7 @@
             <div class="row">
                 <div class="col-12">
                     <h1>Editar Norma</h1>
-
                     {{ include('secure/norma/_form.html.twig', {'button_label': 'Actualizar'}) }}
-
-                    <a href="{{ path('app_norma_index') }}">Volver a Normas</a>
-
-                    {{ include('secure/norma/_delete_form.html.twig') }}
                 </div>
             </div>
 {% endblock %}

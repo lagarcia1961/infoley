@@ -33,3 +33,10 @@ services:
             - { name: doctrine.event_listener, event: preUpdate }
             - { name: doctrine.event_listener, event: preRemove }
             - { name: doctrine.event_listener, event: postFlush }
+
+parameters:
+    pdf_uploads_directory: '%kernel.project_dir%/public/uploads/normas'
+    word_uploads_directory: '%kernel.project_dir%/public/uploads/word'
+    images_uploads_directory: '%kernel.project_dir%/public/uploads/images'            
+
+    

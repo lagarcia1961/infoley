@@ -27,6 +27,9 @@ class Tema
     #[ORM\Column(options: ["default" => 1])]
     private ?bool $isActive = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $descripcion = null;
+
     public function __construct()
     {
         $this->normaTemas = new ArrayCollection();
@@ -89,6 +92,18 @@ class Tema
     public function setActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    public function setDescripcion(?string $descripcion): static
+    {
+        $this->descripcion = $descripcion;
 
         return $this;
     }
