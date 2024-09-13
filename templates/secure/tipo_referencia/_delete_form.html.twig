@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('app_tipo_referencia_delete', {'id': tipo_referencia.id}) }}" onsubmit="return confirm('Está seguro de eliminar este Tipo de Referencia?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tipo_referencia.id) }}">
+    <button class="btn">Delete</button>
+</form>

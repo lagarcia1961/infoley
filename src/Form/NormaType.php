@@ -12,9 +12,11 @@ use App\Repository\UsuarioTipoNormaRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,7 +41,7 @@ class NormaType extends AbstractType
 
 
         $builder
-            ->add('numero')
+            ->add('numero', IntegerType::class, ['label' => 'Número'])
             ->add('anio', IntegerType::class, [
                 'constraints' => [
                     new Assert\Range([
@@ -47,6 +49,10 @@ class NormaType extends AbstractType
                         'max' => (int) date('Y'), // Año actual
                         'notInRangeMessage' => 'El año debe estar entre {{ min }} y {{ max }}.',
                     ]),
+                ],
+                'attr' => [
+                    'min' => 1900,
+                    'max' => (int) date('Y')
                 ],
                 'label' => 'Año',
             ])
@@ -61,10 +67,11 @@ class NormaType extends AbstractType
                 ]
             ])
 
-            ->add('fechaPublicacion', null, [
+            ->add('fechaPublicacion', DateType::class, [
                 'widget' => 'single_text',
+                'label' => 'Fecha de publicación'
             ])
-            ->add('textoCompleto')
+            ->add('textoCompleto', TextareaType::class)
             // Agregar un campo de texto para mostrar el nombre del archivo actual:
             ->add('currentFile', TextType::class, [
                 'label' => 'Archivo actual',
@@ -95,6 +102,7 @@ class NormaType extends AbstractType
 
             ->add('tipoNorma', EntityType::class, [
                 'class' => TipoNorma::class,
+                'required' => true,
                 'choice_label' => 'nombre',
                 'query_builder' => function (TipoNormaRepository $tn) use ($user) {
                     return $tn->createQueryBuilder('tn')
@@ -103,6 +111,8 @@ class NormaType extends AbstractType
                         ->setParameter('user', $user)
                         ->orderBy('tn.nombre', 'ASC');
                 },
+                'empty_data' => null,
+                'placeholder'=>'Seleccione un Tipo de Norma'
             ])
             ->add('temas', EntityType::class, [
                 'label' => 'Temas',
@@ -126,28 +136,40 @@ class NormaType extends AbstractType
                 ],
             ])
 
-            ->add('normaOrigen', EntityType::class, [
-                'class' => Norma::class,
-                'choice_label' => 'titulo',
-                'query_builder' => function (NormaRepository $n) {
-                    return $n->createQueryBuilder('n')
-                        ->where('n.isActive = :isActive')
-                        ->setParameter('isActive', true)
-                        ->orderBy('n.titulo', 'ASC');
-                },
-
-            ])
-            ->add('normaDestino', EntityType::class, [
-                'class' => Norma::class,
-                'choice_label' => 'titulo',
-                'query_builder' => function (NormaRepository $n) {
-                    return $n->createQueryBuilder('n')
-                        ->where('n.isActive = :isActive')
-                        ->setParameter('isActive', true)
-                        ->orderBy('n.titulo', 'ASC');
-                },
-
-            ])
+            // ->add('normaOrigen', EntityType::class, [
+            //     'class' => Norma::class,
+            //     'choice_label' => 'titulo',
+            //     'query_builder' => function (NormaRepository $n) {
+            //         return $n->createQueryBuilder('n')
+            //             ->where('n.isActive = :isActive')
+            //             ->setParameter('isActive', true)
+            //             ->orderBy('n.titulo', 'ASC');
+            //     },
+            //     'empty_data' => null,
+            //     'placeholder'=>'Seleccione una norma',
+            //     'attr' => [
+            //         'class' => 'choices-single-default-label',
+            //         'placeholder' => 'Seleccione una norma de origen',
+            //         'aria-label' => 'Seleccione una norma de origen'
+            //     ]
+            // ])
+            // ->add('normaDestino', EntityType::class, [
+            //     'class' => Norma::class,
+            //     'choice_label' => 'titulo',
+            //     'query_builder' => function (NormaRepository $n) {
+            //         return $n->createQueryBuilder('n')
+            //             ->where('n.isActive = :isActive')
+            //             ->setParameter('isActive', true)
+            //             ->orderBy('n.titulo', 'ASC');
+            //     },
+            //     'empty_data' => null,
+            //     'placeholder'=>'Seleccione una norma',
+            //     'attr' => [
+            //         'class' => 'choices-single-default-label',
+            //         'placeholder' => 'Seleccione una norma de destino',
+            //         'aria-label' => 'Seleccione una norma de destino'
+            //     ]
+            // ])
 
 
 

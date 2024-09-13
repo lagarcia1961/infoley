@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NormaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NormaRepository::class)]
@@ -37,12 +38,6 @@ class Norma
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $urlPdf = null;
 
-    #[ORM\OneToMany(mappedBy: 'normaOrigen', targetEntity: Referencia::class)]
-    private Collection $referenciasOrigen;
-
-    #[ORM\OneToMany(mappedBy: 'normaDestino', targetEntity: Referencia::class)]
-    private Collection $referenciasDestino;
-
     #[ORM\OneToMany(mappedBy: 'norma', targetEntity: DocumentoAdicional::class)]
     private Collection $documentosAdicionales;
 
@@ -55,16 +50,8 @@ class Norma
     #[ORM\Column(options: ["default" => 1])]
     private ?bool $isActive = null;
 
-    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
-    private ?self $normaOrigen = null;
-
-    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
-    private ?self $normaDestino = null;
-  
     public function __construct()
     {
-        $this->referenciasOrigen = new ArrayCollection();
-        $this->referenciasDestino = new ArrayCollection();
         $this->documentosAdicionales = new ArrayCollection();
         $this->normaTemas = new ArrayCollection();
         $this->isActive = true;
@@ -161,66 +148,6 @@ class Norma
     }
 
     /**
-     * @return Collection<int, Referencia>
-     */
-    public function getReferenciasOrigen(): Collection
-    {
-        return $this->referenciasOrigen;
-    }
-
-    public function addReferenciasOrigen(Referencia $referencia): self
-    {
-        if (!$this->referenciasOrigen->contains($referencia)) {
-            $this->referenciasOrigen->add($referencia);
-            $referencia->setNormaOrigen($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReferenciasOrigen(Referencia $referencia): self
-    {
-        if ($this->referenciasOrigen->removeElement($referencia)) {
-            // set the owning side to null (unless already changed)
-            if ($referencia->getNormaOrigen() === $this) {
-                $referencia->setNormaOrigen(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Referencia>
-     */
-    public function getReferenciasDestino(): Collection
-    {
-        return $this->referenciasDestino;
-    }
-
-    public function addReferenciasDestino(Referencia $referencia): self
-    {
-        if (!$this->referenciasDestino->contains($referencia)) {
-            $this->referenciasDestino->add($referencia);
-            $referencia->setNormaDestino($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReferenciasDestino(Referencia $referencia): self
-    {
-        if ($this->referenciasDestino->removeElement($referencia)) {
-            // set the owning side to null (unless already changed)
-            if ($referencia->getNormaDestino() === $this) {
-                $referencia->setNormaDestino(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, DocumentoAdicional>
      */
     public function getDocumentosAdicionales(): Collection
@@ -288,30 +215,6 @@ class Norma
     public function setActive(bool $isActive): static
     {
         $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    public function getNormaOrigen(): ?self
-    {
-        return $this->normaOrigen;
-    }
-
-    public function setNormaOrigen(?self $normaOrigen): static
-    {
-        $this->normaOrigen = $normaOrigen;
-
-        return $this;
-    }
-
-    public function getNormaDestino(): ?self
-    {
-        return $this->normaDestino;
-    }
-
-    public function setNormaDestino(?self $normaDestino): static
-    {
-        $this->normaDestino = $normaDestino;
 
         return $this;
     }

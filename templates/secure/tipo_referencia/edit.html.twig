@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar Tipo de Referencia
+{% endblock %}
+
+{% block body %}
+            <div class="row">
+                <div class="col-12">
+						<h1>Editar Tipo de Referencia</h1>
+						{{ include('secure/tipo_referencia/_form.html.twig', {'button_label': 'Actualizar'}) }}					
+					</div>
+				</div>
+{% endblock %}

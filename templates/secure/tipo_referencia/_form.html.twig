@@ -1,0 +1,16 @@
+{{ form_start (form) }}
+<div class="row">
+	<div class="col-6">
+		{{ form_label (form.nombre) }}
+		{{ form_widget (form.nombre) }}
+		{{ form_errors (form.nombre)}}
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 mt-4 text-end">
+		{{ form_widget (form.guardar) }}
+		<a href="{{ path('app_tipo_referencia_index') }}" class="btn btn-secondary">Volver</a>
+	</div>
+
+</div>
+{{ form_end (form) }}
