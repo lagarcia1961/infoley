@@ -4,9 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\Tema;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class TemaFixtures extends Fixture
+class TemaFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -26,11 +27,16 @@ class TemaFixtures extends Fixture
         foreach ($temas as $temaData) {
             $tema = new Tema();
             $tema->setNombre($temaData['nombre']);
-            $tema->setDescripcion($temaData['descripcion']); 
+            $tema->setDescripcion($temaData['descripcion']);
 
             $manager->persist($tema);
         }
 
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['tema'];
     }
 }
