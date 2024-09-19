@@ -1,69 +1,242 @@
-{{ form_start (form) }}
+{{ form_start (form_norma) }}
+<!-- Modal -->
+<div class="modal fade" id="modalAgregarNormaOrigen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	aria-labelledby="modalAgregarNormaOrigenLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="modalAgregarNormaOrigenLabel">Normas que
+					modifica/deroga/complementa/anula/hace referencia a/actualiza/aclara</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row">
+
+						<div class="col-8">
+							{{ form_label (form_norma.normaOrigen) }}
+							{{ form_widget (form_norma.normaOrigen) }}
+							{{ form_errors (form_norma.normaOrigen) }}
+						</div>
+
+						<div class="col-4">
+							{{ form_label (form_norma.tipoReferenciaOrigen) }}
+							{{ form_widget (form_norma.tipoReferenciaOrigen) }}
+							{{ form_errors (form_norma.tipoReferenciaOrigen) }}
+						</div>
+
+					</div>
+					<div class="row mt-4">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-12">
+												<p>
+													<b>Título:</b><span id="spanNormaOrigenTitulo"
+														class="spanNormaOrigen"></span>
+												</p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-4">
+												<p>
+													<b>Número:</b>
+													<span id="spanNormaOrigenNumero" class="spanNormaOrigen">1234</span>
+												</p>
+											</div>
+											<div class="col-4">
+												<p>
+													<b>Año:</b>
+													<span id="spanNormaOrigenAnio" class="spanNormaOrigen">2024</span>
+												</p>
+											</div>
+											<div class="col-4">
+												<p>
+													<b>Fecha de publicación:</b>
+													<span id="spanNormaOrigenFechaDePublicacion"
+														class="spanNormaOrigen">01/01/2024</span>
+												</p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-12">
+												<b>Texto</b><br>
+												<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil
+													necessitatibus,
+													nobis
+													debitis quia sequi dicta ex iste accusamus obcaecati alias,
+													recusandae nam.
+													Quisquam
+													numquam neque itaque omnis consequatur ab molestias?</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary">Agregar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="modalAgregarNormaDestino" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	aria-labelledby="modalAgregarNormaDestinoLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="modalAgregarNormaDestinoLabel">Normas que la
+					modifican/derogan/complementan/anulan/hacen referencia/actualizan/aclaran</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row">
+
+						<div class="col-8">
+							{{ form_label (form_norma.normaDestino) }}
+							{{ form_widget (form_norma.normaDestino) }}
+							{{ form_errors (form_norma.normaDestino) }}
+						</div>
+
+						<div class="col-4">
+							{{ form_label (form_norma.tipoReferenciaDestino) }}
+							{{ form_widget (form_norma.tipoReferenciaDestino) }}
+							{{ form_errors (form_norma.tipoReferenciaDestino) }}
+						</div>
+
+					</div>
+					<div class="row mt-4">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-12">
+												<b>Título:</b><span id="spanNormaDestinoTitulo" <p>
+													class="spanNormaDestino"></span>
+											</div>
+											</p>
+										</div>
+										<div class="row">
+											<div class="col-4">
+												<p>
+													<b>Número:</b>
+													<span id="spanNormaDestinoNumero"
+														class="spanNormaDestino">1234</span>
+												</p>
+											</div>
+											<div class="col-4">
+												<p>
+													<b>Año:</b>
+													<span id="spanNormaDestinoAnio" class="spanNormaDestino">2024</span>
+												</p>
+											</div>
+											<div class="col-4">
+												<p>
+													<b>Fecha de publicación:</b>
+													<span id="spanNormaDestinoFechaDePublicacion"
+														class="spanNormaDestino">01/01/2024</span>
+												</p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-12">
+												<b>Texto</b><br>
+												<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil
+													necessitatibus,
+													nobis
+													debitis quia sequi dicta ex iste accusamus obcaecati alias,
+													recusandae nam.
+													Quisquam
+													numquam neque itaque omnis consequatur ab molestias?</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary">Agregar</button>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-12 mb-3">
-		{{ form_label (form.tipoNorma) }}
-		{{ form_widget (form.tipoNorma) }}
-		{{ form_errors (form.tipoNorma)}}
+		{{ form_label (form_norma.tipoNorma) }}
+		{{ form_widget (form_norma.tipoNorma) }}
+		{{ form_errors (form_norma.tipoNorma)}}
 	</div>
 
-    <div class="mb-3">
-		{{ form_label (form.titulo) }}
-		{{ form_widget (form.titulo) }}
-		{{ form_errors (form.titulo)}}
+	<div class="mb-3">
+		{{ form_label (form_norma.titulo) }}
+		{{ form_widget (form_norma.titulo) }}
+		{{ form_errors (form_norma.titulo)}}
 	</div>
 
-    <div <div class="col-md-4 mb-3">
-		{{ form_label (form.numero) }}
-		{{ form_widget (form.numero) }}
-		{{ form_errors (form.numero)}}
+	<div <div class="col-md-4 mb-3">
+		{{ form_label (form_norma.numero) }}
+		{{ form_widget (form_norma.numero) }}
+		{{ form_errors (form_norma.numero)}}
 	</div>
 
-	 <div class="col-md-4 mb-3">
-		{{ form_label (form.anio) }}
-		{{ form_widget (form.anio) }}
-		{{ form_errors (form.anio)}}
+	<div class="col-md-4 mb-3">
+		{{ form_label (form_norma.anio) }}
+		{{ form_widget (form_norma.anio) }}
+		{{ form_errors (form_norma.anio)}}
 	</div>
 
-    <div class="col-md-4 mb-3">
-		{{ form_label (form.fechaPublicacion) }}
-		{{ form_widget (form.fechaPublicacion) }}
-		{{ form_errors (form.fechaPublicacion)}}
+	<div class="col-md-4 mb-3">
+		{{ form_label (form_norma.fechaPublicacion) }}
+		{{ form_widget (form_norma.fechaPublicacion) }}
+		{{ form_errors (form_norma.fechaPublicacion)}}
 	</div>
 
-    <div class="mb-3">
-        {{ form_label(form.textoCompleto) }}
-        {{ form_widget(form.textoCompleto, {'attr': {'rows': 12}}) }}
-        {{ form_errors(form.textoCompleto) }}
-    </div>
-
-    <div class="mb-3">
-		{{ form_label (form.currentFile) }}
-		{{ form_widget (form.currentFile) }}
-		{{ form_errors (form.currentFile)}}
+	<div class="mb-3">
+		{{ form_label(form_norma.textoCompleto) }}
+		{{ form_widget(form_norma.textoCompleto, {'attr': {'rows': 12}}) }}
+		{{ form_errors(form_norma.textoCompleto) }}
 	</div>
 
-    <div class="mb-3">
-		{{ form_label (form.urlPdf) }}
-		{{ form_widget (form.urlPdf) }}
-		{{ form_errors (form.urlPdf)}}
+	<div class="mb-3">
+		{{ form_label (form_norma.currentFile) }}
+		{{ form_widget (form_norma.currentFile) }}
+		{{ form_errors (form_norma.currentFile)}}
 	</div>
 
-    <div class="mb-3">
-		{{ form_label (form.temas) }}
-		{{ form_widget (form.temas) }}
-		{{ form_errors (form.temas)}}
+	<div class="mb-3">
+		{{ form_label (form_norma.urlPdf) }}
+		{{ form_widget (form_norma.urlPdf) }}
+		{{ form_errors (form_norma.urlPdf)}}
 	</div>
 
-    {# <div class="mb-3 col-md-6">
-		{{ form_label (form.normaOrigen) }}
-		{{ form_widget (form.normaOrigen) }}
-		{{ form_errors (form.normaOrigen)}}
+	<div class="mb-3">
+		{{ form_label (form_norma.temas) }}
+		{{ form_widget (form_norma.temas) }}
+		{{ form_errors (form_norma.temas)}}
 	</div>
 
-    <div class="mb-3 col-md-6">
-		{{ form_label (form.normaDestino) }}
-		{{ form_widget (form.normaDestino) }}
-		{{ form_errors (form.normaDestino)}}
+	{# <div class="mb-3 col-md-6">
+		{{ form_label (form_norma.normaOrigen) }}
+		{{ form_widget (form_norma.normaOrigen) }}
+		{{ form_errors (form_norma.normaOrigen)}}
+	</div>
+
+	<div class="mb-3 col-md-6">
+		{{ form_label (form_norma.normaDestino) }}
+		{{ form_widget (form_norma.normaDestino) }}
+		{{ form_errors (form_norma.normaDestino)}}
 	</div>
 
 	<div class="col-md-6">
@@ -86,7 +259,7 @@
 		</div>
 	</div>
 
-	
+
 	<div class="col-md-6">
 		<div class="row">
 			<div class="col-12">
@@ -108,8 +281,200 @@
 	</div> #}
 
 </div>
+<hr>
+<div class="row">
+	<div class="col-6">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-10">
+					<h5>Normas que modifica/deroga/complementa/anula/hace referencia a/actualiza/aclara</h5>
+				</div>
+				<div class="col-2 text-end">
+					<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+						data-bs-target="#modalAgregarNormaOrigen">
+						Agregar norma
+					</button>
+				</div>
+			</div>
+		</div>
 
-<div class="col-12 mt-4 text-end">
-	{{ form_widget (form.guardar) }}
+	</div>
+	<div class="col-6">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-10">
+					<h5>Normas que la modifican/derogan/complementan/anulan/hacen referencia/actualizan/aclaran</h5>
+				</div>
+				<div class="col-2 text-end">
+					<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+						data-bs-target="#modalAgregarNormaDestino">
+						Agregar norma
+					</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="row mt-4">
+	<div class="col-6">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>
+						Tipo
+					</th>
+					<th>
+						Norma
+					</th>
+					<th>
+						Tipo de referencia
+					</th>
+					<th>
+						Número
+					</th>
+					<th>
+						Año
+					</th>
+					<th>
+						Fecha de Publicación
+					</th>
+					<th>
+
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						Acuerdo
+					</td>
+					<td>
+						Título prueba 3
+					</td>
+					<td>
+						Modifica
+					</td>
+					<td>
+						123456789
+					</td>
+					<td>
+						2024
+					</td>
+					<td>
+						01/01/2024
+					</td>
+					<td>
+						<a href="javascript:void(0);" class="text-danger"><i class="fas fa-trash"></i></a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Acuerdo
+					</td>
+					<td>
+						Título prueba 2
+					</td>
+					<td>
+						Modifica
+					</td>
+					<td>
+						123456789
+					</td>
+					<td>
+						2023
+					</td>
+					<td>
+						01/01/2023
+					</td>
+					<td>
+						<a href="javascript:void(0);" class="text-danger"><i class="fas fa-trash"></i></a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Acuerdo
+					</td>
+					<td>
+						Título prueba 1
+					</td>
+					<td>
+						Modifica
+					</td>
+					<td>
+						123456789
+					</td>
+					<td>
+						2022
+					</td>
+					<td>
+						01/01/2022
+					</td>
+					<td>
+						<a href="javascript:void(0);" class="text-danger"><i class="fas fa-trash"></i></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-6">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>
+						Tipo
+					</th>
+					<th>
+						Norma
+					</th>
+					<th>
+						Tipo de referencia
+					</th>
+					<th>
+						Número
+					</th>
+					<th>
+						Año
+					</th>
+					<th>
+						Fecha de Publicación
+					</th>
+					<th>
+
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						Acuerdo
+					</td>
+					<td>
+						Título prueba 5
+					</td>
+					<td>
+						Modifica
+					</td>
+					<td>
+						987654321
+					</td>
+					<td>
+						2024
+					</td>
+					<td>
+						12/12/2024
+					</td>
+					<td>
+						<a href="javascript:void(0);" class="text-danger"><i class="fas fa-trash"></i></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<hr>
+<div class="col-12 mt-4 mb-4 text-end">
+	{{ form_widget (form_norma.guardar) }}
 	<a href="{{ path('app_norma_index') }}" class="btn btn-secondary">Volver</a>
-</div></div>{{ form_end (form) }}
+</div>
+</div>{{ form_end (form_norma) }}

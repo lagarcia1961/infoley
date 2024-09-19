@@ -33,6 +33,9 @@ class TipoNorma
     #[ORM\Column(options: ["default" => 1])]
     private ?bool $isActive = null;
 
+    #[ORM\Column]
+    private ?int $rango = null;
+
     public function __construct()
     {
         $this->normas = new ArrayCollection();
@@ -138,6 +141,18 @@ class TipoNorma
     public function setActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getRango(): ?int
+    {
+        return $this->rango;
+    }
+
+    public function setRango(int $rango): static
+    {
+        $this->rango = $rango;
 
         return $this;
     }

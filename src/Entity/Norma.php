@@ -50,11 +50,25 @@ class Norma
     #[ORM\Column(options: ["default" => 1])]
     private ?bool $isActive = null;
 
+    /**
+     * @var Collection<int, Referencia>
+     */
+    #[ORM\OneToMany(targetEntity: Referencia::class, mappedBy: 'normasOrigen')]
+    private Collection $normasOrigen;
+
+    /**
+     * @var Collection<int, Referencia>
+     */
+    #[ORM\OneToMany(targetEntity: Referencia::class, mappedBy: 'normaDestino')]
+    private Collection $normasDestino;
+
     public function __construct()
     {
         $this->documentosAdicionales = new ArrayCollection();
         $this->normaTemas = new ArrayCollection();
         $this->isActive = true;
+        $this->normasOrigen = new ArrayCollection();
+        $this->normasDestino = new ArrayCollection();
     }
 
     // Getters y setters
@@ -215,6 +229,66 @@ class Norma
     public function setActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Referencia>
+     */
+    public function getNormasOrigen(): Collection
+    {
+        return $this->normasOrigen;
+    }
+
+    public function addNormasOrigen(Referencia $normasOrigen): static
+    {
+        if (!$this->normasOrigen->contains($normasOrigen)) {
+            $this->normasOrigen->add($normasOrigen);
+            $normasOrigen->setNormaOrigen($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNormasOrigen(Referencia $normasOrigen): static
+    {
+        if ($this->normasOrigen->removeElement($normasOrigen)) {
+            // set the owning side to null (unless already changed)
+            if ($normasOrigen->getNormaOrigen() === $this) {
+                $normasOrigen->setNormaOrigen(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Referencia>
+     */
+    public function getNormasDestino(): Collection
+    {
+        return $this->normasDestino;
+    }
+
+    public function addNormasDestino(Referencia $normasDestino): static
+    {
+        if (!$this->normasDestino->contains($normasDestino)) {
+            $this->normasDestino->add($normasDestino);
+            $normasDestino->setNormaDestino($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNormasDestino(Referencia $normasDestino): static
+    {
+        if ($this->normasDestino->removeElement($normasDestino)) {
+            // set the owning side to null (unless already changed)
+            if ($normasDestino->getNormaDestino() === $this) {
+                $normasDestino->setNormaDestino(null);
+            }
+        }
 
         return $this;
     }

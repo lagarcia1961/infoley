@@ -37,6 +37,6 @@ class TemaFixtures extends Fixture implements FixtureGroupInterface
 
     public static function getGroups(): array
     {
-        return ['tema'];
+        return ['init', 'tema'];
     }
 }

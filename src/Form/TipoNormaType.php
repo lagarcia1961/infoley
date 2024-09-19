@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\TipoNorma;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,12 +19,15 @@ class TipoNormaType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'attr' => ['maxlength' => 100],
-                'constraints'=>[
+                'constraints' => [
                     new Length([
                         'max' => 100,
                         'maxMessage' => 'El nombre no puede tener más de {{ limit }} caracteres.',
                     ]),
                 ]
+            ])
+            ->add('rango', IntegerType::class, [
+                'label' => 'Rango'
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción'

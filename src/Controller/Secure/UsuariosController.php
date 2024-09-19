@@ -2,14 +2,17 @@
 
 namespace App\Controller\Secure;
 
+use App\Constants\Rol;
 use App\Entity\User;
 use App\Entity\UsuarioTipoNorma;
+use App\Form\UsuarioPerfilType;
 use App\Form\UsuarioType;
 use App\Repository\TipoNormaRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,10 +23,26 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('secure/usuarios')]
 class UsuariosController extends AbstractController
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
+
     #[Route('/', name: 'app_usuarios_index')]
     public function index(UserRepository $userRepository): Response
     {
-        $data['usuarios'] = $userRepository->findBy(['isActive' => 1]);
+        $user = $this->security->getUser();
+
+        $qb = $userRepository->createQueryBuilder('u')
+            ->where('u.isActive = :active')
+            ->andWhere('u.id != :currentUserId')
+            ->setParameter('active', 1)
+            ->setParameter('currentUserId', $user->getId());
+
+        $data['usuarios'] = $qb->getQuery()->getResult();
         return $this->render('secure/usuarios/abm_usuario.html.twig', $data);
     }
 
@@ -41,17 +60,14 @@ class UsuariosController extends AbstractController
 
             $dataForm = $data['form']->getData();
 
-            $rol = $dataForm->getRol()->getNombre();
-            if ($rol === 'ROLE_ADMIN') {
-                $selectedTipoNormas = $tipoNormaRepository->findBy(['isActive' => true]);
-            } else {
+            if ($dataForm->getRol()->getId() === Rol::ROLE_CARGA) {
                 $selectedTipoNormas = $data['form']->get('tipoNormas')->getData();
-            }
-            foreach ($selectedTipoNormas as $tipoNorma) {
-                $usuarioTipoNorma = new UsuarioTipoNorma();
-                $usuarioTipoNorma->setUser($data['usuario'])
-                    ->setTipoNorma($tipoNorma);
-                $em->persist($usuarioTipoNorma);
+                foreach ($selectedTipoNormas as $tipoNorma) {
+                    $usuarioTipoNorma = new UsuarioTipoNorma();
+                    $usuarioTipoNorma->setUser($data['usuario'])
+                        ->setTipoNorma($tipoNorma);
+                    $em->persist($usuarioTipoNorma);
+                }
             }
 
             $em->persist($data['usuario']);
@@ -100,17 +116,14 @@ class UsuariosController extends AbstractController
 
             $dataForm = $data['form']->getData();
 
-            $rol = $dataForm->getRol()->getNombre();
-            if ($rol === 'ROLE_ADMIN') {
-                $selectedTipoNormas = $tipoNormaRepository->findBy(['isActive' => true]);
-            } else {
+            if ($dataForm->getRol()->getId() === Rol::ROLE_CARGA) {
                 $selectedTipoNormas = $data['form']->get('tipoNormas')->getData();
-            }
-            foreach ($selectedTipoNormas as $tipoNorma) {
-                $usuarioTipoNorma = new UsuarioTipoNorma();
-                $usuarioTipoNorma->setUser($data['usuario'])
-                    ->setTipoNorma($tipoNorma);
-                $em->persist($usuarioTipoNorma);
+                foreach ($selectedTipoNormas as $tipoNorma) {
+                    $usuarioTipoNorma = new UsuarioTipoNorma();
+                    $usuarioTipoNorma->setUser($data['usuario'])
+                        ->setTipoNorma($tipoNorma);
+                    $em->persist($usuarioTipoNorma);
+                }
             }
 
             $em->persist($data['usuario']);
@@ -152,5 +165,64 @@ class UsuariosController extends AbstractController
                 return new JsonResponse(['success' => false, 'message' => 'Error al eliminar el usuario.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
+    }
+
+
+    #[Route('/mi-perfil', name: 'app_editar_perfil')]
+    public function editarPerfil(Request $request, EntityManagerInterface $em, TipoNormaRepository $tipoNormaRepository): Response
+    {
+        $data['usuario'] = $this->security->getUser();
+
+        if (!$data['usuario']) {
+            return $this->redirectToRoute('app_usuarios_index');
+        }
+
+        $data['form'] = $this->createForm(UsuarioPerfilType::class, $data['usuario']);
+
+        // Obtener todas las instancias de UsuarioTipoNorma asociadas al usuario
+        $usuarioTipoNormas = $data['usuario']->getUsuarioTipoNormas();
+
+        // Crear un array con los TipoNorma asociados
+        $tipoNormas = array_map(function ($usuarioTipoNorma) {
+            return $usuarioTipoNorma->getTipoNorma();
+        }, $usuarioTipoNormas->toArray());
+
+        if ($tipoNormas) {
+            $data['form']->get('tipoNormas')->setData($tipoNormas); // Establece las normas seleccionadas en el formulario
+        }
+
+        $data['form']->handleRequest($request);
+        $data['titulo'] = 'Editar mi perfil';
+        $data['files_js'] = [
+            'usuarios/usuarios.js',
+        ];
+        if ($data['form']->isSubmitted() && $data['form']->isValid()) {
+            $newPassword = $data['form']->get('password')->getData();
+            if ($newPassword) {
+                $data['usuario']->setPassword($newPassword);
+            }
+
+            foreach ($data['usuario']->getUsuarioTipoNormas() as $usuarioTipoNorma) {
+                $em->remove($usuarioTipoNorma);
+            }
+
+            $dataForm = $data['form']->getData();
+
+            if ($dataForm->getRol()->getId() === Rol::ROLE_CARGA) {
+                $selectedTipoNormas = $data['form']->get('tipoNormas')->getData();
+                foreach ($selectedTipoNormas as $tipoNorma) {
+                    $usuarioTipoNorma = new UsuarioTipoNorma();
+                    $usuarioTipoNorma->setUser($data['usuario'])
+                        ->setTipoNorma($tipoNorma);
+                    $em->persist($usuarioTipoNorma);
+                }
+            }
+
+            $em->persist($data['usuario']);
+            $em->flush();
+
+            return $this->redirectToRoute('app_usuarios_index');
+        }
+        return $this->render('secure/usuarios/form_perfil_usuario.html.twig', $data);
     }
 }

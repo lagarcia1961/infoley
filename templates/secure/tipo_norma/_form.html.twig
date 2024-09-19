@@ -1,9 +1,14 @@
 {{ form_start (form) }}
 <div class="row">
-	<div class="col-6">
+	<div class="col-8">
 		{{ form_label (form.nombre) }}
 		{{ form_widget (form.nombre) }}
 		{{ form_errors (form.nombre)}}
+	</div>
+	<div class="col-4">
+		{{ form_label (form.rango) }}
+		{{ form_widget (form.rango) }}
+		{{ form_errors (form.rango)}}
 	</div>
 </div>
 <div class="row">

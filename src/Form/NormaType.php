@@ -2,16 +2,18 @@
 
 namespace App\Form;
 
+use App\Constants\Rol;
 use App\Entity\Norma;
 use App\Entity\Tema;
 use App\Entity\TipoNorma;
-use App\Repository\NormaRepository;
+use App\Entity\TipoReferencia;
 use App\Repository\TemaRepository;
 use App\Repository\TipoNormaRepository;
-use App\Repository\UsuarioTipoNormaRepository;
+use App\Repository\TipoReferenciaRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -38,7 +40,6 @@ class NormaType extends AbstractType
     {
 
         $user = $this->security->getUser();
-
 
         $builder
             ->add('numero', IntegerType::class, ['label' => 'Número'])
@@ -97,10 +98,9 @@ class NormaType extends AbstractType
                         'mimeTypesMessage' => 'Por favor sube un archivo válido (PDF o Word)',
                     ])
                 ],
-            ])
-
-
-            ->add('tipoNorma', EntityType::class, [
+            ]);
+        if ($user->getRol()->getId() == Rol::ROLE_CARGA) {
+            $builder->add('tipoNorma', EntityType::class, [
                 'class' => TipoNorma::class,
                 'required' => true,
                 'choice_label' => 'nombre',
@@ -109,32 +109,95 @@ class NormaType extends AbstractType
                         ->join('tn.usuarioTipoNormas', 'utn')
                         ->where('utn.user = :user')
                         ->setParameter('user', $user)
+                        ->where('tn.isActive = :isActive')
+                        ->setParameter('isActive', true)
                         ->orderBy('tn.nombre', 'ASC');
                 },
                 'empty_data' => null,
-                'placeholder'=>'Seleccione un Tipo de Norma'
-            ])
-            ->add('temas', EntityType::class, [
-                'label' => 'Temas',
-                'class' => Tema::class,
+                'placeholder' => 'Seleccione un Tipo de Norma'
+            ]);
+        } else {
+            $builder->add('tipoNorma', EntityType::class, [
+                'class' => TipoNorma::class,
+                'required' => true,
                 'choice_label' => 'nombre',
-                'required' => false,
-                'multiple' => true,
-                'expanded' => false, // Cambiar a false para usar select en lugar de checkboxes
-                'mapped' => false,
-                'query_builder' => function (TemaRepository $t) {
-                    return $t->createQueryBuilder('t')
-                        ->where('t.isActive = :isActive')
+                'query_builder' => function (TipoNormaRepository $tn) {
+                    return $tn->createQueryBuilder('tn')
+                        ->where('tn.isActive = :isActive')
                         ->setParameter('isActive', true)
-                        ->orderBy('t.nombre', 'ASC');
+                        ->orderBy('tn.nombre', 'ASC');
                 },
+                'empty_data' => null,
+                'placeholder' => 'Seleccione un Tipo de Norma'
+            ]);
+        }
+        $builder->add('tipoReferenciaOrigen', EntityType::class, [
+            'class' => TipoReferencia::class,
+            'label' => 'Tipo de referencia',
+            'required' => false,
+            'disabled' => true,
+            'choice_label' => 'nombre',
+            'query_builder' => function (TipoReferenciaRepository $tr) {
+                return $tr->createQueryBuilder('tr')
+                    ->where('tr.isActive = :isActive')
+                    ->setParameter('isActive', true)
+                    ->orderBy('tr.nombre', 'ASC');
+            },
+            'empty_data' => null,
+            'mapped'=>false,
+            'placeholder' => 'Seleccione un Tipo de referencia'
+        ])
+        ->add('normaOrigen', ChoiceType::class, [
+            'placeholder' => 'Seleccione una norma',
+            'label' => 'Norma',
+            'required' => false,
+            'mapped' => false,
+            'disabled' => true,
+        ])
+        ->add('tipoReferenciaDestino', EntityType::class, [
+            'class' => TipoReferencia::class,
+            'label' => 'Tipo de referencia',
+            'required' => false,
+            'disabled' => true,
+            'choice_label' => 'nombre',
+            'query_builder' => function (TipoReferenciaRepository $tr) {
+                return $tr->createQueryBuilder('tr')
+                    ->where('tr.isActive = :isActive')
+                    ->setParameter('isActive', true)
+                    ->orderBy('tr.nombre', 'ASC');
+            },
+            'empty_data' => null,
+            'mapped'=>false,
+            'placeholder' => 'Seleccione un Tipo de referencia'
+        ])
+        ->add('normaDestino', ChoiceType::class, [
+            'placeholder' => 'Seleccione una norma',
+            'label' => 'Norma',
+            'required' => false,
+            'mapped' => false,
+            'disabled' => true,
+        ])
+        ->add('temas', EntityType::class, [
+            'label' => 'Temas',
+            'class' => Tema::class,
+            'choice_label' => 'nombre',
+            'required' => false,
+            'multiple' => true,
+            'expanded' => false, // Cambiar a false para usar select en lugar de checkboxes
+            'mapped' => false,
+            'query_builder' => function (TemaRepository $t) {
+                return $t->createQueryBuilder('t')
+                    ->where('t.isActive = :isActive')
+                    ->setParameter('isActive', true)
+                    ->orderBy('t.nombre', 'ASC');
+            },
+            'placeholder' => 'Seleccione uno o varios temas',
+            'attr' => [
+                'class' => 'choice_multiple_default',
                 'placeholder' => 'Seleccione uno o varios temas',
-                'attr' => [
-                    'class' => 'choice_multiple_default',
-                    'placeholder' => 'Seleccione uno o varios temas',
-                    'aria-label' => 'Seleccione uno o varios temas'
-                ],
-            ])
+                'aria-label' => 'Seleccione uno o varios temas'
+            ],
+        ])
 
             // ->add('normaOrigen', EntityType::class, [
             //     'class' => Norma::class,

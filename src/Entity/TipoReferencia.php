@@ -21,9 +21,16 @@ class TipoReferencia
     #[ORM\Column(options: ["default" => 1])]
     private ?bool $isActive = null;
 
+    /**
+     * @var Collection<int, Referencia>
+     */
+    #[ORM\OneToMany(targetEntity: Referencia::class, mappedBy: 'tipoReferencia')]
+    private Collection $referencias;
+
     public function __construct()
     {
         $this->isActive = true;
+        $this->referencias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -51,6 +58,36 @@ class TipoReferencia
     public function setActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Referencia>
+     */
+    public function getReferencias(): Collection
+    {
+        return $this->referencias;
+    }
+
+    public function addReferencia(Referencia $referencia): static
+    {
+        if (!$this->referencias->contains($referencia)) {
+            $this->referencias->add($referencia);
+            $referencia->setTipoReferencia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReferencia(Referencia $referencia): static
+    {
+        if ($this->referencias->removeElement($referencia)) {
+            // set the owning side to null (unless already changed)
+            if ($referencia->getTipoReferencia() === $this) {
+                $referencia->setTipoReferencia(null);
+            }
+        }
 
         return $this;
     }

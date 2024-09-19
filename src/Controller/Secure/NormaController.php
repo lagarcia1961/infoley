@@ -31,12 +31,12 @@ class NormaController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $norma = new Norma();
-        $form = $this->createForm(NormaType::class, $norma);
-        $form->handleRequest($request);
+        $form_norma = $this->createForm(NormaType::class, $norma);
+        $form_norma->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form_norma->isSubmitted() && $form_norma->isValid()) {
 
-            $temas = $form->get('temas')->getData();
+            $temas = $form_norma->get('temas')->getData();
 
             if ($temas) {
                 foreach ($temas as $tema) {
@@ -47,7 +47,7 @@ class NormaController extends AbstractController
                 }
             }
 
-            $file = $form->get('urlPdf')->getData();
+            $file = $form_norma->get('urlPdf')->getData();
 
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -71,7 +71,7 @@ class NormaController extends AbstractController
 
         return $this->render('secure/norma/new.html.twig', [
             'norma' => $norma,
-            'form' => $form,
+            'form_norma' => $form_norma,
         ]);
     }
 
@@ -80,7 +80,7 @@ class NormaController extends AbstractController
     public function edit(Request $request, Norma $norma, EntityManagerInterface $entityManager): Response
     {
         // Crear el formulario con la entidad Norma
-        $form = $this->createForm(NormaType::class, $norma);
+        $form_norma = $this->createForm(NormaType::class, $norma);
         // Obtener todas las instancias de UsuarioTipoNorma asociadas al usuario
         $normaTemas = $norma->getNormaTemas();
         
@@ -90,20 +90,20 @@ class NormaController extends AbstractController
         }, $normaTemas->toArray());
         
         if ($temas) {
-            $form->get('temas')->setData($temas); // Establece las normas seleccionadas en el formulario
+            $form_norma->get('temas')->setData($temas); // Establece las normas seleccionadas en el formulario
         }
         
-        $form->handleRequest($request);
+        $form_norma->handleRequest($request);
 
         // Verificar si el formulario ha sido enviado y es válido
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form_norma->isSubmitted() && $form_norma->isValid()) {
             // Obtener el archivo subido (si hay uno nuevo)
-            $file = $form->get('urlPdf')->getData();
+            $file = $form_norma->get('urlPdf')->getData();
 
             foreach ($norma->getNormaTemas() as $normaTema) {
                 $entityManager->remove($normaTema);
             }
-            $temas = $form->get('temas')->getData();
+            $temas = $form_norma->get('temas')->getData();
 
             if ($temas) {
                 foreach ($temas as $tema) {
@@ -148,7 +148,7 @@ class NormaController extends AbstractController
         // Renderizar la vista del formulario de edición
         return $this->render('secure/norma/edit.html.twig', [
             'norma' => $norma,
-            'form' => $form,
+            'form_norma' => $form_norma,
         ]);
     }
 

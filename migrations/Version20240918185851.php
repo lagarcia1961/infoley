@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240808024300 extends AbstractMigration
+final class Version20240918185851 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,14 +20,14 @@ final class Version20240808024300 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $password = password_hash($_ENV['USER_PASSWORD_INIT'], PASSWORD_BCRYPT);
-        $this->addSql("INSERT INTO user (id,email,roles,password) VALUES (1,'admin@infoley.com','" . json_encode(['ROLE_ADMIN']) . "','" . $password . "')");
-        // $this->addSql("INSERT INTO user (id,email,roles,password) VALUES (2,'carga@infoley.com','" . json_encode(['ROLE_CARGA']) . "','" . $password . "')");
+        $this->addSql('ALTER TABLE tipo_norma ADD rango INT NOT NULL');
+        $this->addSql('ALTER TABLE tipo_referencia CHANGE is_active is_active TINYINT(1) DEFAULT 1 NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql("DELETE FROM user WHERE email IN ('admin@infoley.com', 'carga@infoley.com')");
+        $this->addSql('ALTER TABLE tipo_norma DROP rango');
+        $this->addSql('ALTER TABLE tipo_referencia CHANGE is_active is_active TINYINT(1) NOT NULL');
     }
 }
