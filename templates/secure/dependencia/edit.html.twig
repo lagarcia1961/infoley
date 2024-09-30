@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar Dependencia
+{% endblock %}
+
+{% block body %}
+            <div class="row">
+                <div class="col-12">
+						<h1>Editar Dependencia</h1>
+						{{ include('secure/dependencia/_form.html.twig', {'button_label': 'Actualizar'}) }}					
+					</div>
+				</div>
+{% endblock %}

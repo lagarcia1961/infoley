@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Constants\Rol;
+use App\Entity\Dependencia;
 use App\Entity\Norma;
 use App\Entity\Tema;
 use App\Entity\TipoNorma;
 use App\Entity\TipoReferencia;
+use App\Repository\DependenciaRepository;
 use App\Repository\TemaRepository;
 use App\Repository\TipoNormaRepository;
 use App\Repository\TipoReferenciaRepository;
@@ -197,6 +199,20 @@ class NormaType extends AbstractType
                 'placeholder' => 'Seleccione uno o varios temas',
                 'aria-label' => 'Seleccione uno o varios temas'
             ],
+        ])
+        
+        ->add('dependencia', EntityType::class, [
+            'class' => Dependencia::class,
+            'required' => true,
+            'choice_label' => 'nombre',
+            'query_builder' => function (DependenciaRepository $tn) {
+                return $tn->createQueryBuilder('tn')
+                    ->where('tn.isActive = :isActive')
+                    ->setParameter('isActive', true)
+                    ->orderBy('tn.nombre', 'ASC');
+            },
+            'empty_data' => null,
+            'placeholder' => 'Seleccione una dependencia'
         ])
 
             // ->add('normaOrigen', EntityType::class, [

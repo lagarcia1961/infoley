@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dependencia index
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-12">
+			<h1>Listado de Dependencias</h1>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12 text-end my-4">
+			<a href="{{ path('app_dependencia_new')}}" class="btn btn-primary">
+				Nueva Dependencia
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<table id="datatable-buttons" data-url-eliminar="{{ path('app_dependencia_delete') }}" class="table table-sm table-bordered table-striped datatable-delete">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Nombre</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for dependencia in dependencias %}
+						<tr>
+							<td>{{ dependencia.id }}</td>
+							<td>{{ dependencia.nombre }}</td>
+							<td>
+								<a class="btn" href="{{ path('app_dependencia_edit', {'id': dependencia.id}) }}" title="Editar Dependencia">
+									<i class="fas fa-edit text-warning"></i>
+								</a>
+								<a href="javascript:void(0);" class="btn-delete m-2" data-id="{{ dependencia.id }}" title="Eliminar Dependencia">
+									<i class="fas fa-trash text-danger"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

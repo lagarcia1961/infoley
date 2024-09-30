@@ -62,6 +62,10 @@ class Norma
     #[ORM\OneToMany(targetEntity: Referencia::class, mappedBy: 'normaDestino')]
     private Collection $normasDestino;
 
+    #[ORM\ManyToOne(inversedBy: 'normas')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Dependencia $dependencia = null;
+
     public function __construct()
     {
         $this->documentosAdicionales = new ArrayCollection();
@@ -289,6 +293,18 @@ class Norma
                 $normasDestino->setNormaDestino(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDependencia(): ?Dependencia
+    {
+        return $this->dependencia;
+    }
+
+    public function setDependencia(?Dependencia $dependencia): static
+    {
+        $this->dependencia = $dependencia;
 
         return $this;
     }
