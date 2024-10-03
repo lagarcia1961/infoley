@@ -2,6 +2,7 @@ $(document).ready(function () {
     listenTipoNorma();
     listenModals();
     listenEliminarNorma();
+    readPdf();
 
     // Escucha cuando el modal se oculta
     $('#modalAgregarNormaOrigen, #modalAgregarNormaDestino').on('hidden.bs.modal', function () {
@@ -205,7 +206,6 @@ const eliminarNorma = (index, tipo) => {
 const listenTipoNorma = () => {
     tipoNormaId = $('#norma_tipoNorma').val();
     var normaIdEdit = $('#normaIdEdit').length ? $('#normaIdEdit').data('id') : false;
-    console.log(normaIdEdit);
     activeBotonesModal(tipoNormaId); // Activar o desactivar botones según el valor
     if (tipoNormaId) {
         getNormas(false, 'norma_normaOrigen', normaIdEdit);
@@ -443,3 +443,40 @@ const resetModals = (tipo) => {
     $('#norma_tipoReferenciaDestino').val('');  // Desseleccionar cualquier opción
     limpiarErrores(tipo);
 };
+
+const readPdf = () => {
+    $('#norma_urlPdf').on('change', function (event) {
+        var file = event.target.files[0];
+        if (file && file.type === 'application/pdf') {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var pdfData = new Uint8Array(e.target.result);
+                pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
+                    var totalPages = pdf.numPages;
+                    var norma_textoCompleto = '';
+    
+                    // Leer cada página y extraer el texto
+                    var pagePromises = [];
+                    for (let i = 1; i <= totalPages; i++) {
+                        pagePromises.push(
+                            pdf.getPage(i).then(function (page) {
+                                return page.getTextContent().then(function (textContent) {
+                                    let pageText = textContent.items.map(item => item.str).join(' ');
+                                    norma_textoCompleto += pageText + '\n\n';
+                                });
+                            })
+                        );
+                    }
+    
+                    // Una vez que todas las páginas están leídas
+                    Promise.all(pagePromises).then(function () {
+                        $('#norma_textoCompleto').val(norma_textoCompleto);
+                    });
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        } else {
+            alert('Por favor, selecciona un archivo PDF.');
+        }
+    });
+}

@@ -55,9 +55,9 @@
 
 	{% endif %}
 
+
 	{% block stylesheets %}
 	{% endblock %}
-
 	{% block javascripts %}
 	{% block importmap %}
 	{{ importmap('app') }}
@@ -305,6 +305,10 @@
 	<!-- Right bar overlay-->
 	<div class="rightbar-overlay"></div>
 
+	<script src="{{ asset('js/pdf/pdf.min.js') }}"></script>
+	<script>
+		const PDF_WORKER = "{{ asset('js/pdf/pdf.min.js') }}";
+	</script>
 	<!-- JAVASCRIPT -->
 	<script src="{{ asset('libs/jquery/jquery.min.js') }}"></script>
 	<script src="{{ asset('libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

@@ -62,6 +62,12 @@ class UsuariosController extends AbstractController
 
             if ($dataForm->getRol()->getId() === Rol::ROLE_CARGA) {
                 $selectedTipoNormas = $data['form']->get('tipoNormas')->getData();
+
+                $password = $data['form']->get('password')->getData();
+                if ($password) {
+                    $data['usuario']->setPassword(password_hash($password, PASSWORD_BCRYPT));
+                }
+
                 foreach ($selectedTipoNormas as $tipoNorma) {
                     $usuarioTipoNorma = new UsuarioTipoNorma();
                     $usuarioTipoNorma->setUser($data['usuario'])
@@ -107,7 +113,7 @@ class UsuariosController extends AbstractController
         if ($data['form']->isSubmitted() && $data['form']->isValid()) {
             $newPassword = $data['form']->get('password')->getData();
             if ($newPassword) {
-                $data['usuario']->setPassword($newPassword);
+                $data['usuario']->setPassword(password_hash($newPassword, PASSWORD_BCRYPT));
             }
 
             foreach ($data['usuario']->getUsuarioTipoNormas() as $usuarioTipoNorma) {
@@ -199,7 +205,7 @@ class UsuariosController extends AbstractController
         if ($data['form']->isSubmitted() && $data['form']->isValid()) {
             $newPassword = $data['form']->get('password')->getData();
             if ($newPassword) {
-                $data['usuario']->setPassword($newPassword);
+                $data['usuario']->setPassword(password_hash($newPassword, PASSWORD_BCRYPT));
             }
 
             foreach ($data['usuario']->getUsuarioTipoNormas() as $usuarioTipoNorma) {
