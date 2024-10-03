@@ -354,6 +354,9 @@
 
 
 	<script src="{{ asset('js/app.js') }}"></script>
+	<script>
+		const BASE_URL = "{{ absolute_url('/') }}";
+	</script>
 
 	{% if files_js is defined %}
 

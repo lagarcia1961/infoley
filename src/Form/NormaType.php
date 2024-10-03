@@ -16,8 +16,10 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -69,7 +71,6 @@ class NormaType extends AbstractType
                     ]),
                 ]
             ])
-
             ->add('fechaPublicacion', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Fecha de publicación'
@@ -146,115 +147,82 @@ class NormaType extends AbstractType
                     ->orderBy('tr.nombre', 'ASC');
             },
             'empty_data' => null,
-            'mapped'=>false,
+            'mapped' => false,
             'placeholder' => 'Seleccione un Tipo de referencia'
         ])
-        ->add('normaOrigen', ChoiceType::class, [
-            'placeholder' => 'Seleccione una norma',
-            'label' => 'Norma',
-            'required' => false,
-            'mapped' => false,
-            'disabled' => true,
-        ])
-        ->add('tipoReferenciaDestino', EntityType::class, [
-            'class' => TipoReferencia::class,
-            'label' => 'Tipo de referencia',
-            'required' => false,
-            'disabled' => true,
-            'choice_label' => 'nombre',
-            'query_builder' => function (TipoReferenciaRepository $tr) {
-                return $tr->createQueryBuilder('tr')
-                    ->where('tr.isActive = :isActive')
-                    ->setParameter('isActive', true)
-                    ->orderBy('tr.nombre', 'ASC');
-            },
-            'empty_data' => null,
-            'mapped'=>false,
-            'placeholder' => 'Seleccione un Tipo de referencia'
-        ])
-        ->add('normaDestino', ChoiceType::class, [
-            'placeholder' => 'Seleccione una norma',
-            'label' => 'Norma',
-            'required' => false,
-            'mapped' => false,
-            'disabled' => true,
-        ])
-        ->add('temas', EntityType::class, [
-            'label' => 'Temas',
-            'class' => Tema::class,
-            'choice_label' => 'nombre',
-            'required' => false,
-            'multiple' => true,
-            'expanded' => false, // Cambiar a false para usar select en lugar de checkboxes
-            'mapped' => false,
-            'query_builder' => function (TemaRepository $t) {
-                return $t->createQueryBuilder('t')
-                    ->where('t.isActive = :isActive')
-                    ->setParameter('isActive', true)
-                    ->orderBy('t.nombre', 'ASC');
-            },
-            'placeholder' => 'Seleccione uno o varios temas',
-            'attr' => [
-                'class' => 'choice_multiple_default',
+            ->add('normaOrigen', ChoiceType::class, [
+                'placeholder' => 'Seleccione una norma',
+                'label' => 'Norma',
+                'required' => false,
+                'mapped' => false,
+                'disabled' => true,
+                'attr' => [
+                    'class' => 'choices-single-default-label',
+                ]
+            ])
+            ->add('tipoReferenciaDestino', EntityType::class, [
+                'class' => TipoReferencia::class,
+                'label' => 'Tipo de referencia',
+                'required' => false,
+                'disabled' => true,
+                'choice_label' => 'nombre',
+                'query_builder' => function (TipoReferenciaRepository $tr) {
+                    return $tr->createQueryBuilder('tr')
+                        ->where('tr.isActive = :isActive')
+                        ->setParameter('isActive', true)
+                        ->orderBy('tr.nombre', 'ASC');
+                },
+                'empty_data' => null,
+                'mapped' => false,
+                'placeholder' => 'Seleccione un Tipo de referencia'
+            ])
+            ->add('normaDestino', ChoiceType::class, [
+                'placeholder' => 'Seleccione una norma',
+                'label' => 'Norma',
+                'required' => false,
+                'mapped' => false,
+                'disabled' => true,
+                'attr' => [
+                    'class' => 'choices-single-default-label',
+                ]
+            ])
+            ->add('temas', EntityType::class, [
+                'label' => 'Temas',
+                'class' => Tema::class,
+                'choice_label' => 'nombre',
+                'required' => false,
+                'multiple' => true,
+                'expanded' => false, // Cambiar a false para usar select en lugar de checkboxes
+                'mapped' => false,
+                'query_builder' => function (TemaRepository $t) {
+                    return $t->createQueryBuilder('t')
+                        ->where('t.isActive = :isActive')
+                        ->setParameter('isActive', true)
+                        ->orderBy('t.nombre', 'ASC');
+                },
                 'placeholder' => 'Seleccione uno o varios temas',
-                'aria-label' => 'Seleccione uno o varios temas'
-            ],
-        ])
-        
-        ->add('dependencia', EntityType::class, [
-            'class' => Dependencia::class,
-            'required' => true,
-            'choice_label' => 'nombre',
-            'query_builder' => function (DependenciaRepository $tn) {
-                return $tn->createQueryBuilder('tn')
-                    ->where('tn.isActive = :isActive')
-                    ->setParameter('isActive', true)
-                    ->orderBy('tn.nombre', 'ASC');
-            },
-            'empty_data' => null,
-            'placeholder' => 'Seleccione una dependencia'
-        ])
-
-            // ->add('normaOrigen', EntityType::class, [
-            //     'class' => Norma::class,
-            //     'choice_label' => 'titulo',
-            //     'query_builder' => function (NormaRepository $n) {
-            //         return $n->createQueryBuilder('n')
-            //             ->where('n.isActive = :isActive')
-            //             ->setParameter('isActive', true)
-            //             ->orderBy('n.titulo', 'ASC');
-            //     },
-            //     'empty_data' => null,
-            //     'placeholder'=>'Seleccione una norma',
-            //     'attr' => [
-            //         'class' => 'choices-single-default-label',
-            //         'placeholder' => 'Seleccione una norma de origen',
-            //         'aria-label' => 'Seleccione una norma de origen'
-            //     ]
-            // ])
-            // ->add('normaDestino', EntityType::class, [
-            //     'class' => Norma::class,
-            //     'choice_label' => 'titulo',
-            //     'query_builder' => function (NormaRepository $n) {
-            //         return $n->createQueryBuilder('n')
-            //             ->where('n.isActive = :isActive')
-            //             ->setParameter('isActive', true)
-            //             ->orderBy('n.titulo', 'ASC');
-            //     },
-            //     'empty_data' => null,
-            //     'placeholder'=>'Seleccione una norma',
-            //     'attr' => [
-            //         'class' => 'choices-single-default-label',
-            //         'placeholder' => 'Seleccione una norma de destino',
-            //         'aria-label' => 'Seleccione una norma de destino'
-            //     ]
-            // ])
-
-
-
+                'attr' => [
+                    'class' => 'choice_multiple_default',
+                    'placeholder' => 'Seleccione uno o varios temas',
+                    'aria-label' => 'Seleccione uno o varios temas'
+                ],
+            ])
+            ->add('dependencia', EntityType::class, [
+                'class' => Dependencia::class,
+                'required' => true,
+                'choice_label' => 'nombre',
+                'query_builder' => function (DependenciaRepository $tn) {
+                    return $tn->createQueryBuilder('tn')
+                        ->where('tn.isActive = :isActive')
+                        ->setParameter('isActive', true)
+                        ->orderBy('tn.nombre', 'ASC');
+                },
+                'empty_data' => null,
+                'placeholder' => 'Seleccione una dependencia'
+            ])
             ->add('guardar', SubmitType::class, [
                 'label' => 'Guardar',
-            ]);;;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

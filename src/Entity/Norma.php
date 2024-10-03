@@ -53,7 +53,7 @@ class Norma
     /**
      * @var Collection<int, Referencia>
      */
-    #[ORM\OneToMany(targetEntity: Referencia::class, mappedBy: 'normasOrigen')]
+    #[ORM\OneToMany(targetEntity: Referencia::class, mappedBy: 'normaOrigen')]
     private Collection $normasOrigen;
 
     /**
@@ -307,5 +307,27 @@ class Norma
         $this->dependencia = $dependencia;
 
         return $this;
+    }
+
+    public function getNormaBasicData(): array
+    {
+        return [
+            'id' => $this->id,
+            'titulo' => $this->titulo,
+        ];
+    }
+
+    public function getNormaFullData(): array
+    {
+        return [
+            'id' => $this->id,
+            'titulo' => $this->titulo,
+            'numero' => $this->numero,
+            'anio' => $this->anio,
+            'fechaPublicacion' => $this->fechaPublicacion->format('d/m/Y'),
+            'textoCompleto' => $this->textoCompleto,
+            'urlPdf' => $this->urlPdf,
+            'tipoNorma' => $this->tipoNorma->getNombre()
+        ];
     }
 }
