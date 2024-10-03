@@ -5,7 +5,8 @@ $(document).ready(function () {
 
     // Escucha cuando el modal se oculta
     $('#modalAgregarNormaOrigen, #modalAgregarNormaDestino').on('hidden.bs.modal', function () {
-        resetModals();
+        resetModals('origen');
+        resetModals('destino');
     });
 
     // Escucha el botón "Agregar" en el modal de Origen
@@ -83,6 +84,7 @@ const agregarNorma = (tipo) => {
 
     // Cerrar el modal
     $(`#modalAgregarNorma${tipo === 'origen' ? 'Origen' : 'Destino'}`).modal('hide');
+    resetModals(tipo);
 };
 
 
@@ -420,7 +422,7 @@ const updateNormas = (selectElement, tipo) => {
 };
 
 // Resetear los spans y selects cuando el modal se cierra
-const resetModals = () => {
+const resetModals = (tipo) => {
     // Limpiar todos los spans de Norma Origen
     $('#spanNormaOrigen_titulo, #spanNormaOrigen_numero, #spanNormaOrigen_anio, #spanNormaOrigen_fechaPublicacion, #spanNormaOrigen_textoCompleto, #spanNormaOrigen_urlPdf').text('');
 
@@ -439,5 +441,5 @@ const resetModals = () => {
     // Restablecer los combos de tipoReferenciaOrigen y tipoReferenciaDestino a su estado inicial
     $('#norma_tipoReferenciaOrigen').val('');  // Desseleccionar cualquier opción
     $('#norma_tipoReferenciaDestino').val('');  // Desseleccionar cualquier opción
-    limpiarErrores();
+    limpiarErrores(tipo);
 };
