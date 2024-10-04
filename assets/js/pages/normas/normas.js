@@ -457,40 +457,53 @@ const readPdf = () => {
     $('#norma_urlPdf').on('change', function (event) {
         var file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                var pdfData = new Uint8Array(e.target.result);
-                pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
-                    var totalPages = pdf.numPages;
-                    var norma_textoCompleto = '';
+            Swal.fire({
+                title: 'Se detecto un documento PDF',
+                text: '¿Desea que el sistema intente leer el documento?, luego podrá editarlo',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, leer documento',
+                cancelButtonText: 'No, solo adjuntar archivo',
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-secondary'
+                },
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var pdfData = new Uint8Array(e.target.result);
+                        pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
+                            var totalPages = pdf.numPages;
+                            var norma_textoCompleto = '';
 
-                    // Leer cada página y extraer el texto
-                    var pagePromises = [];
-                    for (let i = 1; i <= totalPages; i++) {
-                        pagePromises.push(
-                            pdf.getPage(i).then(function (page) {
-                                return page.getTextContent().then(function (textContent) {
-                                    let pageText = textContent.items.map(item => item.str).join(' ');
-                                    norma_textoCompleto += pageText + '\n\n';
-                                });
-                            })
-                        );
-                    }
+                            // Leer cada página y extraer el texto
+                            var pagePromises = [];
+                            for (let i = 1; i <= totalPages; i++) {
+                                pagePromises.push(
+                                    pdf.getPage(i).then(function (page) {
+                                        return page.getTextContent().then(function (textContent) {
+                                            let pageText = textContent.items.map(item => item.str).join(' ');
+                                            norma_textoCompleto += pageText + '\n\n';
+                                        });
+                                    })
+                                );
+                            }
 
-                    // Una vez que todas las páginas están leídas
-                    Promise.all(pagePromises).then(function () {
-                        // Verifica si el editor ya está inicializado
-                        if (editorInstance) {
-                            editorInstance.setData(norma_textoCompleto); // Actualiza el contenido del editor
-                        } else {
-                            console.error('CKEditor no está inicializado.');
-                        }
-                    });
-                });
-            };
-            reader.readAsArrayBuffer(file);
-        } else {
-            alert('Por favor, selecciona un archivo PDF.');
+                            // Una vez que todas las páginas están leídas
+                            Promise.all(pagePromises).then(function () {
+                                // Verifica si el editor ya está inicializado
+                                if (editorInstance) {
+                                    editorInstance.setData(norma_textoCompleto); // Actualiza el contenido del editor
+                                } else {
+                                    console.error('CKEditor no está inicializado.');
+                                }
+                            });
+                        });
+                    };
+                    reader.readAsArrayBuffer(file);
+                }
+            });
         }
     });
 }
