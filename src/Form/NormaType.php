@@ -156,9 +156,6 @@ class NormaType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'disabled' => true,
-                'attr' => [
-                    'class' => 'choices-single-default-label',
-                ]
             ])
             ->add('tipoReferenciaDestino', EntityType::class, [
                 'class' => TipoReferencia::class,
@@ -182,9 +179,6 @@ class NormaType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'disabled' => true,
-                'attr' => [
-                    'class' => 'choices-single-default-label',
-                ]
             ])
             ->add('temas', EntityType::class, [
                 'label' => 'Temas',

@@ -3,6 +3,7 @@ $(document).ready(function () {
     listenModals();
     listenEliminarNorma();
     readPdf();
+    loadCKEditor();
 
     // Escucha cuando el modal se oculta
     $('#modalAgregarNormaOrigen, #modalAgregarNormaDestino').on('hidden.bs.modal', function () {
@@ -28,6 +29,40 @@ var normasOrigenFetched = [];
 var normasDestinoFetched = [];
 var normasSeleccionadasOrigen = [];
 var normasSeleccionadasDestino = [];
+var editorInstance;
+
+const loadCKEditor = () => {
+    const {
+        ClassicEditor,
+        Essentials,
+        Bold,
+        Italic,
+        Font,
+        Paragraph
+    } = CKEDITOR;
+
+    ClassicEditor
+        .create(document.querySelector('#norma_textoCompleto'), {
+            plugins: [Essentials, Bold, Italic, Font, Paragraph],
+            toolbar: [
+                'undo', 'redo', '|', 'bold', 'italic', '|',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+            ],
+            config: {
+                ui: {
+                    poweredBy: {
+                        forceVisible: true
+                    }
+                }
+            }
+        })
+        .then(editor => {
+            editorInstance = editor; // Guardamos la instancia del editor
+        })
+        .catch(error => {
+            console.error('Error al inicializar CKEditor:', error);
+        });
+}
 
 // Función para agregar una norma (Origen o Destino)
 const agregarNorma = (tipo) => {
@@ -166,42 +201,13 @@ const eliminarFila = (normaId, tipo) => {
 
 
 // Función para actualizar la tabla de normas seleccionadas
-const actualizarTablaNormas = (normas, tipo) => {
-    const tbody = $(`#tablaNormas${tipo === 'origen' ? 'Origen' : 'Destino'} tbody`);
-    tbody.empty(); // Limpiar la tabla antes de actualizar
-
-    normas.forEach((norma, index) => {
-        tbody.append(`
-            <tr>
-                <td>${norma.tipoNorma}</td>
-                <td>${norma.titulo}</td>
-                <td>${norma.tipoReferencia}</td>
-                <td>${norma.numero}</td>
-                <td>${norma.anio}</td>
-                <td>${norma.fechaPublicacion}</td>
-                <td><a href="javascript:void(0);" class="text-danger" data-index="${index}" data-tipo="${tipo}"><i class="fas fa-trash"></i></a></td>
-            </tr>
-        `);
-    });
-
-    // Añadir funcionalidad para eliminar normas
-    $('.text-danger').on('click', function () {
-        const index = $(this).data('index');
-        const tipo = $(this).data('tipo');
-        eliminarNorma(index, tipo);
-    });
+const actualizarTablaNormas = () => {
+    const tbodyOrigen = $(`#tablaNormasOrigen tbody`);
+    tbodyOrigen.empty();
+    const tbodyDestino = $(`#tablaNormasDestino tbody`);
+    tbodyDestino.empty();
 };
 
-// Función para eliminar una norma seleccionada
-const eliminarNorma = (index, tipo) => {
-    if (tipo === 'origen') {
-        normasSeleccionadasOrigen.splice(index, 1); // Eliminar del array
-        actualizarTablaNormas(normasSeleccionadasOrigen, 'origen'); // Actualizar la tabla
-    } else {
-        normasSeleccionadasDestino.splice(index, 1); // Eliminar del array
-        actualizarTablaNormas(normasSeleccionadasDestino, 'destino'); // Actualizar la tabla
-    }
-};
 
 const listenTipoNorma = () => {
     tipoNormaId = $('#norma_tipoNorma').val();
@@ -212,6 +218,7 @@ const listenTipoNorma = () => {
         getNormas(true, 'norma_normaDestino', normaIdEdit);
     }
     $('#norma_tipoNorma').on('change', function () {
+        actualizarTablaNormas();
         tipoNormaId = $(this).val();
 
         // Destruir las instancias de Choices si existen
@@ -445,6 +452,8 @@ const resetModals = (tipo) => {
 };
 
 const readPdf = () => {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER;
+
     $('#norma_urlPdf').on('change', function (event) {
         var file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
@@ -454,7 +463,7 @@ const readPdf = () => {
                 pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
                     var totalPages = pdf.numPages;
                     var norma_textoCompleto = '';
-    
+
                     // Leer cada página y extraer el texto
                     var pagePromises = [];
                     for (let i = 1; i <= totalPages; i++) {
@@ -467,10 +476,15 @@ const readPdf = () => {
                             })
                         );
                     }
-    
+
                     // Una vez que todas las páginas están leídas
                     Promise.all(pagePromises).then(function () {
-                        $('#norma_textoCompleto').val(norma_textoCompleto);
+                        // Verifica si el editor ya está inicializado
+                        if (editorInstance) {
+                            editorInstance.setData(norma_textoCompleto); // Actualiza el contenido del editor
+                        } else {
+                            console.error('CKEditor no está inicializado.');
+                        }
                     });
                 });
             };

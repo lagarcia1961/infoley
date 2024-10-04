@@ -19,6 +19,8 @@
 	<link href="{{ asset('libs/choices.js/public/assets/styles/choices.min.css') }}" rel="stylesheet" type="text/css" />
 
 	<!-- Sweet Alert-->
+	<link href="{{ asset('css/ckeditor/ckeditor5.css') }}" rel="stylesheet" type="text/css" />
+	
 	<link href="{{ asset('libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 
 	<!-- DataTables -->
@@ -305,9 +307,11 @@
 	<!-- Right bar overlay-->
 	<div class="rightbar-overlay"></div>
 
+	<script src="{{ asset('js/ckeditor/ckeditor5.umd.js') }}"></script>
+
 	<script src="{{ asset('js/pdf/pdf.min.js') }}"></script>
 	<script>
-		const PDF_WORKER = "{{ asset('js/pdf/pdf.min.js') }}";
+		const PDF_WORKER = "{{ asset('js/pdf/pdf.worker.min.js') }}";
 	</script>
 	<!-- JAVASCRIPT -->
 	<script src="{{ asset('libs/jquery/jquery.min.js') }}"></script>
