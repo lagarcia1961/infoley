@@ -2,193 +2,349 @@
 
 {% block body %}
 
-	<div class="row">
-		<div class="col-xs-12 col-sm-6 col-lg-3">
-			<div class="card border border-primary" style="min-height: 200px;">
-				<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
-					<h5 class="my-0 text-primary">
-						<i class="fas fa-file-signature"></i>
-						CONSTITUCIONES
-					</h5>
-				</div>
-				<div class="card-body">
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						C.A.B.A. y Provinciales
-					</h5>
+<div class="row">
+	<div class="col-xs-12 my-4">
+		<h2>Búsqueda de normativas</h2>
+	</div>
+	<div class="col-xs-12">
 
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Constitución Nacional
-					</h5>
+		<ul class="nav nav-tabs" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link {{ form_avanzado_active? '':'active' }}" data-bs-toggle="tab" href="#simple"
+					role="tab" aria-selected="true">
+					<span class="d-none d-sm-block">Búsqueda simple</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link {{ form_avanzado_active? 'active':'' }}" data-bs-toggle="tab" href="#avanzado"
+					role="tab" aria-selected="false">
+					<span class="d-none d-sm-block">Búsqueda avanzada</span>
+				</a>
+			</li>
+		</ul>
 
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Constituciones del resto del mundo
-					</h5>
+		<!-- Tab panes -->
+		<div class="tab-content p-3 text-muted">
+			<div class="tab-pane {{ form_avanzado_active? '':'active' }}" id="simple" role="tabpanel">
+				{{ form_start (form_simple) }}
+				<div class="row">
+					<div class="col-12 col-md-4">
+
+						{{ form_label (form_simple.tipoNorma) }}
+						{{ form_widget (form_simple.tipoNorma) }}
+						{{ form_errors (form_simple.tipoNorma)}}
+
+					</div>
+					<div class="col-12 col-md-4">
+
+						{{ form_label (form_simple.numero) }}
+						{{ form_widget (form_simple.numero) }}
+						{{ form_errors (form_simple.numero)}}
+
+					</div>
+					<div class="col-12 col-md-4">
+
+						{{ form_label (form_simple.anio) }}
+						{{ form_widget (form_simple.anio) }}
+						{{ form_errors (form_simple.anio)}}
+
+					</div>
+					<div class="col-12 mt-3 d-grid gap-2">
+						{{ form_widget (form_simple.buscar) }}
+					</div>
 				</div>
+
+				{{ form_end (form_simple) }}
+			</div>
+			<div class="tab-pane {{ form_avanzado_active? 'active':'' }}" id="avanzado" role="tabpanel">
+				{{ form_start (form_avanzado) }}
+				<div class="row">
+					<div class="col-12 col-md-4">
+
+						{{ form_label (form_avanzado.tipoNorma) }}
+						{{ form_widget (form_avanzado.tipoNorma) }}
+						{{ form_errors (form_avanzado.tipoNorma)}}
+
+					</div>
+					<div class="col-12 col-md-4">
+
+						{{ form_label (form_avanzado.numero) }}
+						{{ form_widget (form_avanzado.numero) }}
+						{{ form_errors (form_avanzado.numero)}}
+
+					</div>
+					<div class="col-12 col-md-4">
+
+						{{ form_label (form_avanzado.anio) }}
+						{{ form_widget (form_avanzado.anio) }}
+						{{ form_errors (form_avanzado.anio)}}
+
+					</div>
+
+					<div class="col-12 col-md-6 my-2">
+
+						{{ form_label (form_avanzado.texto) }}
+						{{ form_widget (form_avanzado.texto) }}
+						{{ form_errors (form_avanzado.texto)}}
+
+					</div>
+
+
+					<div class="col-12 col-md-6 my-2">
+
+						{{ form_label (form_avanzado.dependencia) }}
+						{{ form_widget (form_avanzado.dependencia) }}
+						{{ form_errors (form_avanzado.dependencia)}}
+
+					</div>
+
+
+					<div class="col-12 col-md-6 my-2">
+
+						{{ form_label (form_avanzado.fechaDesde) }}
+						{{ form_widget (form_avanzado.fechaDesde) }}
+						{{ form_errors (form_avanzado.fechaDesde)}}
+
+					</div>
+
+
+					<div class="col-12 col-md-6 my-2">
+
+						{{ form_label (form_avanzado.fechaHasta) }}
+						{{ form_widget (form_avanzado.fechaHasta) }}
+						{{ form_errors (form_avanzado.fechaHasta)}}
+
+					</div>
+
+					<div class="col-12 mt-3 d-grid gap-2">
+						{{ form_widget (form_avanzado.buscar) }}
+					</div>
+				</div>
+				{{ form_end (form_avanzado) }}
 			</div>
 		</div>
-		<!-- end col -->
-
-		<div class="col-xs-12 col-sm-6 col-lg-3">
-			<div class="card border border-primary" style="min-height: 200px;">
-				<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
-					<h5 class="my-0 text-primary">
-						<i class="fas fa-file-signature"></i>
-						CÓDIGOS
-					</h5>
-				</div>
-				<div class="card-body">
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Códigos C.A.B.A.
-					</h5>
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Códigos Nacionales
-					</h5>
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Códigos Provinciales
-					</h5>
-				</div>
-			</div>
+	</div>
+	{% if normativas is defined %}
+	<div>
+		<div class="col-xs-12">
+			<hr>
 		</div>
-		<!-- end col -->
 
-		<div class="col-xs-12 col-sm-6 col-lg-3">
-			<div class="card border border-primary" style="min-height: 200px;">
-				<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
-					<h5 class="my-0 text-primary">
-						<i class="fas fa-file-signature"></i>
-						PROYECTOS Y ANTEPROYECTOS DE LEY DESTACADOS
-					</h5>
-				</div>
-				<div class="card-body">
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Ver anteproyectos
-					</h5>
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Ver proyectos
-					</h5>
-				</div>
-			</div>
+		<div class="col-xs-12">
+			<table id="datatable-buttons" class="table table-sm table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Normativa/Número</th>
+						<th>Fecha de publicación</th>
+						<th>Descripción</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for normativa in normativas %}
+					<tr>
+						<td>{{ normativa.titulo }}</td>
+						<td>{{ normativa.fechaPublicacion }}</td>
+						<td>{{ normativa.descripcion }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
-		<!-- end col -->
-
-		<div class="col-xs-12 col-sm-6 col-lg-3">
-			<div class="card border border-primary" style="min-height: 200px;">
-				<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
-					<h5 class="my-0 text-primary">
-						<i class="fas fa-file-signature"></i>
-						RECOPILACIONES TEMÁTICAS
-					</h5>
-				</div>
-				<div class="card-body">
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Digesto Emergencia Sanitaria COVID-19
-					</h5>
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Digesto Registral
-					</h5>
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Ver Listado
-					</h5>
-				</div>
-			</div>
-		</div>
-		<!-- end col -->
-
-		<div class="col-xs-12 col-sm-6 col-lg-3">
-			<div class="card border border-primary" style="min-height: 200px;">
-				<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
-					<h5 class="my-0 text-primary">
-						<i class="fas fa-file-signature"></i>
-						ADMINISTRACIÓN PÚBLICA NACIONAL
-					</h5>
-				</div>
-				<div class="card-body">
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Empleo Público
-					</h5>
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Estructuras
-					</h5>
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Índice de la Adm. Pública Nacional
-					</h5>
-				</div>
-			</div>
-		</div>
-		<!-- end col -->
-
-		<div class="col-xs-12 col-sm-6 col-lg-3">
-			<div class="card border border-primary" style="min-height: 200px;">
-				<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
-					<h5 class="my-0 text-primary">
-						<i class="fas fa-file-signature"></i>
-						SIMPLIFICACIÓN Y DESBUROCRATIZACIÓN - SyD
-					</h5>
-				</div>
-				<div class="card-body">
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Normativa SyD
-					</h5>
-				</div>
-			</div>
-		</div>
-		<!-- end col -->
-
-		<div class="col-xs-12 col-sm-6 col-lg-3">
-			<div class="card border border-primary" style="min-height: 200px;">
-				<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
-					<h5 class="my-0 text-primary">
-						<i class="fas fa-file-signature"></i>
-						SISTEMA DE GESTIÓN DOCUMENTAL ELECTRÓNICA – GDE
-					</h5>
-				</div>
-				<div class="card-body">
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Normativa GDE - Marco legal
-					</h5>
-				</div>
-			</div>
-		</div>
-		<!-- end col -->
-
-		<div class="col-xs-12 col-sm-6 col-lg-3">
-			<div class="card border border-primary" style="min-height: 200px;">
-				<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
-					<h5 class="my-0 text-primary">
-						<i class="fas fa-file-signature"></i>
-						OFICINA NACIONAL DE CONTRATACIONES
-					</h5>
-				</div>
-				<div class="card-body">
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Contrataciones de Bienes y Servicios
-					</h5>
-					<h5 class="card-title">
-						<i class="fas fa-angle-right"></i>
-						Obra Pública
-					</h5>
-				</div>
-			</div>
-		</div>
-		<!-- end col -->
 
 	</div>
+	{% endif %}
+</div>
+<hr>
+<div class="row">
+	<div class="col-xs-12 my-4">
+		<h2>Normativas destacadas</h2>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-lg-3">
+		<div class="card border border-primary" style="min-height: 200px;">
+			<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
+				<h5 class="my-0 text-primary">
+					<i class="fas fa-file-signature"></i>
+					CONSTITUCIONES
+				</h5>
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					C.A.B.A. y Provinciales
+				</h5>
+
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Constitución Nacional
+				</h5>
+
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Constituciones del resto del mundo
+				</h5>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+
+	<div class="col-xs-12 col-sm-6 col-lg-3">
+		<div class="card border border-primary" style="min-height: 200px;">
+			<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
+				<h5 class="my-0 text-primary">
+					<i class="fas fa-file-signature"></i>
+					CÓDIGOS
+				</h5>
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Códigos C.A.B.A.
+				</h5>
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Códigos Nacionales
+				</h5>
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Códigos Provinciales
+				</h5>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+
+	<div class="col-xs-12 col-sm-6 col-lg-3">
+		<div class="card border border-primary" style="min-height: 200px;">
+			<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
+				<h5 class="my-0 text-primary">
+					<i class="fas fa-file-signature"></i>
+					PROYECTOS Y ANTEPROYECTOS DE LEY DESTACADOS
+				</h5>
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Ver anteproyectos
+				</h5>
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Ver proyectos
+				</h5>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+
+	<div class="col-xs-12 col-sm-6 col-lg-3">
+		<div class="card border border-primary" style="min-height: 200px;">
+			<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
+				<h5 class="my-0 text-primary">
+					<i class="fas fa-file-signature"></i>
+					RECOPILACIONES TEMÁTICAS
+				</h5>
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Digesto Emergencia Sanitaria COVID-19
+				</h5>
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Digesto Registral
+				</h5>
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Ver Listado
+				</h5>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+
+	<div class="col-xs-12 col-sm-6 col-lg-3">
+		<div class="card border border-primary" style="min-height: 200px;">
+			<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
+				<h5 class="my-0 text-primary">
+					<i class="fas fa-file-signature"></i>
+					ADMINISTRACIÓN PÚBLICA NACIONAL
+				</h5>
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Empleo Público
+				</h5>
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Estructuras
+				</h5>
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Índice de la Adm. Pública Nacional
+				</h5>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+
+	<div class="col-xs-12 col-sm-6 col-lg-3">
+		<div class="card border border-primary" style="min-height: 200px;">
+			<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
+				<h5 class="my-0 text-primary">
+					<i class="fas fa-file-signature"></i>
+					SIMPLIFICACIÓN Y DESBUROCRATIZACIÓN - SyD
+				</h5>
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Normativa SyD
+				</h5>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+
+	<div class="col-xs-12 col-sm-6 col-lg-3">
+		<div class="card border border-primary" style="min-height: 200px;">
+			<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
+				<h5 class="my-0 text-primary">
+					<i class="fas fa-file-signature"></i>
+					SISTEMA DE GESTIÓN DOCUMENTAL ELECTRÓNICA – GDE
+				</h5>
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Normativa GDE - Marco legal
+				</h5>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+
+	<div class="col-xs-12 col-sm-6 col-lg-3">
+		<div class="card border border-primary" style="min-height: 200px;">
+			<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
+				<h5 class="my-0 text-primary">
+					<i class="fas fa-file-signature"></i>
+					OFICINA NACIONAL DE CONTRATACIONES
+				</h5>
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Contrataciones de Bienes y Servicios
+				</h5>
+				<h5 class="card-title">
+					<i class="fas fa-angle-right"></i>
+					Obra Pública
+				</h5>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+
+</div>
 
 {% endblock %}

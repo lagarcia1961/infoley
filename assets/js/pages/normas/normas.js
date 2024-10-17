@@ -3,7 +3,6 @@ $(document).ready(function () {
     listenModals();
     listenEliminarNorma();
     readPdf();
-    loadCKEditor();
 
     // Escucha cuando el modal se oculta
     $('#modalAgregarNormaOrigen, #modalAgregarNormaDestino').on('hidden.bs.modal', function () {
@@ -29,40 +28,6 @@ var normasOrigenFetched = [];
 var normasDestinoFetched = [];
 var normasSeleccionadasOrigen = [];
 var normasSeleccionadasDestino = [];
-var editorInstance;
-
-const loadCKEditor = () => {
-    const {
-        ClassicEditor,
-        Essentials,
-        Bold,
-        Italic,
-        Font,
-        Paragraph
-    } = CKEDITOR;
-
-    ClassicEditor
-        .create(document.querySelector('#norma_textoCompleto'), {
-            plugins: [Essentials, Bold, Italic, Font, Paragraph],
-            toolbar: [
-                'undo', 'redo', '|', 'bold', 'italic', '|',
-                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
-            ],
-            config: {
-                ui: {
-                    poweredBy: {
-                        forceVisible: true
-                    }
-                }
-            }
-        })
-        .then(editor => {
-            editorInstance = editor; // Guardamos la instancia del editor
-        })
-        .catch(error => {
-            console.error('Error al inicializar CKEditor:', error);
-        });
-}
 
 // Función para agregar una norma (Origen o Destino)
 const agregarNorma = (tipo) => {
@@ -493,11 +458,7 @@ const readPdf = () => {
                             // Una vez que todas las páginas están leídas
                             Promise.all(pagePromises).then(function () {
                                 // Verifica si el editor ya está inicializado
-                                if (editorInstance) {
-                                    editorInstance.setData(norma_textoCompleto); // Actualiza el contenido del editor
-                                } else {
-                                    console.error('CKEditor no está inicializado.');
-                                }
+                                $('#norma_textoCompleto').html(norma_textoCompleto); // Actualiza el contenido del editor
                             });
                         });
                     };
