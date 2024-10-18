@@ -5,8 +5,9 @@ namespace App\Entity;
 use App\Repository\NormaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
+use Symfony\Component\Validator\Constraints\Uuid;
 
 #[ORM\Entity(repositoryClass: NormaRepository::class)]
 class Norma
@@ -66,6 +67,9 @@ class Norma
     #[ORM\JoinColumn(nullable: false)]
     private ?Dependencia $dependencia = null;
 
+    #[ORM\Column(length: 600, nullable: false, unique: true)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->documentosAdicionales = new ArrayCollection();
@@ -89,7 +93,7 @@ class Norma
     public function setTipoNorma(?TipoNorma $tipoNorma): self
     {
         $this->tipoNorma = $tipoNorma;
-
+        $this->setSlug();
         return $this;
     }
 
@@ -101,7 +105,7 @@ class Norma
     public function setNumero(int $numero): self
     {
         $this->numero = $numero;
-
+        $this->setSlug();
         return $this;
     }
 
@@ -125,7 +129,7 @@ class Norma
     public function setTitulo(string $titulo): self
     {
         $this->titulo = $titulo;
-
+        $this->setSlug();
         return $this;
     }
 
@@ -329,5 +333,19 @@ class Norma
             'urlPdf' => $this->urlPdf,
             'tipoNorma' => $this->tipoNorma->getNombre()
         ];
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(): static
+    {
+        $slugify = new Slugify();
+
+        $this->slug = $slugify->slugify($this->tipoNorma->getNombre() . '-' . $this->titulo . '-' . $this->numero.'-'.rand(0,99999));
+
+        return $this;
     }
 }

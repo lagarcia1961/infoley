@@ -1,20 +1,168 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Hello NormaController!{% endblock %}
+{% extends 'base_frontend.html.twig' %}
 
 {% block body %}
+{# INICIO FIXED-SECTION STYLE #}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+	.fixed-section {
+		position: fixed;
+		top: 50;
+	}
 </style>
+{# FIN FIXED-SECTION STYLE #}
+<div class="row">
+	<div class="col-xs-12 mt-4">
+		<h2>{{ norma.tipoNorma.nombre ~ ' ' ~ norma.numero ~ '/' ~ norma.anio}}</h2>
+		<h5 class="text-muted">{{ norma.dependencia.nombre }}</h5>
+	</div>
+	<div class="col-xs-12">
+		<hr>
+	</div>
+	<div class="col-xs-12 mt-4">
+		<div class="row">
+			<div class="col-8 pe-5">
+				<div class="row">
+					<div class="col-12">
+						<h1>{{ norma.titulo }}</h1>
+						<h5 class="text-muted mt-4">Fecha de publicación: {{ norma.fechaPublicacion|date('d/m/Y') }}
+						</h5>
+						<p class="mt-4" style="text-align: justify;">
+							{{ norma.textoCompleto|striptags|length > 100 ? norma.textoCompleto|striptags|slice(0, 1500)
+							~ '...'
+							: norma.textoCompleto|striptags }}
+						</p>
+					</div>
+					{% if norma.urlPdf %}
+					<div class="col-12">
+						<embed class="mt-4" src="{{ asset('uploads/normas/' ~ norma.urlPdf) }}" type="application/pdf"
+							width="100%" height="600px" />
+					</div>
+					{% endif %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+				</div>
+			</div>
+			<div class="col-4">
+				{# SI NO GUSTA LO DE FIX NORMAS COMPLEMETARIAS QUITAR SOLO EL DIV FIXED-SECTION #}
+				<div class="fixed-section">
+					<div class="row">
+						{% if norma.normasDestino|length or norma.normasOrigen|length %}
+						<div class="col-12">
+							<h5>
+								Normas complementarias
+							</h5>
+						</div>
+						{% if norma.normasDestino|length %}
+						<div class="col-12 my-2">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/xampp/htdocs/infoley/src/Controller/NormaController.php</code></li>
-        <li>Your template at <code>C:/xampp/htdocs/infoley/templates/norma/index.html.twig</code></li>
-    </ul>
+							<button type="button" class="btn btn-primary waves-effect waves-light"
+								data-bs-toggle="modal" data-bs-target=".normasOrigen">
+								<i class="far fa-hand-point-left"></i>
+								Esta norma modifica o complementa a {{ norma.normasDestino|length }} norma{{
+								norma.normasDestino|length > 1 ? 's':'' }}
+							</button>
+
+						</div>
+						{% endif %}
+
+
+						{% if norma.normasOrigen|length %}
+						<div class="col-12 my-2">
+							<button type="button" class="btn btn-primary waves-effect waves-light"
+								data-bs-toggle="modal" data-bs-target=".normasDestino">
+								<i class="far fa-hand-point-right"></i>
+								Esta norma es complementada o modificada por {{ norma.normasOrigen|length }} norma{{
+								norma.normasOrigen|length > 1 ? 's':'' }}
+							</button>
+						</div>
+						{% endif %}
+
+
+						{% endif %}
+
+					</div>
+				</div>
+				{# END FIXED-SECTION #}
+
+			</div>
+		</div>
+	</div>
 </div>
+{# INICIO LARGE MODAL #}
+
+<div class="modal fade normasOrigen" tabindex="-1" aria-labelledby="normasOrigenLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="normasOrigenLabel">Normas que modifica o complementa</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="col-xs-12">
+					<table class="table table-sm table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Normativa/Número</th>
+								<th>Fecha de publicación</th>
+								<th>Descripción</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for referencia in norma.normasDestino %}
+							<tr>
+								<td>{{ referencia.normaOrigen.titulo }}</td>
+								<td>{{ referencia.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
+								<td>{{ referencia.normaOrigen.textoCompleto|striptags|length > 100 ?
+									referencia.normaOrigen.textoCompleto|striptags|slice(0, 150)
+									~ '...'
+									: referencia.normaOrigen.textoCompleto|striptags }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade normasDestino" tabindex="-1" aria-labelledby="normasDestinoLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="normasDestinoLabel">Normas que la modifican o complementan</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="col-xs-12">
+					<table class="table table-sm table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Normativa/Número</th>
+								<th>Fecha de publicación</th>
+								<th>Descripción</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for referencia in norma.normasOrigen %}
+							<tr>
+								<td>{{ referencia.normaDestino.titulo }}</td>
+								<td>{{ referencia.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
+								<td>{{ referencia.normaDestino.textoCompleto|striptags|length > 100 ?
+									referencia.normaDestino.textoCompleto|striptags|slice(0, 150)
+									~ '...'
+									: referencia.normaDestino.textoCompleto|striptags }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{# FIN LARGE MODAL #}
+
 {% endblock %}

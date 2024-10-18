@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Norma;
+use App\Repository\NormaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/norma')]
@@ -16,11 +18,13 @@ class NormaController extends AbstractController
         return $this->redirectToRoute('app_home_front');
     }
 
-    #[Route('/{id}', name: 'app_show_norma')]
-    public function show_norma(Norma $norma): Response
+    #[Route('/{slug}', name: 'app_show_norma')]
+    public function show_norma($slug, NormaRepository $normaRepository): Response
     {
-        dd($norma);
-
-        return $this->render('home/index.html.twig', $data);
+        $data['norma'] = $normaRepository->findOneBy(['slug' => $slug, 'isActive' => true]);
+        if (!$data['norma']) {
+            throw new NotFoundHttpException('La norma no fue encontrada.');
+        }
+        return $this->render('norma/index.html.twig', $data);
     }
 }

@@ -1,6 +1,7 @@
 {{ form_start (form_norma) }}
 <div id="normaIdEdit" data-id="{{ norma.id }}" style="display: none;"></div>
-<!-- Modal -->
+{# INICIO MODAL #}
+
 <div class="modal fade" id="modalAgregarNormaOrigen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 	aria-labelledby="modalAgregarNormaOrigenLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
@@ -202,6 +203,9 @@
 		</div>
 	</div>
 </div>
+
+{# FIN MODAL #}
+
 <div class="row">
 	<div class="col-md-12 mb-3">
 		{{ form_label (form_norma.tipoNorma) }}
@@ -321,8 +325,8 @@
 					<td>{{ normaOrigen.normaOrigen.anio }}</td>
 					<td>{{ normaOrigen.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
 					<td class="text-center">
-						<a href="javascript:void(0);" class="text-danger eliminarNorma" data-id="{{ normaOrigen.normaOrigen.id }}"
-							data-tipo="origen">
+						<a href="javascript:void(0);" class="text-danger eliminarNorma"
+							data-id="{{ normaOrigen.normaOrigen.id }}" data-tipo="origen">
 							<i class="fas fa-trash"></i>
 						</a>
 						<input type="hidden"
@@ -363,8 +367,8 @@
 					<td>{{ normaDestino.normaDestino.anio }}</td>
 					<td>{{ normaDestino.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
 					<td class="text-center">
-						<a href="javascript:void(0);" class="text-danger eliminarNorma" data-id="{{ normaDestino.normaDestino.id }}"
-							data-tipo="destino">
+						<a href="javascript:void(0);" class="text-danger eliminarNorma"
+							data-id="{{ normaDestino.normaDestino.id }}" data-tipo="destino">
 							<i class="fas fa-trash"></i>
 						</a>
 						<input type="hidden"
