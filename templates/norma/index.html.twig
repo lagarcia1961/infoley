@@ -101,20 +101,39 @@
 					<table class="table table-sm table-bordered table-striped">
 						<thead>
 							<tr>
-								<th>Normativa/Número</th>
+								<th>Tipo de normativa</th>
+								<th>Referencia</th>
+								<th>Normativa</th>
 								<th>Fecha de publicación</th>
 								<th>Descripción</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for referencia in norma.normasDestino %}
 							<tr>
-								<td>{{ referencia.normaOrigen.titulo }}</td>
+								<td>
+									{{ referencia.normaOrigen.tipoNorma.nombre }}
+								</td>
+								<td>
+									{{ referencia.tipoReferencia.nombre }}
+								</td>
+								<td>
+									{{ referencia.normaOrigen.titulo ~'
+									'~ referencia.normaOrigen.numero }}{{ referencia.normaOrigen.anio ? '/' ~
+									referencia.normaOrigen.anio:'' }}
+								</td>
 								<td>{{ referencia.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
 								<td>{{ referencia.normaOrigen.textoCompleto|striptags|length > 100 ?
 									referencia.normaOrigen.textoCompleto|striptags|slice(0, 150)
 									~ '...'
 									: referencia.normaOrigen.textoCompleto|striptags }}</td>
+								<td class="text-center">
+									<a href="{{ path('app_show_norma',{'slug':referencia.normaOrigen.slug}) }}"
+										target="_blank" title="Ver normativa">
+										<i class="fas fa-eye"></i>
+									</a>
+								</td>
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -139,20 +158,39 @@
 					<table class="table table-sm table-bordered table-striped">
 						<thead>
 							<tr>
-								<th>Normativa/Número</th>
+								<th>Tipo de normativa</th>
+								<th>Referencia</th>
+								<th>Normativa</th>
 								<th>Fecha de publicación</th>
 								<th>Descripción</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for referencia in norma.normasOrigen %}
 							<tr>
-								<td>{{ referencia.normaDestino.titulo }}</td>
+								<td>
+									{{ referencia.normaDestino.tipoNorma.nombre }}
+								</td>
+								<td>
+									{{ referencia.tipoReferencia.nombre }}
+								</td>
+								<td>
+									{{ referencia.normaDestino.titulo ~'
+									'~ referencia.normaDestino.numero }}{{ referencia.normaDestino.anio ? '/' ~
+									referencia.normaDestino.anio:'' }}
+								</td>
 								<td>{{ referencia.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
 								<td>{{ referencia.normaDestino.textoCompleto|striptags|length > 100 ?
 									referencia.normaDestino.textoCompleto|striptags|slice(0, 150)
 									~ '...'
 									: referencia.normaDestino.textoCompleto|striptags }}</td>
+								<td class="text-center">
+									<a href="{{ path('app_show_norma',{'slug':referencia.normaDestino.slug}) }}"
+										target="_blank" title="Ver normativa">
+										<i class="fas fa-eye"></i>
+									</a>
+								</td>
 							</tr>
 							{% endfor %}
 						</tbody>
