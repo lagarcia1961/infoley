@@ -143,8 +143,8 @@
 					{% for normativa in normativas %}
 					<tr>
 						<td>{{ normativa.titulo }}</td>
-						<td>{{ normativa.fechaPublicacion }}</td>
-						<td>{{ normativa.descripcion }}</td>
+						<td>{{ normativa.fechaPublicacion|date('d/m/Y') }}</td>
+						<td>{{ normativa.textoCompleto|striptags|slice(0, 100) }}...</td>
 					</tr>
 					{% endfor %}
 				</tbody>
