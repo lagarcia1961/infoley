@@ -46,7 +46,10 @@ class NormaType extends AbstractType
         $user = $this->security->getUser();
 
         $builder
-            ->add('numero', IntegerType::class, ['label' => 'Número'])
+            ->add('numero', IntegerType::class, [
+                'label' => 'Número <span style="color:red">*</span>',
+                'label_html' => true,
+            ])
             ->add('anio', IntegerType::class, [
                 'constraints' => [
                     new Assert\Range([
@@ -59,10 +62,12 @@ class NormaType extends AbstractType
                     'min' => 1900,
                     'max' => (int) date('Y')
                 ],
-                'label' => 'Año',
+                'label' => 'Año <span style="color:red">*</span>',
+                'label_html' => true,
             ])
             ->add('titulo', TextType::class, [
-                'label' => 'Título',
+                'label' => 'Título <span style="color:red">*</span>',
+                'label_html' => true,
                 'attr' => ['maxlength' => 255],
                 'constraints' => [
                     new Length([
@@ -73,9 +78,13 @@ class NormaType extends AbstractType
             ])
             ->add('fechaPublicacion', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Fecha de publicación'
+                'label' => 'Fecha de publicación <span style="color:red">*</span>',
+                'label_html' => true,
             ])
-            ->add('textoCompleto', TextareaType::class)
+            ->add('textoCompleto', TextareaType::class, [
+                'label' => 'Texto <span style="color:red">*</span>',
+                'label_html' => true,
+            ])
             // Agregar un campo de texto para mostrar el nombre del archivo actual:
             ->add('currentFile', TextType::class, [
                 'label' => 'Archivo actual',
@@ -117,7 +126,9 @@ class NormaType extends AbstractType
                         ->orderBy('tn.nombre', 'ASC');
                 },
                 'empty_data' => null,
-                'placeholder' => 'Seleccione un Tipo de Norma'
+                'placeholder' => 'Seleccione un Tipo de Norma',
+                'label' => 'Tipo de norma <span style="color:red">*</span>',
+                'label_html' => true,
             ]);
         } else {
             $builder->add('tipoNorma', EntityType::class, [
@@ -131,7 +142,9 @@ class NormaType extends AbstractType
                         ->orderBy('tn.nombre', 'ASC');
                 },
                 'empty_data' => null,
-                'placeholder' => 'Seleccione un Tipo de Norma'
+                'placeholder' => 'Seleccione un Tipo de Norma',
+                'label' => 'Tipo de norma <span style="color:red">*</span>',
+                'label_html' => true,
             ]);
         }
         $builder->add('tipoReferenciaOrigen', EntityType::class, [
@@ -212,7 +225,9 @@ class NormaType extends AbstractType
                         ->orderBy('tn.nombre', 'ASC');
                 },
                 'empty_data' => null,
-                'placeholder' => 'Seleccione una dependencia'
+                'placeholder' => 'Seleccione una dependencia',
+                'label' => 'Dependencia <span style="color:red">*</span>',
+                'label_html' => true,
             ])
             ->add('guardar', SubmitType::class, [
                 'label' => 'Guardar',

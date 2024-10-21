@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="row">
+	<div class="col-12">
+		<h1>Auditoria Nro {{ auditoria.id }}</h1>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-12 col-md-4">
+		<table class="table table-stripped table-bordered">
+			<tbody>
+				<tr>
+					<th>Acción</th>
+					<td>{{ auditoria.tipoAuditoria.descripcion }}</td>
+				</tr>
+				<tr>
+					<th>Usuario que realizó la acción</th>
+					<td>{{ auditoria.user.nombre }}</td>
+				</tr>
+				<tr>
+					<th>E-mail</th>
+					<td>{{ auditoria.user.nombre }}</td>
+				</tr>
+
+				<tr>
+					<th>Fecha</th>
+					<td>{{ auditoria.fecha|date('d/m/Y H:i:s') }}</td>
+				</tr>
+
+				<tr>
+					<th>Entidad modificada</th>
+					<td>{{ auditoria.entidad }}</td>
+				</tr>
+
+				<tr>
+					<th>Id de entidad modificada</th>
+					<td>{{ auditoria.entidadId }}</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+	<div class="col-12">
+		<table class="table table-stripped table-bordered">
+			<thead>
+				<tr>
+					{% if auditoria.registroAnterior is not null %}
+					<th>
+						Registro anterior
+					</th>
+					{% endif %}
+
+					{% if auditoria.registroNuevo is not null %}
+					<th>
+						Registro nuevo
+					</th>
+					{% endif %}
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					{% if auditoria.registroAnterior is not null %}
+					<td>
+						{% for key, value in auditoria.registroAnterior %}
+						{% if key == 'id' %}
+						<li>{{ key }}:
+							{{ auditoria.entidadId }}
+						</li>
+
+						{% else %}
+						<li>{{ key }}:
+							{% if value is iterable %}
+							{# Si el valor es un array, lo recorres también #}
+							<ul>
+								{% for subKey, subValue in value %}
+								<li>{{ subKey }}: {{ subValue }}</li>
+								{% endfor %}
+							</ul>
+							{% else %}
+							{% if value == 'false' or value == 0 %}
+							false
+							{% else %}
+							{{ value }}
+							{% endif %}
+							{% endif %}
+						</li>
+						{% endif %}
+
+
+						{% endfor %}
+					</td>
+					{% endif %}
+					{% if auditoria.registroNuevo is not null %}
+					<td>
+						{% for key, value in auditoria.registroNuevo %}
+						{% if key == 'id' %}
+						<li>{{ key }}:
+							{{ auditoria.entidadId }}
+						</li>
+						{% else %}
+
+						<li>{{ key }}:
+							{% if value is iterable %}
+							{# Si el valor es un array, lo recorres también #}
+							<ul>
+								{% for subKey, subValue in value %}
+								<li>{{ subKey }}: {{ subValue }}</li>
+								{% endfor %}
+							</ul>
+							{% else %}
+							{% if value == 'false' or value == 0 %}
+							false
+							{% else %}
+							{{ value }}
+							{% endif %}
+							{% endif %}
+						</li>
+						{% endif %}
+						{% endfor %}
+					</td>
+					{% endif %}
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{% endblock %}

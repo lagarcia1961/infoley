@@ -130,4 +130,16 @@ class Auditoria
 
         return $this;
     }
+
+    public function getData(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'fecha' => $this->getFecha()->format('d/m/Y H:i:s'),
+            'accion' => $this->getTipoAuditoria()->getDescripcion(),
+            'usuario_nombre' => $this->getUser()->getNombre(),
+            'usuario_email' => $this->getUser()->getEmail(),
+            'usuario_usuario' => $this->getUser()->getUsuario()
+        ];
+    }
 }

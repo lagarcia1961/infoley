@@ -344,7 +344,11 @@ class Norma
     {
         $slugify = new Slugify();
 
-        $this->slug = $slugify->slugify($this->tipoNorma->getNombre() . '-' . $this->titulo . '-' . $this->numero.'-'.rand(0,99999));
+        if ($this->tipoNorma !== null && $this->titulo !== null && $this->numero !== null) {
+            $this->slug = $slugify->slugify(
+                $this->tipoNorma->getNombre() . '-' . $this->titulo . '-' . $this->numero . '-' . rand(0, 99999)
+            );
+        }
 
         return $this;
     }

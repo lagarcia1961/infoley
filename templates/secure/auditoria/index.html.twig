@@ -1,81 +1,82 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-			<div class="row">
-				<div class="col-12">
-					<div class="page-title-box d-sm-flex align-items-center justify-content-between">
-						<div class="page-title-left">
-							<ol class="breadcrumb m-0">
-								<li class="breadcrumb-item">
-									<a href="javascript: void(0);">Auditoria</a>
-								</li>
-								<li class="breadcrumb-item active">Lista de registros</li>
-							</ol>
-						</div>
+<div class="row">
+	<div class="col-12">
+		<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+			<div class="page-title-left">
+				<ol class="breadcrumb m-0">
+					<li class="breadcrumb-item">
+						<a href="javascript: void(0);">Auditoria</a>
+					</li>
+					<li class="breadcrumb-item active">Lista de registros</li>
+				</ol>
+			</div>
 
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12">
-					<h1>Auditoria</h1>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12">
-					<table id="datatable-buttons" data-order='[[1, "desc"],[0,"desc"]]' class="table table-sm table-bordered table-striped">
-						<thead>
-							<tr>
-								<th>
-									Id
-								</th>
-								<th>
-									Fecha
-								</th>
-								<th>
-									Acción
-								</th>
-								<th>
-									Nombre
-								</th>
-								<th>
-									Usuario
-								</th>
-								<th>
-									Email
-								</th>
-								<th>
-									Entidad
-								</th>
-								<th>
-									Entidad Id
-								</th>
-								<th>
-									Registro anterior
-								</th>
-								<th>
-									Registro Nuevo
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for auditoria in auditorias %}
-								<tr>
-									<td>{{ auditoria.id }}</td>
-									<td>{{ auditoria.fecha | date('d/m/Y H:i:s') }}</td>
-									<td>{{ auditoria.tipoAuditoria.descripcion }}</td>
-									<td>{{ auditoria.user ? auditoria.user.nombre }}</td>
-									<td>{{ auditoria.user ? auditoria.user.usuario }}</td>
-									<td>{{ auditoria.user ? auditoria.user.email }}</td>
-									<td>{{ auditoria.entidad }}</td>
-									<td>{{ auditoria.entidadId }}</td>
-									<td>{{ auditoria.registroAnterior|json_encode(constant('JSON_PRETTY_PRINT')) }}</td>
-									<td>{{ auditoria.registroNuevo|json_encode(constant('JSON_PRETTY_PRINT')) }}</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<h1>Auditoria</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<table id="datatable-buttons" data-order='[[1, "desc"],[0,"desc"]]'
+			class="table table-sm table-bordered table-striped">
+			<thead>
+				<tr>
+					<th data-column-type="numeric">
+						Id
+					</th>
+					<th data-column-type="datetime">
+						Fecha
+					</th>
+					<th>
+						Acción
+					</th>
+					<th>
+						Nombre
+					</th>
+					<th>
+						Usuario
+					</th>
+					<th>
+						Email
+					</th>
+					<th>
+						Entidad
+					</th>
+					<th data-orderable="false">
+						Entidad Id
+					</th>
+					<th data-orderable="false" class="text-center">
+						Ver auditoria
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for auditoria in auditorias %}
+				<tr>
+					<td>{{ auditoria.id }}</td>
+					<td>{{ auditoria.fecha | date('d/m/Y H:i:s') }}</td>
+					<td>{{ auditoria.tipoAuditoria.descripcion }}</td>
+					<td>{{ auditoria.user ? auditoria.user.nombre }}</td>
+					<td>{{ auditoria.user ? auditoria.user.usuario }}</td>
+					<td>{{ auditoria.user ? auditoria.user.email }}</td>
+					<td>{{ auditoria.entidad }}</td>
+					<td>{{ auditoria.entidadId }}</td>
+					<td class="text-center">
+						<a href="{{ path('app_secure_auditoria_ver',{'id':auditoria.id}) }}" title="Ver auditoria">
+							<i class="fas fa-eye text-primary"></i>
+						</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
 
 {% endblock %}
