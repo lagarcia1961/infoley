@@ -56,10 +56,13 @@
 							title="Eliminar Norma">
 							<i class="fas fa-trash text-danger"></i>
 						</a>
+						{% if is_granted('ROLE_ADMIN') %}
+
 						<a href="javascript:void(0);" class="btn-historico m-2" data-id="{{ norma.id }}"
 							data-entidad="Norma" title="Ver historial">
 							<i class="fas fa-history text-info"></i>
 						</a>
+						{% endif %}
 					</td>
 				</tr>
 				{% endfor %}

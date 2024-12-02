@@ -131,6 +131,7 @@
 				</li>
 			</ul>
 		</li>
+		{% if is_granted('ROLE_ADMIN') %}
 
 		<li>
 			<a href="{{ path('app_secure_auditoria_index') }}">
@@ -138,5 +139,6 @@
 				<span>Auditoría</span>
 			</a>
 		</li>
+		{% endif %}
 </div>
 <!-- Sidebar -->
