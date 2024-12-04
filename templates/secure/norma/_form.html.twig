@@ -67,8 +67,8 @@
 											</div>
 											<div class="col-3">
 												<p>
-													<b>Año: </b>
-													<span id="spanNormaOrigen_anio" class="spanNormaOrigen"></span>
+													<b>Fecha de sanción: </b>
+													<span id="spanNormaOrigen_fechaSancion" class="spanNormaOrigen"></span>
 												</p>
 											</div>
 											<div class="col-3">
@@ -168,8 +168,8 @@
 											</div>
 											<div class="col-3">
 												<p>
-													<b>Año: </b>
-													<span id="spanNormaDestino_anio" class="spanNormaDestino"></span>
+													<b>Fecha de sanción: </b>
+													<span id="spanNormaDestino_fechaSancion" class="spanNormaDestino"></span>
 												</p>
 											</div>
 											<div class="col-3">
@@ -232,9 +232,9 @@
 	</div>
 
 	<div class="col-md-4 mb-3">
-		{{ form_label (form_norma.anio) }}
-		{{ form_widget (form_norma.anio) }}
-		{{ form_errors (form_norma.anio)}}
+		{{ form_label (form_norma.fechaSancion) }}
+		{{ form_widget (form_norma.fechaSancion) }}
+		{{ form_errors (form_norma.fechaSancion)}}
 	</div>
 
 	<div class="col-md-4 mb-3">
@@ -322,7 +322,7 @@
 					<td>{{ normaOrigen.normaOrigen.titulo }}</td>
 					<td>{{ normaOrigen.tipoReferencia.nombre }}</td>
 					<td>{{ normaOrigen.normaOrigen.numero }}</td>
-					<td>{{ normaOrigen.normaOrigen.anio }}</td>
+					<td>{{ normaOrigen.normaOrigen.fechaSancion }}</td>
 					<td>{{ normaOrigen.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
 					<td class="text-center">
 						<a href="javascript:void(0);" class="text-danger eliminarNorma"
@@ -364,7 +364,7 @@
 					<td>{{ normaDestino.normaDestino.titulo }}</td>
 					<td>{{ normaDestino.tipoReferencia.nombre }}</td>
 					<td>{{ normaDestino.normaDestino.numero }}</td>
-					<td>{{ normaDestino.normaDestino.anio }}</td>
+					<td>{{ normaDestino.normaDestino.fechaSancion }}</td>
 					<td>{{ normaDestino.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
 					<td class="text-center">
 						<a href="javascript:void(0);" class="text-danger eliminarNorma"

@@ -50,23 +50,13 @@ class NormaType extends AbstractType
                 'label' => 'Número <span style="color:red">*</span>',
                 'label_html' => true,
             ])
-            ->add('anio', IntegerType::class, [
-                'constraints' => [
-                    new Assert\Range([
-                        'min' => 1900,
-                        'max' => (int) date('Y'), // Año actual
-                        'notInRangeMessage' => 'El año debe estar entre {{ min }} y {{ max }}.',
-                    ]),
-                ],
-                'attr' => [
-                    'min' => 1900,
-                    'max' => (int) date('Y')
-                ],
-                'label' => 'Año <span style="color:red">*</span>',
+            ->add('fechaSancion', DateType::class, [
+                'widget' => 'single_text',
+                'label' => 'Fecha de sanción <span style="color:red">*</span>',
                 'label_html' => true,
             ])
             ->add('titulo', TextType::class, [
-                'label' => 'Título <span style="color:red">*</span>',
+                'label' => 'Título',
                 'label_html' => true,
                 'attr' => ['maxlength' => 255],
                 'constraints' => [
@@ -78,7 +68,7 @@ class NormaType extends AbstractType
             ])
             ->add('fechaPublicacion', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Fecha de publicación <span style="color:red">*</span>',
+                'label' => 'Fecha de publicación',
                 'label_html' => true,
             ])
             ->add('textoCompleto', TextareaType::class, [

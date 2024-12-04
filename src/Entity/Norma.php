@@ -24,10 +24,10 @@ class Norma
     #[ORM\Column]
     private ?int $numero = null;
 
-    #[ORM\Column]
-    private ?int $anio = null;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?\DateTimeInterface $fechaSancion = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $titulo = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
@@ -109,14 +109,14 @@ class Norma
         return $this;
     }
 
-    public function getAnio(): ?int
+    public function getFechaSancion(): ?int
     {
-        return $this->anio;
+        return $this->fechaSancion;
     }
 
-    public function setAnio(int $anio): self
+    public function setFechaSancion(int $fechaSancion): self
     {
-        $this->anio = $anio;
+        $this->fechaSancion = $fechaSancion;
 
         return $this;
     }
@@ -327,7 +327,7 @@ class Norma
             'id' => $this->id,
             'titulo' => $this->titulo,
             'numero' => $this->numero,
-            'anio' => $this->anio,
+            'fechaSancion' => $this->fechaSancion,
             'fechaPublicacion' => $this->fechaPublicacion->format('d/m/Y'),
             'textoCompleto' => $this->textoCompleto,
             'urlPdf' => $this->urlPdf,
