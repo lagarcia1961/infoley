@@ -117,7 +117,6 @@ class NormaController extends AbstractController
         }
 
         $form_norma->handleRequest($request);
-
         // Verificar si el formulario ha sido enviado y es válido
         if ($form_norma->isSubmitted() && $form_norma->isValid()) {
             // Obtener el archivo subido (si hay uno nuevo)

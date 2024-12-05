@@ -149,8 +149,8 @@
 						</td>
 						<td>
 							{{ normativa.tipoNorma.nombre ~' '~ normativa.titulo ~'
-							'~ normativa.numero }}{{ normativa.anio ? '/' ~
-							normativa.anio:'' }}
+							'~ normativa.numero }}{{ normativa.fechaSancion ? '/' ~
+							normativa.fechaSancion|date('d/m/Y'):'' }}
 						</td>
 						<td>{{ normativa.fechaPublicacion|date('d/m/Y') }}</td>
 						<td>{{ normativa.textoCompleto|striptags|slice(0, 100) }}...</td>

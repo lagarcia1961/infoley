@@ -74,7 +74,7 @@ const agregarNorma = (tipo) => {
         titulo: norma.titulo,
         tipoNorma: norma.tipoNorma,
         numero: norma.numero,
-        anio: norma.anio,
+        fechaSancion: norma.fechaSancion,
         fechaPublicacion: norma.fechaPublicacion,
         tipoReferenciaId: tipoReferenciaId, // Guardar el ID de tipo de referencia
         tipoReferencia: $(`#norma_tipoReferencia${tipo === 'origen' ? 'Origen' : 'Destino'} option:selected`).text()  // Usar el texto del select para mostrarlo
@@ -120,7 +120,7 @@ const agregarFilaConInputsHidden = (normaData, tipo) => {
             <td>${normaData.titulo}</td>
             <td>${normaData.tipoReferencia}</td>
             <td>${normaData.numero}</td>
-            <td>${normaData.anio}</td>
+            <td>${normaData.fechaSancion}</td>
             <td>${normaData.fechaPublicacion}</td>
             <td class="text-center">
                 <a href="javascript:void(0);" class="text-danger eliminarNorma" data-id="${normaData.id}" data-tipo="${tipo}">
@@ -323,7 +323,7 @@ const updateNormas = (selectElement, tipo) => {
     choices.setChoices([], 'value', 'label', true);  // Limpiar las opciones actuales
     const normasMaped = (tipo === 'origen' ? normasOrigenFetched : normasDestinoFetched).map(norma => ({
         value: norma.id,
-        label: norma.titulo + ' - ' + norma.numero + ' - ' + norma.anio
+        label: norma.titulo + ' - ' + norma.numero + ' - ' + norma.fechaSancion
     }));
 
     normasMaped.unshift({ value: '', label: 'Seleccione una norma', disabled: true, selected: true });
@@ -340,13 +340,13 @@ const updateNormas = (selectElement, tipo) => {
             selectedNorma = normasOrigenFetched.find(norma => norma.id == selectedValue);
 
             // Limpia el div de destino si se selecciona una norma de origen
-            $('#spanNormaDestino_titulo, #spanNormaDestino_numero, #spanNormaDestino_anio, #spanNormaDestino_fechaPublicacion, #spanNormaDestino_textoCompleto, #spanNormaDestino_urlPdf').text('');
+            $('#spanNormaDestino_titulo, #spanNormaDestino_numero, #spanNormaDestino_fechaSancion, #spanNormaDestino_fechaPublicacion, #spanNormaDestino_textoCompleto, #spanNormaDestino_urlPdf').text('');
 
             // Llenar los spans del origen
             if (selectedNorma) {
                 $('#spanNormaOrigen_titulo').text(selectedNorma.titulo || '');
                 $('#spanNormaOrigen_numero').text(selectedNorma.numero || '');
-                $('#spanNormaOrigen_anio').text(selectedNorma.anio || '');
+                $('#spanNormaOrigen_fechaSancion').text(selectedNorma.fechaSancion || '');
                 $('#spanNormaOrigen_fechaPublicacion').text(selectedNorma.fechaPublicacion || '');
                 // Obtiene el texto completo de selectedNorma
                 var textoCompleto = selectedNorma.textoCompleto || '';
@@ -367,13 +367,13 @@ const updateNormas = (selectElement, tipo) => {
             selectedNorma = normasDestinoFetched.find(norma => norma.id == selectedValue);
 
             // Limpia el div de origen si se selecciona una norma de destino
-            $('#spanNormaOrigen_titulo, #spanNormaOrigen_numero, #spanNormaOrigen_anio, #spanNormaOrigen_fechaPublicacion, #spanNormaOrigen_textoCompleto, #spanNormaOrigen_urlPdf').text('');
+            $('#spanNormaOrigen_titulo, #spanNormaOrigen_numero, #spanNormaOrigen_fechaSancion, #spanNormaOrigen_fechaPublicacion, #spanNormaOrigen_textoCompleto, #spanNormaOrigen_urlPdf').text('');
 
             // Llenar los spans del destino
             if (selectedNorma) {
                 $('#spanNormaDestino_titulo').text(selectedNorma.titulo || '');
                 $('#spanNormaDestino_numero').text(selectedNorma.numero || '');
-                $('#spanNormaDestino_anio').text(selectedNorma.anio || '');
+                $('#spanNormaDestino_fechaSancion').text(selectedNorma.fechaSancion || '');
                 $('#spanNormaDestino_fechaPublicacion').text(selectedNorma.fechaPublicacion || '');
                 // Obtiene el texto completo de selectedNorma
                 var textoCompleto = selectedNorma.textoCompleto || '';
@@ -396,10 +396,10 @@ const updateNormas = (selectElement, tipo) => {
 // Resetear los spans y selects cuando el modal se cierra
 const resetModals = (tipo) => {
     // Limpiar todos los spans de Norma Origen
-    $('#spanNormaOrigen_titulo, #spanNormaOrigen_numero, #spanNormaOrigen_anio, #spanNormaOrigen_fechaPublicacion, #spanNormaOrigen_textoCompleto, #spanNormaOrigen_urlPdf').text('');
+    $('#spanNormaOrigen_titulo, #spanNormaOrigen_numero, #spanNormaOrigen_fechaSancion, #spanNormaOrigen_fechaPublicacion, #spanNormaOrigen_textoCompleto, #spanNormaOrigen_urlPdf').text('');
 
     // Limpiar todos los spans de Norma Destino
-    $('#spanNormaDestino_titulo, #spanNormaDestino_numero, #spanNormaDestino_anio, #spanNormaDestino_fechaPublicacion, #spanNormaDestino_textoCompleto, #spanNormaDestino_urlPdf').text('');
+    $('#spanNormaDestino_titulo, #spanNormaDestino_numero, #spanNormaDestino_fechaSancion, #spanNormaDestino_fechaPublicacion, #spanNormaDestino_textoCompleto, #spanNormaDestino_urlPdf').text('');
 
     // Reiniciar los selects de normaOrigen y normaDestino a su estado inicial
     if (choicesOrigen) {

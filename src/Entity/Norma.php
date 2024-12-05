@@ -109,12 +109,12 @@ class Norma
         return $this;
     }
 
-    public function getFechaSancion(): ?int
+    public function getFechaSancion(): ?\DateTimeInterface
     {
         return $this->fechaSancion;
     }
 
-    public function setFechaSancion(int $fechaSancion): self
+    public function setFechaSancion(?\DateTimeInterface $fechaSancion): self
     {
         $this->fechaSancion = $fechaSancion;
 
@@ -327,7 +327,7 @@ class Norma
             'id' => $this->id,
             'titulo' => $this->titulo,
             'numero' => $this->numero,
-            'fechaSancion' => $this->fechaSancion,
+            'fechaSancion' => $this->fechaSancion? $this->fechaSancion->format('Y'):'',
             'fechaPublicacion' => $this->fechaPublicacion->format('d/m/Y'),
             'textoCompleto' => $this->textoCompleto,
             'urlPdf' => $this->urlPdf,

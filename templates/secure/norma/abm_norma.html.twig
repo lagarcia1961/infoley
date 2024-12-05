@@ -25,7 +25,7 @@
 					<th data-column-type="numeric">Id</th>
 					<th>Tipo de norma</th>
 					<th data-column-type="numeric">Numero</th>
-					<th data-column-type="numeric">Anio</th>
+					<th data-column-type="numeric">Fecha de Sanción</th>
 					<th data-column-type="date">Fecha Publicación</th>
 					<th>Titulo</th>
 					<th>Archivo Actual</th>
@@ -38,7 +38,7 @@
 					<td>{{ norma.id }}</td>
 					<td>{{ norma.tipoNorma.nombre }}</td>
 					<td>{{ norma.numero }}</td>
-					<td>{{ norma.anio }}</td>
+					<td>{{ norma.fechaSancion ? norma.fechaSancion|date('d-m-Y') : '' }}</td> 
 					<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('d-m-Y') : '' }}</td>
 					<td>{{ norma.titulo }}</td>
 					<td>

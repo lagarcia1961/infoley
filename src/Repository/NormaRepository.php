@@ -61,7 +61,7 @@ class NormaRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('n')
             ->join('n.tipoNorma', 'tn')
             ->where('n.isActive = :isActive')
-            ->setParameter('isActive', true);  // Asumimos que siempre buscas normas activas.
+            ->setParameter('isActive', true);
 
         if ($tipoNorma) {
             $qb->andWhere('n.tipoNorma = :tipoNorma')
@@ -74,12 +74,11 @@ class NormaRepository extends ServiceEntityRepository
         }
 
         if ($anio) {
-            $qb->andWhere('n.anio = :anio')
+            $qb->andWhere('YEAR(n.fechaSancion) = :anio')
                 ->setParameter('anio', $anio);
         }
 
-        return $qb->getQuery()
-            ->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     public function busquedaAvanzada($tipoNorma, $numero, $anio, $texto, $dependencia, $fechaDesde, $fechaHasta): array
@@ -88,52 +87,51 @@ class NormaRepository extends ServiceEntityRepository
             ->join('n.tipoNorma', 'tn')
             ->where('n.isActive = :isActive')
             ->setParameter('isActive', true);  // Asumimos que siempre buscas normas activas.
-    
+
         // Filtro por tipo de norma
         if ($tipoNorma) {
             $qb->andWhere('n.tipoNorma = :tipoNorma')
                 ->setParameter('tipoNorma', $tipoNorma);
         }
-    
+
         // Filtro por número de norma
         if ($numero) {
             $qb->andWhere('n.numero = :numero')
                 ->setParameter('numero', $numero);
         }
-    
+
         // Filtro por año de la norma
         if ($anio) {
-            $qb->andWhere('n.anio = :anio')
+            $qb->andWhere('n.fechaSancion = :anio')
                 ->setParameter('anio', $anio);
         }
-    
+
         // Filtro por texto en el campo "textoCompleto"
         if ($texto) {
             $qb->andWhere('n.textoCompleto LIKE :texto')
                 ->setParameter('texto', '%' . $texto . '%');  // Búsqueda parcial en cualquier parte del texto
         }
-    
+
         // Filtro por dependencia
         if ($dependencia) {
             $qb->andWhere('n.dependencia = :dependencia')
                 ->setParameter('dependencia', $dependencia);
         }
-    
+
         // Filtro por fecha de publicación (desde)
         if ($fechaDesde) {
             $qb->andWhere('n.fechaPublicacion >= :fechaDesde')
                 ->setParameter('fechaDesde', $fechaDesde);
         }
-    
+
         // Filtro por fecha de publicación (hasta)
         if ($fechaHasta) {
             $qb->andWhere('n.fechaPublicacion <= :fechaHasta')
                 ->setParameter('fechaHasta', $fechaHasta);
         }
-    
+
         // Retornar los resultados
         return $qb->getQuery()
             ->getResult();
     }
-    
 }
