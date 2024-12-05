@@ -102,7 +102,7 @@ class NormaRepository extends ServiceEntityRepository
 
         // Filtro por año de la norma
         if ($anio) {
-            $qb->andWhere('n.fechaSancion = :anio')
+            $qb->andWhere('YEAR(n.fechaSancion) = :anio')
                 ->setParameter('anio', $anio);
         }
 
