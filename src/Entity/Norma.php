@@ -70,6 +70,12 @@ class Norma
     #[ORM\Column(length: 600, nullable: false, unique: true)]
     private ?string $slug = null;
 
+    /**
+     * @var Collection<int, SeccionNorma>
+     */
+    #[ORM\OneToMany(targetEntity: SeccionNorma::class, mappedBy: 'norma')]
+    private Collection $seccionNormas;
+
     public function __construct()
     {
         $this->documentosAdicionales = new ArrayCollection();
@@ -77,6 +83,7 @@ class Norma
         $this->isActive = true;
         $this->normasOrigen = new ArrayCollection();
         $this->normasDestino = new ArrayCollection();
+        $this->seccionNormas = new ArrayCollection();
     }
 
     // Getters y setters
@@ -348,6 +355,36 @@ class Norma
             $this->slug = $slugify->slugify(
                 $this->tipoNorma->getNombre() . '-' . $this->titulo . '-' . $this->numero . '-' . rand(0, 99999)
             );
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SeccionNorma>
+     */
+    public function getSeccionNormas(): Collection
+    {
+        return $this->seccionNormas;
+    }
+
+    public function addSeccionNorma(SeccionNorma $seccionNorma): static
+    {
+        if (!$this->seccionNormas->contains($seccionNorma)) {
+            $this->seccionNormas->add($seccionNorma);
+            $seccionNorma->setNorma($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeccionNorma(SeccionNorma $seccionNorma): static
+    {
+        if ($this->seccionNormas->removeElement($seccionNorma)) {
+            // set the owning side to null (unless already changed)
+            if ($seccionNorma->getNorma() === $this) {
+                $seccionNorma->setNorma(null);
+            }
         }
 
         return $this;

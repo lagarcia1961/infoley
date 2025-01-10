@@ -30,6 +30,9 @@ class Tema
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $descripcion = null;
 
+    #[ORM\OneToOne(mappedBy: 'tema', cascade: ['persist', 'remove'])]
+    private ?Seccion $seccion = null;
+
     public function __construct()
     {
         $this->normaTemas = new ArrayCollection();
@@ -104,6 +107,23 @@ class Tema
     public function setDescripcion(?string $descripcion): static
     {
         $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    public function getSeccion(): ?Seccion
+    {
+        return $this->seccion;
+    }
+
+    public function setSeccion(Seccion $seccion): static
+    {
+        // set the owning side of the relation if necessary
+        if ($seccion->getTema() !== $this) {
+            $seccion->setTema($this);
+        }
+
+        $this->seccion = $seccion;
 
         return $this;
     }
