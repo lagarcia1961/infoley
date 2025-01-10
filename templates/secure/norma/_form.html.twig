@@ -1,14 +1,46 @@
+<style>
+.modal .trumbowyg-button-pane {
+    z-index: 1;
+}
+
+.modal .choices__list--dropdown {
+    z-index: 2;
+}
+.trumbowyg-editor{
+	height: 200px;
+}
+</style>
+ <!-- Spinner de carga -->
+
+<div id="loading-spinner" class="d-flex justify-content-center align-items-center position-fixed top-0 start-0 w-100 h-100 bg-white" style="z-index: 1050;">
+	<div class="text-center">
+		<div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+			<span class="visually-hidden">Cargando...</span>
+		</div>
+		<p class="mt-3">Cargando normativa...</p>
+	</div>
+</div>
+
+<div id="pdf-loading-spinner" class="d-flex justify-content-center align-items-center position-fixed top-0 start-0 w-100 h-100 bg-white d-none" style="z-index: 1050;">
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-3">Leyendo archivo PDF, esto puede demorar un tiempo, por favor espere a que finalice...</p>
+    </div>
+</div>
+
 {{ form_start (form_norma) }}
+
 <div id="normaIdEdit" data-id="{{ norma.id }}" style="display: none;"></div>
 {# INICIO MODAL #}
 
 <div class="modal fade" id="modalAgregarNormaOrigen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-	aria-labelledby="modalAgregarNormaOrigenLabel" aria-hidden="true">
+	aria-labelledby="modalAgregarNormaOrigenLabel">
 	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="modalAgregarNormaOrigenLabel">Normas que
-					modifica/deroga/complementa/anula/hace referencia a/actualiza/aclara</h1>
+				<h1 class="modal-title fs-5" id="modalAgregarNormaOrigenLabel">Normas que modifica/deroga/complementa/anula/hace referencia a/actualiza/aclara</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -67,7 +99,7 @@
 											</div>
 											<div class="col-3">
 												<p>
-													<b>Fecha de sanción: </b>
+													<b>Año: </b>
 													<span id="spanNormaOrigen_fechaSancion" class="spanNormaOrigen"></span>
 												</p>
 											</div>
@@ -82,111 +114,7 @@
 										<div class="row my-2">
 											<div class="col-12">
 												<b>Texto: </b><br>
-												<p>
-													<span id="spanNormaOrigen_textoCompleto" class="spanNormaOrigen">
-													</span>
-												</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary">Agregar</button>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="modalAgregarNormaDestino" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-	aria-labelledby="modalAgregarNormaDestinoLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="modalAgregarNormaDestinoLabel">Normas que la
-					modifican/derogan/complementan/anulan/hacen referencia/actualizan/aclaran</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<div id="spinnerNormaDestino" class="d-none text-center my-3">
-					<div class="spinner-border" role="status">
-						<span class="visually-hidden">Cargando...</span>
-					</div>
-					<p>Cargando normas, esto puede demorar...</p>
-				</div>
-				<div class="container-fluid" id="contentNormaDestino">
-					<div class="row">
-
-						<div class="col-8">
-							{{ form_label (form_norma.normaDestino) }}
-							{{ form_widget (form_norma.normaDestino) }}
-							{{ form_errors (form_norma.normaDestino) }}
-						</div>
-
-						<div class="col-4">
-							{{ form_label (form_norma.tipoReferenciaDestino) }}
-							{{ form_widget (form_norma.tipoReferenciaDestino) }}
-							{{ form_errors (form_norma.tipoReferenciaDestino) }}
-						</div>
-
-					</div>
-					<div class="row mt-4" id="div_normaDestino">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-body">
-									<div class="container-fluid">
-										<div class="row my-2">
-											<div class="col-12">
-												<b>Título: </b><span id="spanNormaDestino_titulo"
-													class="spanNormaDestino"></span>
-											</div>
-										</div>
-										<div class="row my-2">
-											<div class="col-12">
-												<b>Archivo: </b><a id="aNormaDestino_urlPdf" href="#"
-													target="_blank"><span id="spanNormaDestino_urlPdf"
-														class="spanNormaDestino"></span></a>
-											</div>
-										</div>
-										<div class="row my-2">
-											<div class="col-3">
-												<p>
-													<b>Tipo de norma: </b>
-													<span id="spanNormaDestino_tipoNorma"
-														class="spanNormaDestino"></span>
-												</p>
-											</div>
-											<div class="col-3">
-												<p>
-													<b>Número: </b>
-													<span id="spanNormaDestino_numero" class="spanNormaDestino"></span>
-												</p>
-											</div>
-											<div class="col-3">
-												<p>
-													<b>Fecha de sanción: </b>
-													<span id="spanNormaDestino_fechaSancion" class="spanNormaDestino"></span>
-												</p>
-											</div>
-											<div class="col-3">
-												<p>
-													<b>Fecha de publicación: </b>
-													<span id="spanNormaDestino_fechaPublicacion"
-														class="spanNormaDestino"></span>
-												</p>
-											</div>
-										</div>
-										<div class="row my-2">
-											<div class="col-12">
-												<b>Texto: </b><br>
-												<p>
-													<span id="spanNormaDestino_textoCompleto" class="spanNormaDestino">
-													</span>
-												</p>
+												<textarea id="modal_textoCompletoModificadoHtml" class="trumbowyg-editor" name="modal_textoCompletoModificadoHtml"></textarea>
 											</div>
 										</div>
 									</div>
@@ -244,10 +172,18 @@
 	</div>
 
 	<div class="mb-3">
-		{{ form_label(form_norma.textoCompleto) }}
-		{{ form_widget(form_norma.textoCompleto, {'attr': {'rows': 12}}) }}
-		{{ form_errors(form_norma.textoCompleto) }}
+		{{ form_label(form_norma.textoCompletoHtml) }}
+		{{ form_widget(form_norma.textoCompletoHtml, {'attr': {'max-rows': 12}}) }}
+		{{ form_errors(form_norma.textoCompletoHtml) }}
 	</div>
+
+	{% if norma.textoCompletoModificadoHtml %}
+	<div class="mb-3">
+		{{ form_label(form_norma.textoCompletoModificadoHtml) }}
+		{{ form_widget(form_norma.textoCompletoModificadoHtml, {'attr': {'max-rows': 12}}) }}
+		{{ form_errors(form_norma.textoCompletoModificadoHtml) }}
+	</div>
+	{% endif %}
 
 	<div class="mb-3">
 		{{ form_label (form_norma.currentFile) }}
@@ -287,13 +223,8 @@
 	<div class="col-6">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-10">
+				<div class="col-12">
 					<h5>Normas que la modifican/derogan/complementan/anulan/hacen referencia/actualizan/aclaran</h5>
-				</div>
-				<div class="col-2 text-end">
-					<button id="botonModalAgregarNormaDestino" type="button" class="btn btn-primary btn-sm disabled">
-						Agregar norma
-					</button>
 				</div>
 			</div>
 		</div>
@@ -322,11 +253,17 @@
 					<td>{{ normaOrigen.normaOrigen.titulo }}</td>
 					<td>{{ normaOrigen.tipoReferencia.nombre }}</td>
 					<td>{{ normaOrigen.normaOrigen.numero }}</td>
-					<td>{{ normaOrigen.normaOrigen.fechaSancion }}</td>
+					<td>{{ normaOrigen.normaOrigen.fechaSancion|date('Y') }}</td>
 					<td>{{ normaOrigen.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
 					<td class="text-center">
-						<a href="javascript:void(0);" class="text-danger eliminarNorma"
-							data-id="{{ normaOrigen.normaOrigen.id }}" data-tipo="origen">
+						<a href="javascript:void(0);" class="verTextoModificado text-secondary m-2" title="Ver texto modificado">
+							<i class="fas fa-eye"></i>
+						</a>
+						<a href="{{ path('app_norma_edit', {'id':normaOrigen.normaOrigen.id})  }}" target="_blank" title="Editar normativa relacionada" class="text-edit m-2">
+							<i class="fas fa-edit"></i>
+						</a>
+						<a href="javascript:void(0);" class="text-danger eliminarNorma m-2" title="Eliminar relación con la normativa"
+							data-id="{{ normaOrigen.normaOrigen.id }}">
 							<i class="fas fa-trash"></i>
 						</a>
 						<input type="hidden"
@@ -335,6 +272,9 @@
 						<input type="hidden"
 							name="norma[normasAgregadasOrigen][{{ normaOrigen.normaOrigen.id }}][tipoReferencia]"
 							value=" {{ normaOrigen.tipoReferencia.id }} ">
+						<textarea  style="display:none;"
+							name="norma[normasAgregadasOrigen][{{ normaOrigen.normaOrigen.id }}][textoCompletoModificadoHtml]"
+							>{{ normaOrigen.normaOrigen.textoCompletoModificadoHtml }}</textarea>
 					</td>
 				</tr>
 
@@ -364,12 +304,11 @@
 					<td>{{ normaDestino.normaDestino.titulo }}</td>
 					<td>{{ normaDestino.tipoReferencia.nombre }}</td>
 					<td>{{ normaDestino.normaDestino.numero }}</td>
-					<td>{{ normaDestino.normaDestino.fechaSancion }}</td>
+					<td>{{ normaDestino.normaDestino.fechaSancion|date('Y') }}</td>
 					<td>{{ normaDestino.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
 					<td class="text-center">
-						<a href="javascript:void(0);" class="text-danger eliminarNorma"
-							data-id="{{ normaDestino.normaDestino.id }}" data-tipo="destino">
-							<i class="fas fa-trash"></i>
+						<a href="{{ path('app_norma_edit', {'id':normaDestino.normaDestino.id})  }}" target="_blank" class="text-edit">
+							<i class="fas fa-edit"></i>
 						</a>
 						<input type="hidden"
 							name="norma[normasAgregadasDestino][{{ normaDestino.normaDestino.id }}][norma]"

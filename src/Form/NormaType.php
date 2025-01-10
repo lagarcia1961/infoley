@@ -71,10 +71,24 @@ class NormaType extends AbstractType
                 'label' => 'Fecha de publicación',
                 'label_html' => true,
             ])
-            ->add('textoCompleto', TextareaType::class, [
-                'label' => 'Texto <span style="color:red">*</span>',
+            ->add('textoCompleto', HiddenType::class)
+            ->add('textoCompletoHtml', TextareaType::class, [
+                'label' => 'Texto de la norma <span style="color:red">*</span>',
                 'label_html' => true,
-            ])
+                'attr' => [
+                    'class' => 'trumbowyg-editor',
+                ],
+            ]);
+            if ($options['is_edit']) {
+                $builder->add('textoCompletoModificadoHtml', TextareaType::class, [
+                    'label' => 'Texto modificado',
+                    'label_html' => true,
+                    'attr' => [
+                        'class' => 'trumbowyg-editor',
+                    ],
+                ]);
+            }
+            $builder
             // Agregar un campo de texto para mostrar el nombre del archivo actual:
             ->add('currentFile', TextType::class, [
                 'label' => 'Archivo actual',
@@ -89,15 +103,16 @@ class NormaType extends AbstractType
                 'label' => 'Subir una norma en formato PDF o Word',
                 'mapped' => false, // No se asigna directamente a la entidad
                 'required' => false, // Si no es obligatorio
+                'attr' => [
+                    'accept' => '.pdf'
+                ],
                 'constraints' => [
                     new File([
                         'maxSize' => '3072k', // Tamaño máximo
                         'mimeTypes' => [
                             'application/pdf',
-                            'application/msword',
-                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                         ],
-                        'mimeTypesMessage' => 'Por favor sube un archivo válido (PDF o Word)',
+                        'mimeTypesMessage' => 'Por favor sube un archivo PDF válido.',
                     ])
                 ],
             ]);
@@ -160,29 +175,6 @@ class NormaType extends AbstractType
                 'mapped' => false,
                 'disabled' => true,
             ])
-            ->add('tipoReferenciaDestino', EntityType::class, [
-                'class' => TipoReferencia::class,
-                'label' => 'Tipo de referencia',
-                'required' => false,
-                'disabled' => true,
-                'choice_label' => 'nombre',
-                'query_builder' => function (TipoReferenciaRepository $tr) {
-                    return $tr->createQueryBuilder('tr')
-                        ->where('tr.isActive = :isActive')
-                        ->setParameter('isActive', true)
-                        ->orderBy('tr.nombre', 'ASC');
-                },
-                'empty_data' => null,
-                'mapped' => false,
-                'placeholder' => 'Seleccione un Tipo de referencia'
-            ])
-            ->add('normaDestino', ChoiceType::class, [
-                'placeholder' => 'Seleccione una norma',
-                'label' => 'Norma',
-                'required' => false,
-                'mapped' => false,
-                'disabled' => true,
-            ])
             ->add('temas', EntityType::class, [
                 'label' => 'Temas',
                 'class' => Tema::class,
@@ -228,6 +220,7 @@ class NormaType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Norma::class,
+            'is_edit' => false,
         ]);
     }
 }

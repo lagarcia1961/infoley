@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NormaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
 use Symfony\Component\Validator\Constraints\Uuid;
@@ -69,6 +70,12 @@ class Norma
 
     #[ORM\Column(length: 600, nullable: false, unique: true)]
     private ?string $slug = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: false)]
+    private ?string $textoCompletoHtml = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: false)]
+    private ?string $textoCompletoModificadoHtml = null;
 
     public function __construct()
     {
@@ -330,6 +337,8 @@ class Norma
             'fechaSancion' => $this->fechaSancion? $this->fechaSancion->format('Y'):'',
             'fechaPublicacion' => $this->fechaPublicacion->format('d/m/Y'),
             'textoCompleto' => $this->textoCompleto,
+            'textoCompletoHtml' => $this->textoCompletoHtml,
+            'textoCompletoModificadoHtml' => $this->textoCompletoModificadoHtml,
             'urlPdf' => $this->urlPdf,
             'tipoNorma' => $this->tipoNorma->getNombre()
         ];
@@ -349,6 +358,30 @@ class Norma
                 $this->tipoNorma->getNombre() . '-' . $this->titulo . '-' . $this->numero . '-' . rand(0, 99999)
             );
         }
+
+        return $this;
+    }
+
+    public function getTextoCompletoHtml(): ?string
+    {
+        return $this->textoCompletoHtml;
+    }
+
+    public function setTextoCompletoHtml(?string $textoCompletoHtml): static
+    {
+        $this->textoCompletoHtml = $textoCompletoHtml;
+
+        return $this;
+    }
+
+    public function getTextoCompletoModificadoHtml(): ?string
+    {
+        return $this->textoCompletoModificadoHtml;
+    }
+
+    public function setTextoCompletoModificadoHtml(?string $textoCompletoModificadoHtml): static
+    {
+        $this->textoCompletoModificadoHtml = $textoCompletoModificadoHtml;
 
         return $this;
     }

@@ -18,9 +18,12 @@
 
 	<link href="{{ asset('libs/choices.js/public/assets/styles/choices.min.css') }}" rel="stylesheet" type="text/css" />
 
-	<!-- Sweet Alert-->
-	<link href="{{ asset('css/ckeditor/ckeditor5.css') }}" rel="stylesheet" type="text/css" />
+	<!-- SUMMERNOTE-->
+	<link href="{{ asset('trumbowyg/dist/ui/trumbowyg.min.css') }}" rel="stylesheet" type="text/css" />
 	
+	<link href="{{ asset('trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}" rel="stylesheet" type="text/css" >
+
+	<!-- Sweet Alert-->
 	<link href="{{ asset('libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 
 	<!-- DataTables -->
@@ -48,6 +51,8 @@
 
 	<!-- App Css-->
 	<link href="{{ asset('css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+
+	
 
 	{% if files_css is defined %}
 
@@ -307,12 +312,8 @@
 	<!-- Right bar overlay-->
 	<div class="rightbar-overlay"></div>
 
-	<script src="{{ asset('js/ckeditor/ckeditor5.umd.js') }}"></script>
-
 	<script src="{{ asset('js/pdf/pdf.min.js') }}"></script>
-	<script>
-		const PDF_WORKER = "{{ asset('js/pdf/pdf.worker.min.js') }}";
-	</script>
+
 	<!-- JAVASCRIPT -->
 	<script src="{{ asset('libs/jquery/jquery.min.js') }}"></script>
 	<script src="{{ asset('libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -356,15 +357,22 @@
 
 
 	<!-- Custom init js -->
+
 	<script src="{{ asset('js/datatable/datatable_buttons.js') }}"></script>
 	<script src="{{ asset('js/datatable/datatable_simple.js') }}"></script>
 	<script src="{{ asset('js/sweetalert2/sweetalert2_delete.js') }}"></script>
 	<script src="{{ asset('js/bootstrap/modal_historico.js') }}"></script>
 
+	<script src="{{ asset('trumbowyg/dist/trumbowyg.min.js') }}"></script>
+	<script src="{{ asset('trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
+	
+	<script src="{{ asset('tesseract/tesseract.min.js') }}"></script>
 
 
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script>
+		const PDF_WORKER = "{{ asset('js/pdf/pdf.worker.min.js') }}";
+		const ICONS_PATH = "{{ asset('trumbowyg/dist/ui/icons.svg') }}";;
 		const BASE_URL = "{{ absolute_url('/') }}";
 	</script>
 
