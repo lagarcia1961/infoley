@@ -424,7 +424,6 @@ const resetModals = () => {
 
     limpiarErrores();
 };
-
 const readPdf = () => {
     pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER;
 
@@ -449,20 +448,33 @@ const readPdf = () => {
                 for (let i = 1; i <= totalPages; i++) {
                     pagePromises.push(
                         pdf.getPage(i).then(function (page) {
-                            const viewport = page.getViewport({ scale: 1.0 });
+                            const viewport = page.getViewport({ scale: 2.0 }); // Aumentar escala para mayor detalle
                             const canvas = document.createElement('canvas');
                             const context = canvas.getContext('2d');
                             canvas.height = viewport.height;
                             canvas.width = viewport.width;
 
                             return page.render({ canvasContext: context, viewport }).promise.then(() => {
-                                // Usar Tesseract.js para extraer texto de la imagen
+                                // Preprocesar imagen: convertir a escala de grises
+                                const imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+                                for (let i = 0; i < imgData.data.length; i += 4) {
+                                    const grayscale = imgData.data[i] * 0.3 + imgData.data[i + 1] * 0.59 + imgData.data[i + 2] * 0.11;
+                                    imgData.data[i] = imgData.data[i + 1] = imgData.data[i + 2] = grayscale;
+                                }
+                                context.putImageData(imgData, 0, 0);
+
+                                // Usar Tesseract.js para extraer texto
                                 return Tesseract.recognize(canvas, 'spa', {
+                                    tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁÉÍÓÚÑáéíóúñ ',
+                                    preserve_interword_spaces: '1',
                                     logger: info => console.log(info), // Progreso del OCR
                                 }).then(({ data: { text } }) => {
                                     return text;
                                 });
                             });
+                        }).catch((err) => {
+                            console.error(`Error procesando la página ${i}:`, err);
+                            return ''; // Retorna texto vacío si ocurre un error
                         })
                     );
                 }
