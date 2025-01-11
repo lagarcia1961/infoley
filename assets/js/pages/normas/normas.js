@@ -3,48 +3,109 @@ $(document).ready(function () {
     listenModals();
     listenEliminarNorma();
     readPdf();
+    loadTrumbowygEditor();
+    listenVerTextoModificado();
 
     // Escucha cuando el modal se oculta
     $('#modalAgregarNormaOrigen, #modalAgregarNormaDestino').on('hidden.bs.modal', function () {
-        resetModals('origen');
-        resetModals('destino');
+        resetModals();
     });
 
     // Escucha el botón "Agregar" en el modal de Origen
     $('#modalAgregarNormaOrigen .btn-primary').on('click', function () {
-        agregarNorma('origen');
+        agregarNorma();
     });
 
-    // Escucha el botón "Agregar" en el modal de Destino
-    $('#modalAgregarNormaDestino .btn-primary').on('click', function () {
-        agregarNorma('destino');
-    });
+    deleteSpinner();
 });
 
 var tipoNormaId;
 var choicesOrigen;
-var choicesDestino;
 var normasOrigenFetched = [];
-var normasDestinoFetched = [];
 var normasSeleccionadasOrigen = [];
-var normasSeleccionadasDestino = [];
 
-// Función para agregar una norma (Origen o Destino)
-const agregarNorma = (tipo) => {
-    const normaId = $(`#norma_norma${tipo === 'origen' ? 'Origen' : 'Destino'}`).val();
-    const tipoReferenciaId = $(`#norma_tipoReferencia${tipo === 'origen' ? 'Origen' : 'Destino'}`).val();
+
+const deleteSpinner = () => {
+    $('#loading-spinner').remove();
+}
+const loadTrumbowygEditor = () => {
+
+    if ($('#norma_textoCompletoModificadoHtml').length) {
+        $('#norma_textoCompletoModificadoHtml').trumbowyg({
+            svgPath: ICONS_PATH,
+            lang: 'es_ar',
+            btns: [
+                ['undo', 'redo'], // Deshacer y rehacer
+                ['formatting'], // Formatos de párrafo
+                ['strong', 'em', 'del'], // Negrita, cursiva y tachado
+                ['superscript', 'subscript'], // Superíndice y subíndice
+                ['link'], // Enlaces
+                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'], // Alineaciones
+                ['unorderedList', 'orderedList'], // Listas
+                ['horizontalRule'], // Línea horizontal
+                ['removeformat'], // Quitar formato
+                ['foreColor', 'backColor'], // Colores de texto y fondo
+                ['fullscreen']
+            ],
+            linkTargets: ['_blank', '_self'],
+        });
+    }
+
+    $('#norma_textoCompletoHtml').trumbowyg({
+        svgPath: ICONS_PATH,
+        lang: 'es_ar',
+        btns: [
+            ['undo', 'redo'], // Deshacer y rehacer
+            ['formatting'], // Formatos de párrafo
+            ['strong', 'em', 'del'], // Negrita, cursiva y tachado
+            ['superscript', 'subscript'], // Superíndice y subíndice
+            ['link'], // Enlaces
+            ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'], // Alineaciones
+            ['unorderedList', 'orderedList'], // Listas
+            ['horizontalRule'], // Línea horizontal
+            ['removeformat'], // Quitar formato
+            ['foreColor', 'backColor'], // Colores de texto y fondo
+            ['fullscreen']
+        ],
+        linkTargets: ['_blank', '_self'],
+    });
+
+    $('#modal_textoCompletoModificadoHtml').trumbowyg({
+        svgPath: ICONS_PATH,
+        lang: 'es_ar',
+        btns: [
+            ['undo', 'redo'], // Deshacer y rehacer
+            ['formatting'], // Formatos de párrafo
+            ['strong', 'em', 'del'], // Negrita, cursiva y tachado
+            ['superscript', 'subscript'], // Superíndice y subíndice
+            ['link'], // Enlaces
+            ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'], // Alineaciones
+            ['unorderedList', 'orderedList'], // Listas
+            ['horizontalRule'], // Línea horizontal
+            ['removeformat'], // Quitar formato
+            ['foreColor', 'backColor'], // Colores de texto y fondo
+            ['fullscreen']
+        ],
+        linkTargets: ['_blank', '_self'],
+    });
+};
+
+// Función para agregar una norma 
+const agregarNorma = () => {
+    const normaId = $(`#norma_normaOrigen`).val();
+    const tipoReferenciaId = $(`#norma_tipoReferenciaOrigen`).val();
 
     // Limpiar mensajes de error previos
-    limpiarErrores(tipo);
+    limpiarErrores();
 
     // Validar si ambos campos están seleccionados
     let errores = false;
     if (!normaId) {
-        mostrarError(`#norma_norma${tipo === 'origen' ? 'Origen' : 'Destino'}`, 'Debe seleccionar una norma');
+        mostrarError(`#norma_normaOrigen`, 'Debe seleccionar una norma');
         errores = true;
     }
     if (!tipoReferenciaId) {
-        mostrarError(`#norma_tipoReferencia${tipo === 'origen' ? 'Origen' : 'Destino'}`, 'Debe seleccionar un tipo de referencia');
+        mostrarError(`#norma_tipoReferenciaOrigen`, 'Debe seleccionar un tipo de referencia');
         errores = true;
     }
 
@@ -54,17 +115,17 @@ const agregarNorma = (tipo) => {
     }
 
     // Verificar si la norma ya está agregada en la tabla correspondiente
-    const normaYaAgregada = $(`#tablaNormas${tipo === 'origen' ? 'Origen' : 'Destino'} tbody tr[id="row-norma-${normaId}-${tipo}"]`).length > 0;
+    const normaYaAgregada = $(`#tablaNormasOrigen tbody tr[id="row-norma-${normaId}-origen"]`).length > 0;
     if (normaYaAgregada) {
-        mostrarError(`#norma_norma${tipo === 'origen' ? 'Origen' : 'Destino'}`, 'La norma ya se encuenta agregada, si desea corregir, elimine primero la norma de la lista y luego vuelva a agregarla.');
+        mostrarError(`#norma_normaOrigen`, 'La norma ya se encuenta agregada, si desea corregir, elimine primero la norma de la lista y luego vuelva a agregarla.');
         return;
     }
 
     // Obtener los datos de la norma seleccionada
-    const norma = (tipo === 'origen' ? normasOrigenFetched : normasDestinoFetched).find(n => n.id == normaId);
+    const norma = normasOrigenFetched.find(n => n.id == normaId);
 
     if (!norma) {
-        mostrarError(`#norma_norma${tipo === 'origen' ? 'Origen' : 'Destino'}`, 'Norma no encontrada');
+        mostrarError(`#norma_normaOrigen`, 'Norma no encontrada');
         return;
     }
 
@@ -77,15 +138,16 @@ const agregarNorma = (tipo) => {
         fechaSancion: norma.fechaSancion,
         fechaPublicacion: norma.fechaPublicacion,
         tipoReferenciaId: tipoReferenciaId, // Guardar el ID de tipo de referencia
-        tipoReferencia: $(`#norma_tipoReferencia${tipo === 'origen' ? 'Origen' : 'Destino'} option:selected`).text()  // Usar el texto del select para mostrarlo
+        textoCompletoModificadoHtml: $('.trumbowyg-editor').html(),
+        tipoReferencia: $(`#norma_tipoReferenciaOrigen option:selected`).text()  // Usar el texto del select para mostrarlo
     };
 
     // Agregar inputs hidden directamente dentro de la fila
-    agregarFilaConInputsHidden(normaData, tipo);
+    agregarFilaConInputsHidden(normaData);
 
     // Cerrar el modal
-    $(`#modalAgregarNorma${tipo === 'origen' ? 'Origen' : 'Destino'}`).modal('hide');
-    resetModals(tipo);
+    $(`#modalAgregarNormaOrigen`).modal('hide');
+    resetModals();
 };
 
 
@@ -100,22 +162,22 @@ const mostrarError = (selector, mensaje) => {
 };
 
 // Función para limpiar errores previos
-const limpiarErrores = (tipo) => {
-    $(`#norma_norma${tipo === 'origen' ? 'Origen' : 'Destino'}`).removeClass('is-invalid');
-    $(`#norma_tipoReferencia${tipo === 'origen' ? 'Origen' : 'Destino'}`).removeClass('is-invalid');
+const limpiarErrores = () => {
+    $(`#norma_normaOrigen`).removeClass('is-invalid');
+    $(`#norma_tipoReferenciaOrigen`).removeClass('is-invalid');
 
     // Eliminar los mensajes de error previos
-    $(`#norma_norma${tipo === 'origen' ? 'Origen' : 'Destino'}`).parent().find('.invalid-feedback').remove();
-    $(`#norma_tipoReferencia${tipo === 'origen' ? 'Origen' : 'Destino'}`).parent().find('.invalid-feedback').remove();
+    $(`#norma_normaOrigen`).parent().find('.invalid-feedback').remove();
+    $(`#norma_tipoReferenciaOrigen`).parent().find('.invalid-feedback').remove();
 };
 
 // Función para agregar fila con inputs hidden
-const agregarFilaConInputsHidden = (normaData, tipo) => {
-    const tbody = $(`#tablaNormas${tipo === 'origen' ? 'Origen' : 'Destino'} tbody`);
+const agregarFilaConInputsHidden = (normaData) => {
+    const tbody = $(`#tablaNormasOrigen tbody`);
 
     // Crear la fila con inputs hidden dentro de la estructura de "norma"
     tbody.append(`
-        <tr id="row-norma-${normaData.id}-${tipo}">
+        <tr id="row-norma-${normaData.id}-origen">
             <td>${normaData.tipoNorma}</td>
             <td>${normaData.titulo}</td>
             <td>${normaData.tipoReferencia}</td>
@@ -123,23 +185,48 @@ const agregarFilaConInputsHidden = (normaData, tipo) => {
             <td>${normaData.fechaSancion}</td>
             <td>${normaData.fechaPublicacion}</td>
             <td class="text-center">
-                <a href="javascript:void(0);" class="text-danger eliminarNorma" data-id="${normaData.id}" data-tipo="${tipo}">
+                <a href="javascript:void(0);" class="verTextoModificado text-secondary m-2" title="Ver texto modificado" data-id="${normaData.id}">
+                    <i class="fas fa-eye"></i>
+                </a>
+                <a href="javascript:void(0);" class="text-danger eliminarNorma m-2" data-id="${normaData.id}">
                     <i class="fas fa-trash"></i>
                 </a>
-                <input type="hidden" name="norma[normasAgregadas${tipo === 'origen' ? 'Origen' : 'Destino'}][${normaData.id}][norma]" value="${normaData.id}">
-                <input type="hidden" name="norma[normasAgregadas${tipo === 'origen' ? 'Origen' : 'Destino'}][${normaData.id}][tipoReferencia]" value="${normaData.tipoReferenciaId}">
+                <input type="hidden" name="norma[normasAgregadasOrigen][${normaData.id}][norma]" value="${normaData.id}">
+                <input type="hidden" name="norma[normasAgregadasOrigen][${normaData.id}][tipoReferencia]" value="${normaData.tipoReferenciaId}">
+                <textarea style="display:none;" name="norma[normasAgregadasOrigen][${normaData.id}][textoCompletoModificadoHtml]">${normaData.textoCompletoModificadoHtml}</textarea>
             </td>
         </tr>
     `);
 
     listenEliminarNorma();
+    listenVerTextoModificado();
+};
+
+const listenVerTextoModificado = () => {
+    $('.verTextoModificado').on('click', function () {
+        // Obtener el textarea en la misma fila
+        const textareaContent = $(this).closest('tr').find('textarea').val();
+
+        // Mostrar el contenido del textarea en SweetAlert2
+        Swal.fire({
+            title: 'Texto Modificado',
+            html: `
+                <div style="max-height: 300px; overflow-y: auto; text-align: left;">
+                    ${textareaContent}
+                </div>
+            `,
+            width: '80%', // Ajustar ancho del modal según necesidad
+            showCloseButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Cerrar',
+        });
+    });
 };
 
 const listenEliminarNorma = () => {
 
     $('.eliminarNorma').on('click', function () {
         const normaId = $(this).data('id');
-        const tipo = $(this).data('tipo');
         Swal.fire({
             title: '¿Estás seguro?',
             text: 'No podrás revertir esto',
@@ -153,15 +240,15 @@ const listenEliminarNorma = () => {
             },
         }).then(function (result) {
             if (result.isConfirmed) {
-                eliminarFila(normaId, tipo);
+                eliminarFila(normaId);
             }
         });
     });
 }
 // Función para eliminar la fila y los inputs hidden
-const eliminarFila = (normaId, tipo) => {
+const eliminarFila = (normaId) => {
     // Eliminar la fila completa, incluyendo los inputs hidden
-    $(`#row-norma-${normaId}-${tipo}`).remove();
+    $(`#row-norma-${normaId}-origen`).remove();
 };
 
 
@@ -180,7 +267,6 @@ const listenTipoNorma = () => {
     activeBotonesModal(tipoNormaId); // Activar o desactivar botones según el valor
     if (tipoNormaId) {
         getNormas(false, 'norma_normaOrigen', normaIdEdit);
-        getNormas(true, 'norma_normaDestino', normaIdEdit);
     }
     $('#norma_tipoNorma').on('change', function () {
         actualizarTablaNormas();
@@ -190,44 +276,34 @@ const listenTipoNorma = () => {
         if (choicesOrigen) {
             choicesOrigen.destroy();
         }
-        if (choicesDestino) {
-            choicesDestino.destroy();
-        }
 
         // Limpiar selects
-        clearNormasOrigenYDestino();
+        clearNormasOrigen();
 
         // Obtener nuevas normas según el nuevo tipo de norma
         getNormas(false, 'norma_normaOrigen');
-        getNormas(true, 'norma_normaDestino');
 
         // Activar o desactivar botones modales según el nuevo tipo de norma
         activeBotonesModal(tipoNormaId);
     });
 };
 
-const clearNormasOrigenYDestino = () => {
+const clearNormasOrigen = () => {
     // Vaciar los selects para evitar residuos
     $('#norma_normaOrigen').empty().attr('disabled', 'disabled');
-    $('#norma_normaDestino').empty().attr('disabled', 'disabled');
 };
 
 const activeBotonesModal = (status) => {
     if (status) {
         $('#botonModalAgregarNormaOrigen').removeClass('disabled');
-        $('#botonModalAgregarNormaDestino').removeClass('disabled');
     } else {
         $('#botonModalAgregarNormaOrigen').addClass('disabled');
-        $('#botonModalAgregarNormaDestino').addClass('disabled');
     }
 };
 
 const listenModals = () => {
     $('#botonModalAgregarNormaOrigen').on('click', () => {
         showModal('modalAgregarNormaOrigen');
-    });
-    $('#botonModalAgregarNormaDestino').on('click', () => {
-        showModal('modalAgregarNormaDestino');
     });
 };
 
@@ -237,13 +313,8 @@ const showModal = (idModal) => {
 
 const getNormas = (menor, idSelectNormas, normaIdEdit) => {
     // Mostrar spinner y ocultar el contenido mientras se cargan las normas
-    if (idSelectNormas === 'norma_normaOrigen') {
-        $('#spinnerNormaOrigen').removeClass('d-none'); // Mostrar spinner
-        $('#contentNormaOrigen').addClass('d-none'); // Ocultar contenido del modal
-    } else {
-        $('#spinnerNormaDestino').removeClass('d-none'); // Mostrar spinner
-        $('#contentNormaDestino').addClass('d-none'); // Ocultar contenido del modal
-    }
+    $('#spinnerNormaOrigen').removeClass('d-none'); // Mostrar spinner
+    $('#contentNormaOrigen').addClass('d-none'); // Ocultar contenido del modal
 
     $.ajax({
         url: BASE_URL + 'secure/norma/getNormas',
@@ -255,24 +326,20 @@ const getNormas = (menor, idSelectNormas, normaIdEdit) => {
 
             if (res.success) {
                 normasFetched = res.normas;
-                if (idSelectNormas === 'norma_normaOrigen') {
-                    normasOrigenFetched = normasFetched;
-                } else {
-                    normasDestinoFetched = normasFetched;
-                }
+                normasOrigenFetched = normasFetched;
 
-                const selectElement = document.getElementById(`${idSelectNormas}`);
+                const selectElement = document.getElementById(`norma_normaOrigen`);
 
                 // Si hay normas, habilita los selectores
                 if (normasFetched.length === 0) {
                     $(selectElement).attr('disabled', 'disabled');
-                    $(`#norma_tipoReferencia${idSelectNormas === 'norma_normaOrigen' ? 'Origen' : 'Destino'}`).attr('disabled', 'disabled');
+                    $(`#norma_tipoReferenciaOrigen`).attr('disabled', 'disabled');
                 } else {
                     $(selectElement).removeAttr('disabled');
-                    $(`#norma_tipoReferencia${idSelectNormas === 'norma_normaOrigen' ? 'Origen' : 'Destino'}`).removeAttr('disabled');
+                    $(`#norma_tipoReferenciaOrigen`).removeAttr('disabled');
                 }
 
-                await updateNormas(selectElement, idSelectNormas === 'norma_normaOrigen' ? 'origen' : 'destino');
+                await updateNormas(selectElement);
             } else {
                 console.log('Error al obtener normas');
                 $(idSelectNormas).attr('disabled', 'disabled');
@@ -284,187 +351,150 @@ const getNormas = (menor, idSelectNormas, normaIdEdit) => {
         },
         complete: function () {
             // Ocultar spinner y mostrar contenido una vez completada la carga
-            if (idSelectNormas === 'norma_normaOrigen') {
-                $('#spinnerNormaOrigen').addClass('d-none'); // Ocultar spinner
-                $('#contentNormaOrigen').removeClass('d-none'); // Mostrar contenido del modal
-            } else {
-                $('#spinnerNormaDestino').addClass('d-none'); // Ocultar spinner
-                $('#contentNormaDestino').removeClass('d-none'); // Mostrar contenido del modal
-            }
+            $('#spinnerNormaOrigen').addClass('d-none'); // Ocultar spinner
+            $('#contentNormaOrigen').removeClass('d-none'); // Mostrar contenido del modal
         }
     });
 };
 
 
-const updateNormas = (selectElement, tipo) => {
+const updateNormas = (selectElement) => {
     // Rehabilitar los selects
-    $('#norma_normaDestino').removeAttr('disabled');
-    $('#norma_tipoReferenciaDestino').removeAttr('disabled');
     $('#norma_normaOrigen').removeAttr('disabled');
     $('#norma_tipoReferenciaOrigen').removeAttr('disabled');
 
     // Inicializar el plugin Choices.js para el select correspondiente
-    let choices;
-    if (tipo === 'origen') {
-        choicesOrigen = new Choices(selectElement, {
-            placeholder: true,
-            placeholderValue: 'Seleccione una norma',
-        });
-        choices = choicesOrigen;
-    } else {
-        choicesDestino = new Choices(selectElement, {
-            placeholder: true,
-            placeholderValue: 'Seleccione una norma',
-        });
-        choices = choicesDestino;
-    }
+    choicesOrigen = new Choices(selectElement, {
+        placeholder: true,
+        placeholderValue: 'Seleccione una norma',
+    });
 
     // Limpiar y actualizar el select con las normas obtenidas
-    choices.setChoices([], 'value', 'label', true);  // Limpiar las opciones actuales
-    const normasMaped = (tipo === 'origen' ? normasOrigenFetched : normasDestinoFetched).map(norma => ({
+    choicesOrigen.setChoices([], 'value', 'label', true);  // Limpiar las opciones actuales
+    const normasMaped = normasOrigenFetched.map(norma => ({
         value: norma.id,
         label: norma.titulo + ' - ' + norma.numero + ' - ' + norma.fechaSancion
     }));
 
     normasMaped.unshift({ value: '', label: 'Seleccione una norma', disabled: true, selected: true });
 
-    choices.setChoices(normasMaped);
+    choicesOrigen.setChoices(normasMaped);
 
     // Agregar un evento para cuando se selecciona un valor en el combo
     $(selectElement).on('change', function () {
         const selectedValue = this.value; // Valor seleccionado
         let selectedNorma;
 
-        // Verifica si es de origen o destino y busca la norma correspondiente
-        if (tipo === 'origen') {
-            selectedNorma = normasOrigenFetched.find(norma => norma.id == selectedValue);
+        selectedNorma = normasOrigenFetched.find(norma => norma.id == selectedValue);
 
-            // Limpia el div de destino si se selecciona una norma de origen
-            $('#spanNormaDestino_titulo, #spanNormaDestino_numero, #spanNormaDestino_fechaSancion, #spanNormaDestino_fechaPublicacion, #spanNormaDestino_textoCompleto, #spanNormaDestino_urlPdf').text('');
 
-            // Llenar los spans del origen
-            if (selectedNorma) {
-                $('#spanNormaOrigen_titulo').text(selectedNorma.titulo || '');
-                $('#spanNormaOrigen_numero').text(selectedNorma.numero || '');
-                $('#spanNormaOrigen_fechaSancion').text(selectedNorma.fechaSancion || '');
-                $('#spanNormaOrigen_fechaPublicacion').text(selectedNorma.fechaPublicacion || '');
-                // Obtiene el texto completo de selectedNorma
-                var textoCompleto = selectedNorma.textoCompleto || '';
-                // Limita el texto a 200 caracteres
-                var textoLimitado = textoCompleto.length > 1500 ? textoCompleto.substring(0, 1500) + '...' : textoCompleto;
-                // Establece el texto limitado en el span
-                $('#spanNormaOrigen_textoCompleto').text(textoLimitado);
-                $('#spanNormaOrigen_tipoNorma').text(selectedNorma.tipoNorma || '');
-                $('#spanNormaOrigen_urlPdf').text(selectedNorma.urlPdf || '');
-                if (selectedNorma.urlPdf) {
-                    $('#aNormaOrigen_urlPdf').attr('href', window.location.origin + '/uploads/normas/' + selectedNorma.urlPdf)
-                } else {
-                    $('#aNormaOrigen_urlPdf').attr('href', '#');
-                }
+        // Llenar los spans del origen
+        if (selectedNorma) {
+            $('#spanNormaOrigen_titulo').text(selectedNorma.titulo || '');
+            $('#spanNormaOrigen_numero').text(selectedNorma.numero || '');
+            $('#spanNormaOrigen_fechaSancion').text(selectedNorma.fechaSancion || '');
+            $('#spanNormaOrigen_fechaPublicacion').text(selectedNorma.fechaPublicacion || '');
+            // Establece el texto limitado en el span
+            $(' #spanNormaOrigen_tipoNorma').text(selectedNorma.tipoNorma || '');
+            $('#spanNormaOrigen_urlPdf').text(selectedNorma.urlPdf || '');
+            if (selectedNorma.urlPdf) {
+                $('#aNormaOrigen_urlPdf').attr('href', window.location.origin + '/uploads/normas/' + selectedNorma.urlPdf)
+            } else {
+                $('#aNormaOrigen_urlPdf').attr('href', '#');
             }
-
-        } else {
-            selectedNorma = normasDestinoFetched.find(norma => norma.id == selectedValue);
-
-            // Limpia el div de origen si se selecciona una norma de destino
-            $('#spanNormaOrigen_titulo, #spanNormaOrigen_numero, #spanNormaOrigen_fechaSancion, #spanNormaOrigen_fechaPublicacion, #spanNormaOrigen_textoCompleto, #spanNormaOrigen_urlPdf').text('');
-
-            // Llenar los spans del destino
-            if (selectedNorma) {
-                $('#spanNormaDestino_titulo').text(selectedNorma.titulo || '');
-                $('#spanNormaDestino_numero').text(selectedNorma.numero || '');
-                $('#spanNormaDestino_fechaSancion').text(selectedNorma.fechaSancion || '');
-                $('#spanNormaDestino_fechaPublicacion').text(selectedNorma.fechaPublicacion || '');
-                // Obtiene el texto completo de selectedNorma
-                var textoCompleto = selectedNorma.textoCompleto || '';
-                // Limita el texto a 200 caracteres
-                var textoLimitado = textoCompleto.length > 1500 ? textoCompleto.substring(0, 1500) + '...' : textoCompleto;
-                // Establece el texto limitado en el span
-                $('#spanNormaDestino_textoCompleto').text(textoLimitado);
-                $('#panNormaDestino_tipoNorma').text(selectedNorma.tipoNorma || '');
-                $('#spanNormaDestino_urlPdf').text(selectedNorma.urlPdf || '');
-                if (selectedNorma.urlPdf) {
-                    $('#aNormaDestino_urlPdf').attr('href', window.location.origin + '/uploads/normas/' + selectedNorma.urlPdf)
-                } else {
-                    $('#aNormaDestino_urlPdf').attr('href', '#');
-                }
-            }
+            $('#modal_textoCompletoModificadoHtml').trumbowyg('html', selectedNorma.textoCompletoModificadoHtml);
         }
     });
 };
 
 // Resetear los spans y selects cuando el modal se cierra
-const resetModals = (tipo) => {
+const resetModals = () => {
     // Limpiar todos los spans de Norma Origen
-    $('#spanNormaOrigen_titulo, #spanNormaOrigen_numero, #spanNormaOrigen_fechaSancion, #spanNormaOrigen_fechaPublicacion, #spanNormaOrigen_textoCompleto, #spanNormaOrigen_urlPdf').text('');
+    $('#spanNormaOrigen_titulo, #spanNormaOrigen_tipoNorma, #spanNormaOrigen_numero, #spanNormaOrigen_fechaSancion, #spanNormaOrigen_fechaPublicacion, #modal_textoCompletoModificadoHtml, #spanNormaOrigen_urlPdf').text('');
 
-    // Limpiar todos los spans de Norma Destino
-    $('#spanNormaDestino_titulo, #spanNormaDestino_numero, #spanNormaDestino_fechaSancion, #spanNormaDestino_fechaPublicacion, #spanNormaDestino_textoCompleto, #spanNormaDestino_urlPdf').text('');
-
-    // Reiniciar los selects de normaOrigen y normaDestino a su estado inicial
+    // Resetear selects
     if (choicesOrigen) {
-        choicesOrigen.setChoiceByValue('');  // Reiniciar el select de origen
+        choicesOrigen.setChoiceByValue('');
     }
 
-    if (choicesDestino) {
-        choicesDestino.setChoiceByValue('');  // Reiniciar el select de destino
-    }
+    $('#norma_tipoReferenciaOrigen').val('');
+    $('#modal_textoCompletoModificadoHtml').html('');
+    $('#modal_textoCompletoModificadoHtml').trumbowyg('empty');
+    $('#modal_textoCompletoModificadoHtml').trumbowyg('html', '');
 
-    // Restablecer los combos de tipoReferenciaOrigen y tipoReferenciaDestino a su estado inicial
-    $('#norma_tipoReferenciaOrigen').val('');  // Desseleccionar cualquier opción
-    $('#norma_tipoReferenciaDestino').val('');  // Desseleccionar cualquier opción
-    limpiarErrores(tipo);
+    limpiarErrores();
 };
-
 const readPdf = () => {
     pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER;
 
     $('#norma_urlPdf').on('change', function (event) {
-        var file = event.target.files[0];
-        if (file && file.type === 'application/pdf') {
-            Swal.fire({
-                title: 'Se detecto un documento PDF',
-                text: '¿Desea que el sistema intente leer el documento?, luego podrá editarlo',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, leer documento',
-                cancelButtonText: 'No, solo adjuntar archivo',
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-secondary'
-                },
-            }).then(function (result) {
-                if (result.isConfirmed) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var pdfData = new Uint8Array(e.target.result);
-                        pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
-                            var totalPages = pdf.numPages;
-                            var norma_textoCompleto = '';
-
-                            // Leer cada página y extraer el texto
-                            var pagePromises = [];
-                            for (let i = 1; i <= totalPages; i++) {
-                                pagePromises.push(
-                                    pdf.getPage(i).then(function (page) {
-                                        return page.getTextContent().then(function (textContent) {
-                                            let pageText = textContent.items.map(item => item.str).join(' ');
-                                            norma_textoCompleto += pageText + '\n\n';
-                                        });
-                                    })
-                                );
-                            }
-
-                            // Una vez que todas las páginas están leídas
-                            Promise.all(pagePromises).then(function () {
-                                // Verifica si el editor ya está inicializado
-                                $('#norma_textoCompleto').html(norma_textoCompleto); // Actualiza el contenido del editor
-                            });
-                        });
-                    };
-                    reader.readAsArrayBuffer(file);
-                }
-            });
+        const file = event.target.files[0];
+        if (!file) {
+            return;
         }
+
+        // Mostrar el spinner de carga de PDF
+        $('#pdf-loading-spinner').removeClass('d-none');
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const pdfData = new Uint8Array(e.target.result);
+
+            // Utilizamos PDF.js para extraer las páginas
+            pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
+                const totalPages = pdf.numPages;
+
+                const pagePromises = [];
+                for (let i = 1; i <= totalPages; i++) {
+                    pagePromises.push(
+                        pdf.getPage(i).then(function (page) {
+                            const viewport = page.getViewport({ scale: 2.0 }); // Aumentar escala para mayor detalle
+                            const canvas = document.createElement('canvas');
+                            const context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+
+                            return page.render({ canvasContext: context, viewport }).promise.then(() => {
+                                // Preprocesar imagen: convertir a escala de grises
+                                const imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+                                for (let i = 0; i < imgData.data.length; i += 4) {
+                                    const grayscale = imgData.data[i] * 0.3 + imgData.data[i + 1] * 0.59 + imgData.data[i + 2] * 0.11;
+                                    imgData.data[i] = imgData.data[i + 1] = imgData.data[i + 2] = grayscale;
+                                }
+                                context.putImageData(imgData, 0, 0);
+
+                                // Usar Tesseract.js para extraer texto
+                                return Tesseract.recognize(canvas, 'spa', {
+                                    tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁÉÍÓÚÑáéíóúñ ',
+                                    preserve_interword_spaces: '1',
+                                    logger: info => console.log(info), // Progreso del OCR
+                                }).then(({ data: { text } }) => {
+                                    return text;
+                                });
+                            });
+                        }).catch((err) => {
+                            console.error(`Error procesando la página ${i}:`, err);
+                            return ''; // Retorna texto vacío si ocurre un error
+                        })
+                    );
+                }
+
+                // Combinar los textos de todas las páginas
+                Promise.all(pagePromises).then((pageTexts) => {
+                    const fullText = pageTexts.join('\n\n');
+                    $('#norma_textoCompleto').html(fullText); // Mostrar el texto extraído
+                    $('#norma_textoCompletoHtml').trumbowyg('html', fullText); // Actualizar el contenido del editor HTML
+                }).finally(() => {
+                    // Ocultar el spinner una vez que termina el proceso
+                    $('#pdf-loading-spinner').addClass('d-none');
+                });
+            }).catch((error) => {
+                console.error('Error al leer el archivo PDF:', error);
+                alert('Ocurrió un error al leer el archivo PDF.');
+                $('#pdf-loading-spinner').addClass('d-none');
+            });
+        };
+
+        reader.readAsArrayBuffer(file);
     });
-}
+};

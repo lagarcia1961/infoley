@@ -33,7 +33,7 @@ class NormaController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, NormaRepository $normaRepository, TipoReferenciaRepository $tipoReferenciaRepository): Response
     {
         $data['norma'] = new Norma();
-        $data['form_norma'] = $this->createForm(NormaType::class, $data['norma'], ['allow_extra_fields' => true]);
+        $data['form_norma'] = $this->createForm(NormaType::class, $data['norma'], ['allow_extra_fields' => true,'is_edit' => false]);
         $data['form_norma']->handleRequest($request);
 
         $data['files_js'] = [
@@ -42,7 +42,6 @@ class NormaController extends AbstractController
         if ($data['form_norma']->isSubmitted() && $data['form_norma']->isValid()) {
             $temas = $data['form_norma']->get('temas')->getData();
             $normasAgregadasOrigen = $data['form_norma']->getExtraData()['normasAgregadasOrigen'] ?? null;
-            $normasAgregadasDestino = $data['form_norma']->getExtraData()['normasAgregadasDestino'] ?? null;
             if ($temas) {
                 foreach ($temas as $tema) {
                     $normaTema = new NormaTema();
@@ -56,18 +55,13 @@ class NormaController extends AbstractController
                 foreach ($normasAgregadasOrigen as $normaAgregadaOrigen) {
                     $referenciaOrigen = new Referencia();
                     $referenciaOrigen->setNormaDestino($data['norma']);
-                    $referenciaOrigen->setNormaOrigen($normaRepository->find((int)$normaAgregadaOrigen['norma']));
+                    $normaOrigen = $normaRepository->find((int)$normaAgregadaOrigen['norma']);
+                    $referenciaOrigen->setNormaOrigen($normaOrigen);
                     $referenciaOrigen->setTipoReferencia($tipoReferenciaRepository->find((int)$normaAgregadaOrigen['tipoReferencia']));
                     $entityManager->persist($referenciaOrigen);
-                }
-            }
-            if ($normasAgregadasDestino) {
-                foreach ($normasAgregadasDestino as $normaAgregadaDestino) {
-                    $referenciaDestino = new Referencia();
-                    $referenciaDestino->setNormaOrigen($data['norma']);
-                    $referenciaDestino->setNormaDestino($normaRepository->find((int)$normaAgregadaDestino['norma']));
-                    $referenciaDestino->setTipoReferencia($tipoReferenciaRepository->find((int)$normaAgregadaDestino['tipoReferencia']));
-                    $entityManager->persist($referenciaDestino);
+
+                    $normaOrigen->setTextoCompletoModificadoHtml($normaAgregadaOrigen['textoCompletoModificadoHtml']);
+                    $entityManager->persist($normaOrigen);
                 }
             }
 
@@ -87,6 +81,7 @@ class NormaController extends AbstractController
 
                 $data['norma']->setUrlPdf($newFilename);
             }
+            $data['norma']->setTextoCompletoModificadoHtml($data['norma']->getTextoCompletoHtml());
             $entityManager->persist($data['norma']);
             $entityManager->flush();
 
@@ -101,7 +96,7 @@ class NormaController extends AbstractController
     public function edit(Request $request, Norma $norma, EntityManagerInterface $entityManager, NormaRepository $normaRepository, TipoReferenciaRepository $tipoReferenciaRepository): Response
     {
         // Crear el formulario con la entidad Norma
-        $form_norma = $this->createForm(NormaType::class, $norma, ['allow_extra_fields' => true]);
+        $form_norma = $this->createForm(NormaType::class, $norma, ['allow_extra_fields' => true,'is_edit' => true]);
         // Obtener todas las instancias de UsuarioTipoNorma asociadas al usuario
         $normaTemas = $norma->getNormaTemas();
         $files_js = [
@@ -136,8 +131,6 @@ class NormaController extends AbstractController
 
             $temas = $form_norma->get('temas')->getData();
             $normasAgregadasOrigen = $form_norma->getExtraData()['normasAgregadasOrigen'] ?? null;
-            $normasAgregadasDestino = $form_norma->getExtraData()['normasAgregadasDestino'] ?? null;
-
 
             if ($temas) {
                 foreach ($temas as $tema) {
@@ -152,21 +145,16 @@ class NormaController extends AbstractController
                 foreach ($normasAgregadasOrigen as $normaAgregadaOrigen) {
                     $referenciaOrigen = new Referencia();
                     $referenciaOrigen->setNormaDestino($norma);
-                    $referenciaOrigen->setNormaOrigen($normaRepository->find((int)$normaAgregadaOrigen['norma']));
+
+                    $normaOrigen = $normaRepository->find((int)$normaAgregadaOrigen['norma']);
+                    $referenciaOrigen->setNormaOrigen($normaOrigen);
                     $referenciaOrigen->setTipoReferencia($tipoReferenciaRepository->find((int)$normaAgregadaOrigen['tipoReferencia']));
                     $entityManager->persist($referenciaOrigen);
-                }
-            }
-            if ($normasAgregadasDestino) {
-                foreach ($normasAgregadasDestino as $normaAgregadaDestino) {
-                    $referenciaDestino = new Referencia();
-                    $referenciaDestino->setNormaOrigen($norma);
-                    $referenciaDestino->setNormaDestino($normaRepository->find((int)$normaAgregadaDestino['norma']));
-                    $referenciaDestino->setTipoReferencia($tipoReferenciaRepository->find((int)$normaAgregadaDestino['tipoReferencia']));
-                    $entityManager->persist($referenciaDestino);
-                }
-            }
 
+                    $normaOrigen->setTextoCompletoModificadoHtml($normaAgregadaOrigen['textoCompletoModificadoHtml']);
+                    $entityManager->persist($normaOrigen);
+                }
+            }
 
             // Si se sube un nuevo archivo, procesarlo
             if ($file) {
