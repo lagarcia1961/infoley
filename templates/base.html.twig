@@ -18,10 +18,10 @@
 
 	<link href="{{ asset('libs/choices.js/public/assets/styles/choices.min.css') }}" rel="stylesheet" type="text/css" />
 
-	<!-- SUMMERNOTE-->
-	<link href="{{ asset('trumbowyg/dist/ui/trumbowyg.min.css') }}" rel="stylesheet" type="text/css" />
+	<!-- TRUMBOWYG-->
+	<link href="{{ asset('libs/trumbowyg/dist/ui/trumbowyg.min.css') }}" rel="stylesheet" type="text/css"/>
 	
-	<link href="{{ asset('trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}" rel="stylesheet" type="text/css" >
+	<link href="{{ asset('libs/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}" rel="stylesheet" type="text/css" >
 
 	<!-- Sweet Alert-->
 	<link href="{{ asset('libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
@@ -363,8 +363,8 @@
 	<script src="{{ asset('js/sweetalert2/sweetalert2_delete.js') }}"></script>
 	<script src="{{ asset('js/bootstrap/modal_historico.js') }}"></script>
 
-	<script src="{{ asset('trumbowyg/dist/trumbowyg.min.js') }}"></script>
-	<script src="{{ asset('trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
+	<script src="{{ asset('libs/trumbowyg/dist/trumbowyg.min.js') }}"></script>
+	<script src="{{ asset('libs/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
 	
 	<script src="{{ asset('tesseract/tesseract.min.js') }}"></script>
 
@@ -372,7 +372,7 @@
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script>
 		const PDF_WORKER = "{{ asset('js/pdf/pdf.worker.min.js') }}";
-		const ICONS_PATH = "{{ asset('trumbowyg/dist/ui/icons.svg') }}";;
+		const ICONS_PATH = "{{ asset('libs/trumbowyg/dist/ui/icons.svg') }}";;
 		const BASE_URL = "{{ absolute_url('/') }}";
 	</script>
 
