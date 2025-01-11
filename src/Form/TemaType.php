@@ -38,7 +38,7 @@ class TemaType extends AbstractType
 
             ->add('guardar', SubmitType::class, [
                 'label' => 'Guardar',
-            ]);;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

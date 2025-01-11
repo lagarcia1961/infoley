@@ -27,7 +27,10 @@ class TipoNormaType extends AbstractType
                 ]
             ])
             ->add('rango', IntegerType::class, [
-                'label' => 'Rango'
+                'label' => 'Rango',
+                'attr' => [
+                    'min' => 1,
+                ],
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción'

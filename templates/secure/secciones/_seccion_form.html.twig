@@ -1,0 +1,23 @@
+{{ form_start (form_seccion) }}
+<div class="row">
+	<div class="col-8">
+		<div class="mb-3">
+			{{ form_label (form_seccion.tema) }}
+			{{ form_widget (form_seccion.tema) }}
+			{{ form_errors (form_seccion.tema)}}
+		</div>
+	</div>
+	<div class="col-4">
+		<div class="mb-3">
+			{{ form_label (form_seccion.orden) }}
+			{{ form_widget (form_seccion.orden) }}
+			{{ form_errors (form_seccion.orden)}}
+		</div>
+	</div>
+</div>
+
+<div class="col-12 mt-4 text-end">
+	{{ form_widget (form_seccion.guardar) }}
+	<a href="{{ path('app_secure_secciones_index') }}" class="btn btn-secondary">Volver</a>
+</div>
+{{ form_end (form_seccion) }}

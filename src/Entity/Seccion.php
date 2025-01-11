@@ -17,7 +17,7 @@ class Seccion
 
     #[ORM\OneToOne(inversedBy: 'seccion', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?tema $tema = null;
+    private ?Tema $tema = null;
 
     /**
      * @var Collection<int, SeccionNorma>
@@ -25,9 +25,16 @@ class Seccion
     #[ORM\OneToMany(targetEntity: SeccionNorma::class, mappedBy: 'seccion')]
     private Collection $seccionNormas;
 
+    #[ORM\Column(nullable: false)]
+    private ?int $orden = null;
+
+    #[ORM\Column(nullable: false)]
+    private ?bool $isActive = null;
+
     public function __construct()
     {
         $this->seccionNormas = new ArrayCollection();
+        $this->isActive = true;
     }
 
      public function getId(): ?int
@@ -35,12 +42,12 @@ class Seccion
         return $this->id;
     }
 
-     public function getTema(): ?tema
+     public function getTema(): ?Tema
      {
          return $this->tema;
      }
 
-     public function setTema(tema $tema): static
+     public function setTema(Tema $tema): static
      {
          $this->tema = $tema;
 
@@ -73,6 +80,30 @@ class Seccion
                  $seccionNorma->setSeccion(null);
              }
          }
+
+         return $this;
+     }
+
+     public function getOrden(): ?int
+     {
+         return $this->orden;
+     }
+
+     public function setOrden(?int $orden): static
+     {
+         $this->orden = $orden;
+
+         return $this;
+     }
+
+     public function isActive(): ?bool
+     {
+         return $this->isActive;
+     }
+
+     public function setActive(?bool $isActive): static
+     {
+         $this->isActive = $isActive;
 
          return $this;
      }

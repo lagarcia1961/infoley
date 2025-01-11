@@ -1,0 +1,32 @@
+{{ form_start (form_seccion_norma) }}
+<div class="row">
+	<div class="col-12">
+		<div class="mb-3">
+			{{ form_label (form_seccion_norma.norma) }}
+			{{ form_widget (form_seccion_norma.norma) }}
+			{{ form_errors (form_seccion_norma.norma)}}
+		</div>
+	</div>
+	<div class="col-8">
+		<div class="mb-3">
+			{{ form_label (form_seccion_norma.titulo) }}
+			{{ form_widget (form_seccion_norma.titulo) }}
+			{{ form_errors (form_seccion_norma.titulo)}}
+		</div>
+	</div>
+	<div class="col-4">
+		<div class="mb-3">
+			{{ form_label (form_seccion_norma.orden) }}
+			{{ form_widget (form_seccion_norma.orden) }}
+			{{ form_errors (form_seccion_norma.orden)}}
+		</div>
+	</div>
+</div>
+
+<div class="col-12 mt-4 text-end">
+	{{ form_widget (form_seccion_norma.guardar) }}
+	<a href="{{ path('app_secure_secciones_norma',{id:seccion.id}) }}" class="btn btn-secondary">Volver</a>
+</div>
+<div style="height: 60vh;">
+</div>
+{{ form_end (form_seccion_norma) }}

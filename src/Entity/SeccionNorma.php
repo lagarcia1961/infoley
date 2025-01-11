@@ -15,11 +15,11 @@ class SeccionNorma
 
     #[ORM\ManyToOne(inversedBy: 'seccionNormas')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?seccion $seccion = null;
+    private ?Seccion $seccion = null;
 
     #[ORM\ManyToOne(inversedBy: 'seccionNormas')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?norma $norma = null;
+    private ?Norma $norma = null;
 
     #[ORM\Column(length: 255)]
     private ?string $titulo = null;
@@ -27,29 +27,37 @@ class SeccionNorma
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    #[ORM\Column]
+    private ?int $orden = null;
+
+    public function __construct()
+    {
+        $this->isActive = true;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSeccion(): ?seccion
+    public function getSeccion(): ?Seccion
     {
         return $this->seccion;
     }
 
-    public function setSeccion(?seccion $seccion): static
+    public function setSeccion(?Seccion $seccion): static
     {
         $this->seccion = $seccion;
 
         return $this;
     }
 
-    public function getNorma(): ?norma
+    public function getNorma(): ?Norma
     {
         return $this->norma;
     }
 
-    public function setNorma(?norma $norma): static
+    public function setNorma(?Norma $norma): static
     {
         $this->norma = $norma;
 
@@ -61,7 +69,7 @@ class SeccionNorma
         return $this->titulo;
     }
 
-    public function setTitulo(string $titulo): static
+    public function setTitulo(?string $titulo): static
     {
         $this->titulo = $titulo;
 
@@ -76,6 +84,18 @@ class SeccionNorma
     public function setActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getOrden(): ?int
+    {
+        return $this->orden;
+    }
+
+    public function setOrden(int $orden): static
+    {
+        $this->orden = $orden;
 
         return $this;
     }
