@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\BusquedaAvanzadaType;
 use App\Form\BusquedaSimpleType;
 use App\Repository\NormaRepository;
+use App\Repository\SeccionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home_front')]
-    public function index(EntityManagerInterface $entityManager, Request $request, NormaRepository $normaRepository): Response
+    public function index(EntityManagerInterface $entityManager, Request $request, NormaRepository $normaRepository, SeccionRepository $seccionRepository): Response
     {
 
         $data['form_simple'] = $this->createForm(BusquedaSimpleType::class);
@@ -50,6 +51,7 @@ class HomeController extends AbstractController
             $data['normativas']= $normaRepository->busquedaAvanzada($tipoNorma,$numero,$anio,$texto,$dependencia,$fechaDesde,$fechaHasta);
         }
 
+        $data['secciones'] = $seccionRepository->findBy(['isActive'=>true],['orden'=>'ASC']);
 
         return $this->render('home/index.html.twig', $data);
     }

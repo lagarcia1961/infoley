@@ -37,75 +37,93 @@ class Seccion
         $this->isActive = true;
     }
 
-     public function getId(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-     public function getTema(): ?Tema
-     {
-         return $this->tema;
-     }
+    public function getTema(): ?Tema
+    {
+        return $this->tema;
+    }
 
-     public function setTema(Tema $tema): static
-     {
-         $this->tema = $tema;
+    public function setTema(Tema $tema): static
+    {
+        $this->tema = $tema;
 
-         return $this;
-     }
+        return $this;
+    }
 
-     /**
-      * @return Collection<int, SeccionNorma>
-      */
-     public function getSeccionNormas(): Collection
-     {
-         return $this->seccionNormas;
-     }
+    /**
+     * @return Collection<int, SeccionNorma>
+     */
+    public function getSeccionNormas(): Collection
+    {
+        return $this->seccionNormas;
+    }
 
-     public function addSeccionNorma(SeccionNorma $seccionNorma): static
-     {
-         if (!$this->seccionNormas->contains($seccionNorma)) {
-             $this->seccionNormas->add($seccionNorma);
-             $seccionNorma->setSeccion($this);
-         }
+    public function addSeccionNorma(SeccionNorma $seccionNorma): static
+    {
+        if (!$this->seccionNormas->contains($seccionNorma)) {
+            $this->seccionNormas->add($seccionNorma);
+            $seccionNorma->setSeccion($this);
+        }
 
-         return $this;
-     }
+        return $this;
+    }
 
-     public function removeSeccionNorma(SeccionNorma $seccionNorma): static
-     {
-         if ($this->seccionNormas->removeElement($seccionNorma)) {
-             // set the owning side to null (unless already changed)
-             if ($seccionNorma->getSeccion() === $this) {
-                 $seccionNorma->setSeccion(null);
-             }
-         }
+    public function removeSeccionNorma(SeccionNorma $seccionNorma): static
+    {
+        if ($this->seccionNormas->removeElement($seccionNorma)) {
+            // set the owning side to null (unless already changed)
+            if ($seccionNorma->getSeccion() === $this) {
+                $seccionNorma->setSeccion(null);
+            }
+        }
 
-         return $this;
-     }
+        return $this;
+    }
 
-     public function getOrden(): ?int
-     {
-         return $this->orden;
-     }
+    public function getOrden(): ?int
+    {
+        return $this->orden;
+    }
 
-     public function setOrden(?int $orden): static
-     {
-         $this->orden = $orden;
+    public function setOrden(?int $orden): static
+    {
+        $this->orden = $orden;
 
-         return $this;
-     }
+        return $this;
+    }
 
-     public function isActive(): ?bool
-     {
-         return $this->isActive;
-     }
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
 
-     public function setActive(?bool $isActive): static
-     {
-         $this->isActive = $isActive;
+    public function setActive(?bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
-         return $this;
-     }
+        return $this;
+    }
 
+    public function getVisibleSeccionNormas(): Collection
+    {
+        // Filtrar las normas visibles
+        $filtered = $this->seccionNormas->filter(function (SeccionNorma $seccionNorma) {
+            return $seccionNorma->isActive();
+        });
+
+        // Convertir a array para ordenar
+        $array = $filtered->toArray();
+
+        // Ordenar por la columna 'orden'
+        usort($array, function (SeccionNorma $a, SeccionNorma $b) {
+            return $a->getOrden() <=> $b->getOrden();
+        });
+
+        // Devolver una nueva colección ordenada
+        return new ArrayCollection($array);
+    }
 }
