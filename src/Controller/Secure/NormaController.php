@@ -33,7 +33,7 @@ class NormaController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, NormaRepository $normaRepository, TipoReferenciaRepository $tipoReferenciaRepository): Response
     {
         $data['norma'] = new Norma();
-        $data['form_norma'] = $this->createForm(NormaType::class, $data['norma'], ['allow_extra_fields' => true,'is_edit' => false]);
+        $data['form_norma'] = $this->createForm(NormaType::class, $data['norma'], ['allow_extra_fields' => true, 'is_edit' => false]);
         $data['form_norma']->handleRequest($request);
 
         $data['files_js'] = [
@@ -68,19 +68,27 @@ class NormaController extends AbstractController
             $file = $data['form_norma']->get('urlPdf')->getData();
 
             if ($file) {
+                // Obtener el nombre original y sanitizarlo
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                //$newFilename = uniqid().'.'.$file->guessExtension();
-                $newFilename = $originalFilename . '-' . uniqid() . '.' . $file->guessExtension();
+                $sanitizedFilename = $this->sanitizeFileName($originalFilename);
+
+                // Crear un nombre único para el archivo subido
+                $newFilename = $sanitizedFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
                 try {
+                    // Mover el archivo subido al directorio de almacenamiento
                     $pdfUploadsDir = $this->getParameter('pdf_uploads_directory');
                     $file->move($pdfUploadsDir, $newFilename);
                 } catch (FileException $e) {
                     // Manejar error si algo falla en la subida
+                    $this->addFlash('error', 'Ocurrió un error al subir el archivo.');
+                    return $this->redirectToRoute('app_norma_new');
                 }
 
+                // Establecer el nuevo nombre en la entidad
                 $data['norma']->setUrlPdf($newFilename);
             }
+
             $data['norma']->setTextoCompletoModificadoHtml($data['norma']->getTextoCompletoHtml());
             $entityManager->persist($data['norma']);
             $entityManager->flush();
@@ -96,7 +104,7 @@ class NormaController extends AbstractController
     public function edit(Request $request, Norma $norma, EntityManagerInterface $entityManager, NormaRepository $normaRepository, TipoReferenciaRepository $tipoReferenciaRepository): Response
     {
         // Crear el formulario con la entidad Norma
-        $form_norma = $this->createForm(NormaType::class, $norma, ['allow_extra_fields' => true,'is_edit' => true]);
+        $form_norma = $this->createForm(NormaType::class, $norma, ['allow_extra_fields' => true, 'is_edit' => true]);
         // Obtener todas las instancias de UsuarioTipoNorma asociadas al usuario
         $normaTemas = $norma->getNormaTemas();
         $files_js = [
@@ -159,24 +167,19 @@ class NormaController extends AbstractController
             // Si se sube un nuevo archivo, procesarlo
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                // Crear un nombre único para el archivo subido
-                $newFilename = $originalFilename . '-' . uniqid() . '.' . $file->guessExtension();
+                $sanitizedFilename = $this->sanitizeFileName($originalFilename);
+
+                $newFilename = $sanitizedFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
                 try {
-                    // Mover el archivo subido al directorio de almacenamiento
                     $pdfUploadsDir = $this->getParameter('pdf_uploads_directory');
                     $file->move($pdfUploadsDir, $newFilename);
                 } catch (FileException $e) {
-                    // Manejar el error si algo falla en la subida del archivo
                     $this->addFlash('error', 'Ocurrió un error al subir el archivo.');
                     return $this->redirectToRoute('app_norma_edit', ['id' => $norma->getId()]);
                 }
 
-                // Actualizar la entidad Norma con el nuevo nombre del archivo
                 $norma->setUrlPdf($newFilename);
-            } else {
-                // Si no se sube un nuevo archivo, mantener el archivo actual
-                $norma->setUrlPdf($norma->getUrlPdf());
             }
 
             // Guardar los cambios en la base de datos
@@ -251,5 +254,16 @@ class NormaController extends AbstractController
 
             return new JsonResponse(['success' => true, 'normas' => $normasData]);
         }
+    }
+
+    private function sanitizeFileName(string $filename): string
+    {
+        // Remueve caracteres no válidos y convierte espacios a guiones bajos
+        $sanitized = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $filename);
+
+        // Asegúrate de que no haya múltiples guiones bajos consecutivos
+        $sanitized = preg_replace('/_+/', '_', $sanitized);
+
+        return $sanitized;
     }
 }
