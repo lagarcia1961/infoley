@@ -183,7 +183,7 @@
 					</div>
 					<div class="card-body">
 						{% for seccion_norma in seccion.getVisibleSeccionNormas() %}
-							<a href="{{ path('app_show_norma', {'slug':seccion_norma.norma.slug}) }}">
+							<a target="_blank" href="{{ path('app_show_norma', {'slug':seccion_norma.norma.slug}) }}">
 								<h5 class="card-title">
 									<i class="fas fa-angle-right"></i>
 									{{ seccion_norma.titulo }}
