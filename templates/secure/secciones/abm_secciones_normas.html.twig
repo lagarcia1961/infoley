@@ -1,59 +1,76 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{{ include('modals/_modal_historico.html.twig') }}
-<div class="row">
-	<div class="col-12">
-		<h1>Sección {{ seccion.tema.nombre }}:</h1>
-	</div>
-</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+				<div class="page-title-left">
+					<ol class="breadcrumb m-0">
+						<li class="breadcrumb-item">
+							<a href="javascript: void(0);">Secciones</a>
+						</li>
+						<li class="breadcrumb-item">
+							<a href="{{ path('app_secure_secciones_index') }}">Lista de secciones</a>
+						</li>
+						<li class="breadcrumb-item active">Sección
+							{{ seccion.tema.nombre }}</li>
+					</ol>
+				</div>
 
-<div class="row">
-	<div class="col-xs-12 text-end my-4">
-		<a href="{{ path('app_secure_secciones_norma_new',{id:seccion.id})}}" class="btn btn-primary">
-			Cargar norma a la sección
-		</a>
+			</div>
+		</div>
 	</div>
-</div>
-<div class="row">
-	<div class="col-xs-12">
-		<table id="datatable-buttons" data-url-eliminar="{{ path('app_secure_seccion_norma_delete') }}"
-			class="table table-sm table-bordered table-striped datatable-delete">
-			<thead>
-				<tr>
-					<th data-column-type="numeric">Orden</th>
-					<th>Título sección</th>
-					<th>Norma título</th>
-					<th>Nro</th>
-					<th>Año sanción</th>
-					<th data-orderable="false" class="text-center">Acciones</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for seccion_norma in secciones %}
-				<tr>
-					<td>{{ seccion_norma.orden }}</td>
-					<td>{{ seccion_norma.titulo }}</td>
-					<td>{{ seccion_norma.norma.titulo }}</td>
-					<td>{{ seccion_norma.norma.numero }}</td>
-					<td>{{ seccion_norma.norma.fechaSancion|date('Y') }}</td>
-					<td class="text-center">
-						<a class="m-2" href="{{ path('app_secure_secciones_norma_edit', {'id': seccion.id,'seccion_norma_id':seccion_norma.id}) }}" title="Editar sección">
-							<i class="fas fa-edit text-warning"></i>
-						</a>
-						<a href="javascript:void(0);" class="btn-delete m-2" data-id="{{ seccion_norma.id }}"
-							title="Eliminar Norma">
-							<i class="fas fa-trash text-danger"></i>
-						</a>
-					</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+	<div class="row">
+		<div class="col-12">
+			<h1>Sección
+				{{ seccion.tema.nombre }}:</h1>
+		</div>
 	</div>
-</div>
 
-<div class="col-12 mt-4 text-end">
-	<a href="{{ path('app_secure_secciones_index') }}" class="btn btn-secondary">Volver</a>
-</div>
+	<div class="row">
+		<div class="col-xs-12 text-end my-4">
+			<a href="{{ path('app_secure_secciones_norma_new',{id:seccion.id})}}" class="btn btn-primary">
+				Cargar norma a la sección
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<table id="datatable-buttons" data-url-eliminar="{{ path('app_secure_seccion_norma_delete') }}" class="table table-sm table-bordered table-striped datatable-delete">
+				<thead>
+					<tr>
+						<th data-column-type="numeric">Orden</th>
+						<th>Título sección</th>
+						<th>Norma título</th>
+						<th>Nro</th>
+						<th>Año sanción</th>
+						<th data-orderable="false" class="text-center">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for seccion_norma in secciones %}
+						<tr>
+							<td>{{ seccion_norma.orden }}</td>
+							<td>{{ seccion_norma.titulo }}</td>
+							<td>{{ seccion_norma.norma.titulo }}</td>
+							<td>{{ seccion_norma.norma.numero }}</td>
+							<td>{{ seccion_norma.norma.fechaSancion|date('Y') }}</td>
+							<td class="text-center">
+								<a class="m-2" href="{{ path('app_secure_secciones_norma_edit', {'id': seccion.id,'seccion_norma_id':seccion_norma.id}) }}" title="Editar sección">
+									<i class="fas fa-edit text-warning"></i>
+								</a>
+								<a href="javascript:void(0);" class="btn-delete m-2" data-id="{{ seccion_norma.id }}" title="Eliminar Norma">
+									<i class="fas fa-trash text-danger"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="col-12 mt-4 text-end">
+		<a href="{{ path('app_secure_secciones_index') }}" class="btn btn-secondary">Volver</a>
+	</div>
 {% endblock %}

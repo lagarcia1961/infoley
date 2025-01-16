@@ -11,7 +11,7 @@
 {# FIN FIXED-SECTION STYLE #}
 <div class="row">
 	<div class="col-xs-12 mt-4">
-		<h2>{{ norma.tipoNorma.nombre ~ ' ' ~ norma.numero ~ '/' ~ norma.anio}}</h2>
+		<h2>{{ norma.tipoNorma.nombre ~ ' ' ~ norma.numero ~ '/' ~ norma.fechaSancion|date('Y')}}</h2>
 		<h5 class="text-muted">{{ norma.dependencia.nombre }}</h5>
 	</div>
 	<div class="col-xs-12">
@@ -25,12 +25,46 @@
 						<h1>{{ norma.titulo }}</h1>
 						<h5 class="text-muted mt-4">Fecha de publicación: {{ norma.fechaPublicacion|date('d/m/Y') }}
 						</h5>
-						<p class="mt-4" style="text-align: justify;">
-							{{ norma.textoCompleto|striptags|length > 100 ? norma.textoCompleto|striptags|slice(0, 1500)
-							~ '...'
-							: norma.textoCompleto|striptags }}
-						</p>
 					</div>
+					<div class="col-12">
+						<!-- Accordions Bordered -->
+						<div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-secondary" id="accordionBordered1">
+							<div class="accordion-item material-shadow">
+								<h2 class="accordion-header" id="accordionbordered1TextoOriginal">
+									<button class="accordion-button bg-secondary text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accor_borderedExamplecollapseOriginal" aria-expanded="true" aria-controls="accor_borderedExamplecollapseOriginal">
+										Texto de la norma
+									</button>
+								</h2>
+								<div id="accor_borderedExamplecollapseOriginal" class="accordion-collapse collapse" aria-labelledby="accordionbordered1TextoOriginal" data-bs-parent="#accordionBordered">
+									<div class="accordion-body">
+										{{ norma.textoCompletoHtml|raw }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{% if norma.modificado %}
+					<div class="col-12">
+						<div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-secondary" id="accordionBordered2">
+
+							<div class="accordion-item mt-2 material-shadow">
+								<h2 class="accordion-header" id="accordionbordered2TextoModificado">
+									<button class="accordion-button bg-secondary text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accor_borderedExamplecollapseModificado" aria-expanded="false" aria-controls="accor_borderedExamplecollapseModificado">
+										Texto modificado
+									</button>
+								</h2>
+								<div id="accor_borderedExamplecollapseModificado" class="accordion-collapse collapse" aria-labelledby="accordionbordered2TextoModificado" data-bs-parent="#accordionBordered">
+									<div class="accordion-body">
+										{{ norma.textoCompletoModificadoHtml|raw }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+						
+					{% endif %}
+
 					{% if norma.urlPdf %}
 					<div class="col-12">
 						<embed class="mt-4" src="{{ asset('uploads/normas/' ~ norma.urlPdf) }}" type="application/pdf"
@@ -120,8 +154,8 @@
 								</td>
 								<td>
 									{{ referencia.normaOrigen.titulo ~'
-									'~ referencia.normaOrigen.numero }}{{ referencia.normaOrigen.anio ? '/' ~
-									referencia.normaOrigen.anio:'' }}
+									'~ referencia.normaOrigen.numero }}{{ referencia.normaOrigen.fechaSancion ? '/' ~
+									referencia.normaOrigen.fechaSancion|date('Y'):'' }}
 								</td>
 								<td>{{ referencia.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
 								<td>{{ referencia.normaOrigen.textoCompleto|striptags|length > 100 ?
@@ -177,8 +211,8 @@
 								</td>
 								<td>
 									{{ referencia.normaDestino.titulo ~'
-									'~ referencia.normaDestino.numero }}{{ referencia.normaDestino.anio ? '/' ~
-									referencia.normaDestino.anio:'' }}
+									'~ referencia.normaDestino.numero }}{{ referencia.normaDestino.fechaSancion ? '/' ~
+									referencia.normaDestino.fechaSancion|date('Y'):'' }}
 								</td>
 								<td>{{ referencia.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
 								<td>{{ referencia.normaDestino.textoCompleto|striptags|length > 100 ?

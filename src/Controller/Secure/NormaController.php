@@ -60,7 +60,8 @@ class NormaController extends AbstractController
                     $referenciaOrigen->setTipoReferencia($tipoReferenciaRepository->find((int)$normaAgregadaOrigen['tipoReferencia']));
                     $entityManager->persist($referenciaOrigen);
 
-                    $normaOrigen->setTextoCompletoModificadoHtml($normaAgregadaOrigen['textoCompletoModificadoHtml']);
+                    $normaOrigen->setTextoCompletoModificadoHtml($normaAgregadaOrigen['textoCompletoModificadoHtml'])
+                        ->setModificado(true);
                     $entityManager->persist($normaOrigen);
                 }
             }
@@ -104,7 +105,7 @@ class NormaController extends AbstractController
     public function edit(Request $request, Norma $norma, EntityManagerInterface $entityManager, NormaRepository $normaRepository, TipoReferenciaRepository $tipoReferenciaRepository): Response
     {
         // Crear el formulario con la entidad Norma
-        $form_norma = $this->createForm(NormaType::class, $norma, ['allow_extra_fields' => true, 'is_edit' => true]);
+        $form_norma = $this->createForm(NormaType::class, $norma, ['allow_extra_fields' => true, 'is_edit' => true, 'modificado' => $norma->isModificado()]);
         // Obtener todas las instancias de UsuarioTipoNorma asociadas al usuario
         $normaTemas = $norma->getNormaTemas();
         $files_js = [
@@ -159,7 +160,8 @@ class NormaController extends AbstractController
                     $referenciaOrigen->setTipoReferencia($tipoReferenciaRepository->find((int)$normaAgregadaOrigen['tipoReferencia']));
                     $entityManager->persist($referenciaOrigen);
 
-                    $normaOrigen->setTextoCompletoModificadoHtml($normaAgregadaOrigen['textoCompletoModificadoHtml']);
+                    $normaOrigen->setTextoCompletoModificadoHtml($normaAgregadaOrigen['textoCompletoModificadoHtml'])
+                        ->setModificado(true);
                     $entityManager->persist($normaOrigen);
                 }
             }

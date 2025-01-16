@@ -4,6 +4,25 @@
 
 <div class="row">
 	<div class="col-12">
+		<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+			<div class="page-title-left">
+				<ol class="breadcrumb m-0">
+					<li class="breadcrumb-item">
+						<a href="javascript: void(0);">Auditoria</a>
+					</li>
+					<li class="breadcrumb-item">
+						<a href="{{ path('app_secure_auditoria_index') }}">Lista de registros</a>
+					</li>
+					<li class="breadcrumb-item active">Ver auditoria</li>
+				</ol>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-12">
 		<h1>Auditoria Nro {{ auditoria.id }}</h1>
 	</div>
 </div>
@@ -126,6 +145,11 @@
 				</tr>
 			</tbody>
 		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 text-end">
+		<a href="{{ path('app_secure_auditoria_index') }}" class="btn btn-secondary">Volver</a>
 	</div>
 </div>
 

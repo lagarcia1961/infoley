@@ -177,7 +177,7 @@
 		{{ form_errors(form_norma.textoCompletoHtml) }}
 	</div>
 
-	{% if norma.textoCompletoModificadoHtml %}
+	{% if norma.textoCompletoModificadoHtml and norma.modificado %}
 	<div class="mb-3">
 		{{ form_label(form_norma.textoCompletoModificadoHtml) }}
 		{{ form_widget(form_norma.textoCompletoModificadoHtml, {'attr': {'max-rows': 12}}) }}

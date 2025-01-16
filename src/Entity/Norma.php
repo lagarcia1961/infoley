@@ -83,6 +83,9 @@ class Norma
     #[ORM\OneToMany(targetEntity: SeccionNorma::class, mappedBy: 'norma')]
     private Collection $seccionNormas;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $modificado = null;
+
     public function __construct()
     {
         $this->documentosAdicionales = new ArrayCollection();
@@ -91,6 +94,7 @@ class Norma
         $this->normasOrigen = new ArrayCollection();
         $this->normasDestino = new ArrayCollection();
         $this->seccionNormas = new ArrayCollection();
+        $this->modificado = false;
     }
 
     // Getters y setters
@@ -341,7 +345,7 @@ class Norma
             'id' => $this->id,
             'titulo' => $this->titulo,
             'numero' => $this->numero,
-            'fechaSancion' => $this->fechaSancion? $this->fechaSancion->format('Y'):'',
+            'fechaSancion' => $this->fechaSancion ? $this->fechaSancion->format('Y') : '',
             'fechaPublicacion' => $this->fechaPublicacion->format('d/m/Y'),
             'textoCompleto' => $this->textoCompleto,
             'textoCompletoHtml' => $this->textoCompletoHtml,
@@ -419,6 +423,18 @@ class Norma
                 $seccionNorma->setNorma(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isModificado(): ?bool
+    {
+        return $this->modificado;
+    }
+
+    public function setModificado(?bool $modificado): static
+    {
+        $this->modificado = $modificado;
 
         return $this;
     }

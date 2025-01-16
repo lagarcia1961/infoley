@@ -79,16 +79,16 @@ class NormaType extends AbstractType
                     'class' => 'trumbowyg-editor',
                 ],
             ]);
-            if ($options['is_edit']) {
-                $builder->add('textoCompletoModificadoHtml', TextareaType::class, [
-                    'label' => 'Texto modificado',
-                    'label_html' => true,
-                    'attr' => [
-                        'class' => 'trumbowyg-editor',
-                    ],
-                ]);
-            }
-            $builder
+        if ($options['is_edit'] && $options['modificado']) {
+            $builder->add('textoCompletoModificadoHtml', TextareaType::class, [
+                'label' => 'Texto modificado',
+                'label_html' => true,
+                'attr' => [
+                    'class' => 'trumbowyg-editor',
+                ],
+            ]);
+        }
+        $builder
             // Agregar un campo de texto para mostrar el nombre del archivo actual:
             ->add('currentFile', TextType::class, [
                 'label' => 'Archivo actual',
@@ -221,6 +221,7 @@ class NormaType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Norma::class,
             'is_edit' => false,
+            'modificado' => false,
         ]);
     }
 }

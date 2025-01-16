@@ -85,6 +85,7 @@ class SeccionesController extends AbstractController
     #[Route('/{id}/norma/new', name: 'app_secure_secciones_norma_new')]
     public function seccionNormaNew($id, SeccionRepository $seccionRepository, SeccionNormaRepository $seccionNormaRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $data['titulo'] = 'Cargar';
         $data['seccion'] = $seccionRepository->findOneBy(['id' => $id, 'isActive' => true]);
         if (!$data['seccion']) {
             return $this->redirectToRoute('app_secure_secciones_index');
@@ -123,6 +124,8 @@ class SeccionesController extends AbstractController
     #[Route('/{id}/norma/edit/{seccion_norma_id}', name: 'app_secure_secciones_norma_edit')]
     public function seccionNormaEdit($id, $seccion_norma_id, SeccionRepository $seccionRepository, SeccionNormaRepository $seccionNormaRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
+        
+        $data['titulo'] = 'Editar';
         $data['seccion'] = $seccionRepository->findOneBy(['id' => $id, 'isActive' => true]);
         if (!$data['seccion']) {
             return $this->redirectToRoute('app_secure_secciones_index');

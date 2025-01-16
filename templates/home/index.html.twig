@@ -2,200 +2,199 @@
 
 {% block body %}
 
-<div class="row">
-	<div class="col-xs-12 my-4">
-		<h2>Búsqueda de normativas</h2>
-	</div>
-	<div class="col-xs-12">
+	<div class="row">
+		<div class="col-xs-12 my-4">
+			<h2>Búsqueda de normativas</h2>
+		</div>
+		<div class="col-xs-12">
 
-		<ul class="nav nav-tabs" role="tablist">
-			<li class="nav-item">
-				<a class="nav-link {{ form_avanzado_active? '':'active' }}" data-bs-toggle="tab" href="#simple"
-					role="tab" aria-selected="true">
-					<span class="d-none d-sm-block">Búsqueda simple</span>
-				</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link {{ form_avanzado_active? 'active':'' }}" data-bs-toggle="tab" href="#avanzado"
-					role="tab" aria-selected="false">
-					<span class="d-none d-sm-block">Búsqueda avanzada</span>
-				</a>
-			</li>
-		</ul>
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link {{ form_avanzado_active? '':'active' }}" data-bs-toggle="tab" href="#simple" role="tab" aria-selected="true">
+						<span class="d-none d-sm-block">Búsqueda simple</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link {{ form_avanzado_active? 'active':'' }}" data-bs-toggle="tab" href="#avanzado" role="tab" aria-selected="false">
+						<span class="d-none d-sm-block">Búsqueda avanzada</span>
+					</a>
+				</li>
+			</ul>
 
-		<!-- Tab panes -->
-		<div class="tab-content p-3 text-muted">
-			<div class="tab-pane {{ form_avanzado_active? '':'active' }}" id="simple" role="tabpanel">
-				{{ form_start (form_simple) }}
-				<div class="row">
-					<div class="col-12 col-md-4">
+			<!-- Tab panes -->
+			<div class="tab-content p-3 text-muted">
+				<div class="tab-pane {{ form_avanzado_active? '':'active' }}" id="simple" role="tabpanel">
+					{{ form_start (form_simple) }}
+					<div class="row">
+						<div class="col-12 col-md-4">
 
-						{{ form_label (form_simple.tipoNorma) }}
-						{{ form_widget (form_simple.tipoNorma) }}
-						{{ form_errors (form_simple.tipoNorma)}}
+							{{ form_label (form_simple.tipoNorma) }}
+							{{ form_widget (form_simple.tipoNorma) }}
+							{{ form_errors (form_simple.tipoNorma)}}
 
+						</div>
+						<div class="col-12 col-md-4">
+
+							{{ form_label (form_simple.numero) }}
+							{{ form_widget (form_simple.numero) }}
+							{{ form_errors (form_simple.numero)}}
+
+						</div>
+						<div class="col-12 col-md-4">
+
+							{{ form_label (form_simple.anio) }}
+							{{ form_widget (form_simple.anio) }}
+							{{ form_errors (form_simple.anio)}}
+
+						</div>
+						<div class="col-12 mt-3 d-grid gap-2">
+							{{ form_widget (form_simple.buscar) }}
+						</div>
 					</div>
-					<div class="col-12 col-md-4">
 
-						{{ form_label (form_simple.numero) }}
-						{{ form_widget (form_simple.numero) }}
-						{{ form_errors (form_simple.numero)}}
-
-					</div>
-					<div class="col-12 col-md-4">
-
-						{{ form_label (form_simple.anio) }}
-						{{ form_widget (form_simple.anio) }}
-						{{ form_errors (form_simple.anio)}}
-
-					</div>
-					<div class="col-12 mt-3 d-grid gap-2">
-						{{ form_widget (form_simple.buscar) }}
-					</div>
+					{{ form_end (form_simple) }}
 				</div>
+				<div class="tab-pane {{ form_avanzado_active? 'active':'' }}" id="avanzado" role="tabpanel">
+					{{ form_start (form_avanzado) }}
+					<div class="row">
+						<div class="col-12 col-md-4">
 
-				{{ form_end (form_simple) }}
-			</div>
-			<div class="tab-pane {{ form_avanzado_active? 'active':'' }}" id="avanzado" role="tabpanel">
-				{{ form_start (form_avanzado) }}
-				<div class="row">
-					<div class="col-12 col-md-4">
+							{{ form_label (form_avanzado.tipoNorma) }}
+							{{ form_widget (form_avanzado.tipoNorma) }}
+							{{ form_errors (form_avanzado.tipoNorma)}}
 
-						{{ form_label (form_avanzado.tipoNorma) }}
-						{{ form_widget (form_avanzado.tipoNorma) }}
-						{{ form_errors (form_avanzado.tipoNorma)}}
+						</div>
+						<div class="col-12 col-md-4">
 
+							{{ form_label (form_avanzado.numero) }}
+							{{ form_widget (form_avanzado.numero) }}
+							{{ form_errors (form_avanzado.numero)}}
+
+						</div>
+						<div class="col-12 col-md-4">
+
+							{{ form_label (form_avanzado.anio) }}
+							{{ form_widget (form_avanzado.anio) }}
+							{{ form_errors (form_avanzado.anio)}}
+
+						</div>
+
+						<div class="col-12 col-md-6 my-2">
+
+							{{ form_label (form_avanzado.texto) }}
+							{{ form_widget (form_avanzado.texto) }}
+							{{ form_errors (form_avanzado.texto)}}
+
+						</div>
+
+
+						<div class="col-12 col-md-6 my-2">
+
+							{{ form_label (form_avanzado.dependencia) }}
+							{{ form_widget (form_avanzado.dependencia) }}
+							{{ form_errors (form_avanzado.dependencia)}}
+
+						</div>
+
+
+						<div class="col-12 col-md-6 my-2">
+
+							{{ form_label (form_avanzado.fechaDesde) }}
+							{{ form_widget (form_avanzado.fechaDesde) }}
+							{{ form_errors (form_avanzado.fechaDesde)}}
+
+						</div>
+
+
+						<div class="col-12 col-md-6 my-2">
+
+							{{ form_label (form_avanzado.fechaHasta) }}
+							{{ form_widget (form_avanzado.fechaHasta) }}
+							{{ form_errors (form_avanzado.fechaHasta)}}
+
+						</div>
+
+						<div class="col-12 mt-3 d-grid gap-2">
+							{{ form_widget (form_avanzado.buscar) }}
+						</div>
 					</div>
-					<div class="col-12 col-md-4">
-
-						{{ form_label (form_avanzado.numero) }}
-						{{ form_widget (form_avanzado.numero) }}
-						{{ form_errors (form_avanzado.numero)}}
-
-					</div>
-					<div class="col-12 col-md-4">
-
-						{{ form_label (form_avanzado.anio) }}
-						{{ form_widget (form_avanzado.anio) }}
-						{{ form_errors (form_avanzado.anio)}}
-
-					</div>
-
-					<div class="col-12 col-md-6 my-2">
-
-						{{ form_label (form_avanzado.texto) }}
-						{{ form_widget (form_avanzado.texto) }}
-						{{ form_errors (form_avanzado.texto)}}
-
-					</div>
-
-
-					<div class="col-12 col-md-6 my-2">
-
-						{{ form_label (form_avanzado.dependencia) }}
-						{{ form_widget (form_avanzado.dependencia) }}
-						{{ form_errors (form_avanzado.dependencia)}}
-
-					</div>
-
-
-					<div class="col-12 col-md-6 my-2">
-
-						{{ form_label (form_avanzado.fechaDesde) }}
-						{{ form_widget (form_avanzado.fechaDesde) }}
-						{{ form_errors (form_avanzado.fechaDesde)}}
-
-					</div>
-
-
-					<div class="col-12 col-md-6 my-2">
-
-						{{ form_label (form_avanzado.fechaHasta) }}
-						{{ form_widget (form_avanzado.fechaHasta) }}
-						{{ form_errors (form_avanzado.fechaHasta)}}
-
-					</div>
-
-					<div class="col-12 mt-3 d-grid gap-2">
-						{{ form_widget (form_avanzado.buscar) }}
-					</div>
+					{{ form_end (form_avanzado) }}
 				</div>
-				{{ form_end (form_avanzado) }}
 			</div>
 		</div>
-	</div>
-	{% if normativas is defined %}
-	<div>
-		<div class="col-xs-12">
-			<hr>
-		</div>
+		{% if normativas is defined %}
+			<div>
+				<div class="col-xs-12">
+					<hr>
+				</div>
 
-		<div class="col-xs-12">
-			<table id="datatable-buttons" class="table table-sm table-bordered table-striped">
-				<thead>
-					<tr>
-						<th>Tipo de normativa</th>
-						<th>Normativa/Número</th>
-						<th>Fecha de publicación</th>
-						<th>Descripción</th>
-						<th class="no-sort"></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for normativa in normativas %}
-					<tr>
-						<td>
-							{{ normativa.tipoNorma.nombre }}
-						</td>
-						<td>
-							{{ normativa.tipoNorma.nombre ~' '~ normativa.titulo ~'
+				<div class="col-xs-12">
+					<table id="datatable-buttons" class="table table-sm table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Tipo de normativa</th>
+								<th>Normativa/Número</th>
+								<th>Fecha de publicación</th>
+								<th>Descripción</th>
+								<th class="no-sort"></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for normativa in normativas %}
+								<tr>
+									<td>
+										{{ normativa.tipoNorma.nombre }}
+									</td>
+									<td>
+										{{ normativa.tipoNorma.nombre ~' '~ normativa.titulo ~'
 							'~ normativa.numero }}{{ normativa.fechaSancion ? '/' ~
 							normativa.fechaSancion|date('d/m/Y'):'' }}
-						</td>
-						<td>{{ normativa.fechaPublicacion|date('d/m/Y') }}</td>
-						<td>{{ normativa.textoCompleto|striptags|slice(0, 100) }}...</td>
-						<td class="text-center">
-							<a href="{{ path('app_show_norma',{'slug':normativa.slug}) }}" target="_blank"
-								title="Ver normativa">
-								<i class="fas fa-eye"></i>
+									</td>
+									<td>{{ normativa.fechaPublicacion|date('d/m/Y') }}</td>
+									<td>{{ normativa.textoCompleto|striptags|slice(0, 100) }}...</td>
+									<td class="text-center">
+										<a href="{{ path('app_show_norma',{'slug':normativa.slug}) }}" target="_blank" title="Ver normativa">
+											<i class="fas fa-eye"></i>
+										</a>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		{% endif %}
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-xs-12 my-4">
+			<h2>Normativas destacadas</h2>
+		</div>
+
+		{% for seccion in secciones %}
+			<div class="col-xs-12 col-sm-6 col-lg-3">
+				<div class="card border border-primary" style="min-height: 200px;">
+					<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
+						<h5 class="my-0 text-primary">
+							<i class="fas fa-file-signature"></i>
+							{{seccion.tema.nombre}}
+						</h5>
+					</div>
+					<div class="card-body">
+						{% for seccion_norma in seccion.getVisibleSeccionNormas() %}
+							<a href="{{ path('app_show_norma', {'slug':seccion_norma.norma.slug}) }}">
+								<h5 class="card-title">
+									<i class="fas fa-angle-right"></i>
+									{{ seccion_norma.titulo }}
+								</h5>
 							</a>
-						</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-
-	</div>
-	{% endif %}
-</div>
-<hr>
-<div class="row">
-	<div class="col-xs-12 my-4">
-		<h2>Normativas destacadas</h2>
-	</div>
-
-	{% for seccion in secciones %}
-	<div class="col-xs-12 col-sm-6 col-lg-3">
-		<div class="card border border-primary" style="min-height: 200px;">
-			<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
-				<h5 class="my-0 text-primary">
-					<i class="fas fa-file-signature"></i>
-					{{seccion.tema.nombre}}
-				</h5>
+						{% endfor %}
+					</div>
+				</div>
 			</div>
-			<div class="card-body">
-				{% for seccion_norma in seccion.getVisibleSeccionNormas() %}
-					<h5 class="card-title">
-					<i class="fas fa-angle-right"></i>
-					{{ seccion_norma.titulo }}
-				</h5>
-				{% endfor %}
-			</div>
-		</div>
-	</div>
-	{% endfor %}
+		{% endfor %}
 
-</div>
+	</div>
 
 {% endblock %}

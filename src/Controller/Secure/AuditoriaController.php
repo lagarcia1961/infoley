@@ -4,7 +4,6 @@ namespace App\Controller\Secure;
 
 use App\Entity\Auditoria;
 use App\Repository\AuditoriaRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,14 +21,14 @@ class AuditoriaController extends AbstractController
     }
 
     #[Route('/ver/{id}', name: 'app_secure_auditoria_ver', methods: ['GET'])]
-    public function ver(Auditoria $auditoria, Request $request, EntityManagerInterface $em): Response
+    public function ver(Auditoria $auditoria): Response
     {
         $data['auditoria'] = $auditoria;
         return $this->render('secure/auditoria/ver.html.twig', $data);
     }
 
     #[Route('/historico', name: 'app_secure_auditoria_historico', methods: ['POST'])]
-    public function eliminar(AuditoriaRepository $auditoriaRepository, Request $request, EntityManagerInterface $em): JsonResponse
+    public function historico(AuditoriaRepository $auditoriaRepository, Request $request): JsonResponse
     { {
             // Obtener el ID desde el cuerpo de la solicitud
             $id = $request->request->get('id') ?? null;

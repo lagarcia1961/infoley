@@ -4,11 +4,25 @@
 {% endblock %}
 
 {% block body %}
-
-				<div class="row">
-					<div class="col-12">
-						<h1>Nuevo Tipo de Norma</h1>
-						{{ include('secure/tipo_norma/_form.html.twig') }}
-					</div>
-				</div>
+	<div class="col-12">
+		<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+			<div class="page-title-left">
+				<ol class="breadcrumb m-0">
+					<li class="breadcrumb-item">
+						<a href="javascript: void(0);">Tipos de normas</a>
+					</li>
+					<li class="breadcrumb-item">
+						<a href="{{path('app_tipo_norma_index')}}">Lista de tipos de normas</a>
+					</li>
+					<li class="breadcrumb-item active">Nuevo tipo de norma</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<h1>Nuevo Tipo de Norma</h1>
+			{{ include('secure/tipo_norma/_form.html.twig') }}
+		</div>
+	</div>
 {% endblock %}

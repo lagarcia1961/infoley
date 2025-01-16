@@ -1,12 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Dependencia index
+{% block title %}Listado de Dependencias
 {% endblock %}
 
 {% block body %}
 	<div class="row">
 		<div class="col-12">
-			<h1>Listado de Dependencias</h1>
+			<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+				<div class="page-title-left">
+					<ol class="breadcrumb m-0">
+						<li class="breadcrumb-item">
+							<a href="javascript: void(0);">Dependencias</a>
+						</li>
+						<li class="breadcrumb-item active">Lista de dependencias</li>
+					</ol>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<h1>Dependencias</h1>
 		</div>
 	</div>
 
@@ -44,6 +59,11 @@
 					{% endfor %}
 				</tbody>
 			</table>
+		</div>
+	</div>
+	<div class="row mb-4">
+		<div class="col-xs-12 text-end">
+			<a href="{{ path('app_secure_home')}}" class="btn btn-secondary">Volver</a>
 		</div>
 	</div>
 {% endblock %}
