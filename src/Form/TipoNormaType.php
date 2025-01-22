@@ -32,9 +32,6 @@ class TipoNormaType extends AbstractType
                     'min' => 1,
                 ],
             ])
-            ->add('descripcion', TextareaType::class, [
-                'label' => 'Descripción'
-            ])
             ->add('guardar', SubmitType::class, [
                 'label' => 'Guardar',
             ]);;

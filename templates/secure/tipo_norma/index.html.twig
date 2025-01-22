@@ -37,7 +37,6 @@
 					<tr>
 						<th data-column-type="numeric">Id</th>
 						<th>Nombre</th>
-						<th>Descripción</th>
 						<th data-column-type="numeric">Rango</th>
 						<th data-orderable="false">Acciones</th>
 					</tr>
@@ -47,7 +46,6 @@
 						<tr>
 							<td>{{ tipo_norma.id }}</td>
 							<td>{{ tipo_norma.nombre }}</td>
-							<td>{{ tipo_norma.descripcion }}</td>
 							<td>{{ tipo_norma.rango }}</td>
 							<td>
 								<a class="btn" href="{{ path('app_tipo_norma_edit', {'id': tipo_norma.id}) }}" title="Editar Tipo de Norma">

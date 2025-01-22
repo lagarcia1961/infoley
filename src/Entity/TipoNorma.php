@@ -18,9 +18,6 @@ class TipoNorma
     #[ORM\Column(length: 100)]
     private ?string $nombre = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $descripcion = null;
-
     #[ORM\OneToMany(mappedBy: 'tipoNorma', targetEntity: Norma::class)]
     private Collection $normas;
 
@@ -57,18 +54,6 @@ class TipoNorma
     public function setNombre(string $nombre): self
     {
         $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    public function getDescripcion(): ?string
-    {
-        return $this->descripcion;
-    }
-
-    public function setDescripcion(?string $descripcion): self
-    {
-        $this->descripcion = $descripcion;
 
         return $this;
     }

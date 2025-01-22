@@ -11,7 +11,7 @@
 {# FIN FIXED-SECTION STYLE #}
 <div class="row">
 	<div class="col-xs-12 mt-4">
-		<h2>{{ norma.tipoNorma.nombre ~ ' ' ~ norma.numero ~ '/' ~ norma.fechaSancion|date('Y')}}</h2>
+		<h2>{{ norma.tipoNorma.nombre ~ ' ' ~ (norma.numero != 0 ? norma.numero|number_format(0, ',', '.') ~ '/':'') ~ norma.fechaSancion|date('Y')}}</h2>
 		<h5 class="text-muted">{{ norma.dependencia.nombre }}</h5>
 	</div>
 	<div class="col-xs-12">
@@ -67,8 +67,8 @@
 
 					{% if norma.urlPdf %}
 					<div class="col-12">
-						<embed class="mt-4" src="{{ asset('uploads/normas/' ~ norma.urlPdf) }}" type="application/pdf"
-							width="100%" height="600px" />
+						<button class="btn btn-primary mt-3" onclick="viewFullScreen()">Ver PDF en pantalla Completa</button>
+						<embed id="pdfViewer" class="mt-4" src="{{ asset('uploads/normas/' ~ norma.urlPdf) }}" type="application/pdf" width="100%" height="600px" />
 					</div>
 					{% endif %}
 
@@ -153,9 +153,15 @@
 									{{ referencia.tipoReferencia.nombre }}
 								</td>
 								<td>
-									{{ referencia.normaOrigen.titulo ~'
-									'~ referencia.normaOrigen.numero }}{{ referencia.normaOrigen.fechaSancion ? '/' ~
-									referencia.normaOrigen.fechaSancion|date('Y'):'' }}
+									{{ referencia.normaOrigen.titulo ~ ' ' ~ 
+									(referencia.normaOrigen.numero != 0 
+										? referencia.normaOrigen.numero|number_format(0, ',', '.') ~ '/' 
+										: '') 
+									}}
+									{{ referencia.normaOrigen.fechaSancion 
+										? referencia.normaOrigen.fechaSancion|date('Y') 
+										: '' 
+									}}
 								</td>
 								<td>{{ referencia.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
 								<td>{{ referencia.normaOrigen.textoCompleto|striptags|length > 100 ?
@@ -210,9 +216,15 @@
 									{{ referencia.tipoReferencia.nombre }}
 								</td>
 								<td>
-									{{ referencia.normaDestino.titulo ~'
-									'~ referencia.normaDestino.numero }}{{ referencia.normaDestino.fechaSancion ? '/' ~
-									referencia.normaDestino.fechaSancion|date('Y'):'' }}
+									{{ referencia.normaDestino.titulo ~ ' ' ~ 
+									(referencia.normaDestino.numero != 0 
+										? referencia.normaDestino.numero|number_format(0, ',', '.') ~ '/' 
+										: '') 
+									}}
+									{{ referencia.normaDestino.fechaSancion 
+										? referencia.normaDestino.fechaSancion|date('Y') 
+										: '' 
+									}}
 								</td>
 								<td>{{ referencia.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
 								<td>{{ referencia.normaDestino.textoCompleto|striptags|length > 100 ?
@@ -236,5 +248,18 @@
 </div><!-- /.modal -->
 
 {# FIN LARGE MODAL #}
-
+<script>
+    function viewFullScreen() {
+        const pdfViewer = document.getElementById('pdfViewer');
+        if (pdfViewer.requestFullscreen) {
+            pdfViewer.requestFullscreen();
+        } else if (pdfViewer.mozRequestFullScreen) { // Firefox
+            pdfViewer.mozRequestFullScreen();
+        } else if (pdfViewer.webkitRequestFullscreen) { // Chrome, Safari y Opera
+            pdfViewer.webkitRequestFullscreen();
+        } else if (pdfViewer.msRequestFullscreen) { // IE/Edge
+            pdfViewer.msRequestFullscreen();
+        }
+    }
+</script>
 {% endblock %}

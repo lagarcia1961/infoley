@@ -12,16 +12,9 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-12">
-		{{ form_label (form.descripcion) }}
-		{{ form_widget (form.descripcion) }}
-		{{ form_errors (form.descripcion)}}
-	</div>
-
 	<div class="col-12 mt-4 text-end">
 		{{ form_widget (form.guardar) }}
 		<a href="{{ path('app_tipo_norma_index') }}" class="btn btn-secondary">Volver</a>
 	</div>
-
 </div>
 {{ form_end (form) }}
