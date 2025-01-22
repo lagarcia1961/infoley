@@ -78,7 +78,7 @@ class SeccionesController extends AbstractController
         if (!$data['seccion']) {
             return $this->redirectToRoute('app_secure_secciones_index');
         }
-        $data['secciones'] = $seccionNormaRepository->findBy(['seccion' => $data['seccion'], 'isActive' => true]);
+        $data['secciones'] = $seccionNormaRepository->findActiveNormasBySeccion($data['seccion']->getId());
         return $this->render('secure/secciones/abm_secciones_normas.html.twig', $data);
     }
 

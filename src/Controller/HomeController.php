@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home_front')]
-    public function index(EntityManagerInterface $entityManager, Request $request, NormaRepository $normaRepository, SeccionRepository $seccionRepository): Response
+    public function index(Request $request, NormaRepository $normaRepository, SeccionRepository $seccionRepository): Response
     {
 
         $data['form_simple'] = $this->createForm(BusquedaSimpleType::class);
@@ -51,7 +51,7 @@ class HomeController extends AbstractController
             $data['normativas']= $normaRepository->busquedaAvanzada($tipoNorma,$numero,$anio,$texto,$dependencia,$fechaDesde,$fechaHasta);
         }
 
-        $data['secciones'] = $seccionRepository->findBy(['isActive'=>true],['orden'=>'ASC']);
+        $data['secciones'] = $seccionRepository->findActiveSeccionesWithActiveNormas();
 
         return $this->render('home/index.html.twig', $data);
     }

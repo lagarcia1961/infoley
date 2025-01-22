@@ -45,6 +45,7 @@ class SeccionNormaType extends AbstractType
                         return $nr->createQueryBuilder('n')
                             ->join('n.normaTemas', 'nt') // Relación Norma -> NormaTema
                             ->where('nt.tema = :tema') // Filtrar por el tema dado
+                            ->andWhere('n.isActive = true')
                             ->setParameter('tema', $tema)
                             ->orderBy('n.numero', 'ASC'); // Ordenar por número
                     },

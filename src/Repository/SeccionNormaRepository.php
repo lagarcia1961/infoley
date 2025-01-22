@@ -16,6 +16,19 @@ class SeccionNormaRepository extends ServiceEntityRepository
         parent::__construct($registry, SeccionNorma::class);
     }
 
+    public function findActiveNormasBySeccion(int $seccionId): array
+    {
+        return $this->createQueryBuilder('sn')
+            ->innerJoin('sn.norma', 'n')
+            ->addSelect('n')
+            ->where('sn.seccion = :seccionId')
+            ->andWhere('n.isActive = :isActive')
+            ->setParameter('seccionId', $seccionId)
+            ->setParameter('isActive', true)
+            ->orderBy('sn.orden', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return SeccionNorma[] Returns an array of SeccionNorma objects
 //     */
