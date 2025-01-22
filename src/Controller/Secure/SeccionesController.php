@@ -21,7 +21,7 @@ class SeccionesController extends AbstractController
     #[Route('/', name: 'app_secure_secciones_index')]
     public function index(SeccionRepository $seccionRepository): Response
     {
-        $data['secciones'] = $seccionRepository->findBy(['isActive' => true]);
+        $data['secciones'] = $seccionRepository->findActiveSeccionesWithActiveTemas();
         return $this->render('secure/secciones/abm_secciones.html.twig', $data);
     }
 

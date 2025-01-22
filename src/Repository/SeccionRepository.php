@@ -16,6 +16,20 @@ class SeccionRepository extends ServiceEntityRepository
         parent::__construct($registry, Seccion::class);
     }
 
+    public function findActiveSeccionesWithActiveTemas(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.tema', 't')
+            ->addSelect('t')
+            ->where('s.isActive = :isActive')
+            ->andWhere('t.isActive = :temaIsActive')
+            ->setParameter('isActive', true)
+            ->setParameter('temaIsActive', true)
+            ->orderBy('s.orden', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findActiveSeccionesWithActiveNormas(): array
     {
         return $this->createQueryBuilder('s')
