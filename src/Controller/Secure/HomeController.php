@@ -68,7 +68,7 @@ class HomeController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        $data['secciones'] = $seccionRepository->findBy(['isActive' => true], ['orden' => 'ASC']);
+        $data['secciones'] = $seccionRepository->findActiveSeccionesWithActiveNormas();
 
         return $this->render('secure/home/index.html.twig', $data);
     }
