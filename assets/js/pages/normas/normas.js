@@ -433,6 +433,8 @@ const readPdf = () => {
 
         // Mostrar spinner
         $('#pdf-loading-spinner').removeClass('d-none');
+        $('#current-page').text('0'); // Resetea la página actual
+        $('#total-pages').text('0'); // Resetea el total de páginas
 
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -443,13 +445,18 @@ const readPdf = () => {
                 const totalPages = pdf.numPages;
                 let currentPage = 1;
 
-                // Procesar cada página de forma incremental
+                // Actualizar el total de páginas en el spinner
+                $('#total-pages').text(totalPages);
+
                 const processPage = () => {
                     if (currentPage > totalPages) {
                         // Ocultar spinner cuando termina
                         $('#pdf-loading-spinner').addClass('d-none');
                         return;
                     }
+
+                    // Actualizar la página actual en el spinner
+                    $('#current-page').text(currentPage);
 
                     pdf.getPage(currentPage).then(function (page) {
                         const viewport = page.getViewport({ scale: 2.0 });
