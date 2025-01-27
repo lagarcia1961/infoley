@@ -429,11 +429,9 @@ const readPdf = () => {
 
     $('#norma_urlPdf').on('change', function (event) {
         const file = event.target.files[0];
-        if (!file) {
-            return;
-        }
+        if (!file) return;
 
-        // Mostrar el spinner de carga de PDF
+        // Mostrar spinner
         $('#pdf-loading-spinner').removeClass('d-none');
 
         const reader = new FileReader();
@@ -443,51 +441,52 @@ const readPdf = () => {
             // Utilizamos PDF.js para extraer las páginas
             pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
                 const totalPages = pdf.numPages;
+                let currentPage = 1;
 
-                const pagePromises = [];
-                for (let i = 1; i <= totalPages; i++) {
-                    pagePromises.push(
-                        pdf.getPage(i).then(function (page) {
-                            const viewport = page.getViewport({ scale: 2.0 }); // Aumentar escala para mayor detalle
-                            const canvas = document.createElement('canvas');
-                            const context = canvas.getContext('2d');
-                            canvas.height = viewport.height;
-                            canvas.width = viewport.width;
+                // Procesar cada página de forma incremental
+                const processPage = () => {
+                    if (currentPage > totalPages) {
+                        // Ocultar spinner cuando termina
+                        $('#pdf-loading-spinner').addClass('d-none');
+                        return;
+                    }
 
-                            return page.render({ canvasContext: context, viewport }).promise.then(() => {
-                                // Preprocesar imagen: convertir a escala de grises
-                                const imgData = context.getImageData(0, 0, canvas.width, canvas.height);
-                                for (let i = 0; i < imgData.data.length; i += 4) {
-                                    const grayscale = imgData.data[i] * 0.3 + imgData.data[i + 1] * 0.59 + imgData.data[i + 2] * 0.11;
-                                    imgData.data[i] = imgData.data[i + 1] = imgData.data[i + 2] = grayscale;
-                                }
-                                context.putImageData(imgData, 0, 0);
+                    pdf.getPage(currentPage).then(function (page) {
+                        const viewport = page.getViewport({ scale: 2.0 });
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
 
-                                // Usar Tesseract.js para extraer texto
-                                return Tesseract.recognize(canvas, 'spa', {
-                                    tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁÉÍÓÚÑáéíóúñ ',
-                                    preserve_interword_spaces: '1',
-                                    logger: info => console.log(info), // Progreso del OCR
-                                }).then(({ data: { text } }) => {
-                                    return text;
-                                });
+                        return page.render({ canvasContext: context, viewport }).promise.then(() => {
+                            const imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+                            // Usar Tesseract.js para extraer texto
+                            return Tesseract.recognize(canvas, 'spa', {
+                                tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁÉÍÓÚÑáéíóúñ ',
+                                preserve_interword_spaces: '1',
+                                logger: info => console.log(info), // Progreso del OCR
+                            }).then(({ data: { text } }) => {
+                                // Agregar texto extraído al textarea
+                                const textarea = $('#norma_textoCompleto');
+                                textarea.val((textarea.val() || '') + `\n\nPágina ${currentPage}:\n${text}`);
+
+                                // Actualizar Trumbowyg
+                                $('#norma_textoCompletoHtml').trumbowyg('html', textarea.val());
+
+                                currentPage++;
+                                processPage(); // Procesar la siguiente página
                             });
-                        }).catch((err) => {
-                            console.error(`Error procesando la página ${i}:`, err);
-                            return ''; // Retorna texto vacío si ocurre un error
-                        })
-                    );
-                }
+                        });
+                    }).catch((err) => {
+                        console.error(`Error procesando la página ${currentPage}:`, err);
+                        currentPage++;
+                        processPage(); // Continuar con la siguiente página en caso de error
+                    });
+                };
 
-                // Combinar los textos de todas las páginas
-                Promise.all(pagePromises).then((pageTexts) => {
-                    const fullText = pageTexts.join('\n\n');
-                    $('#norma_textoCompleto').html(fullText); // Mostrar el texto extraído
-                    $('#norma_textoCompletoHtml').trumbowyg('html', fullText); // Actualizar el contenido del editor HTML
-                }).finally(() => {
-                    // Ocultar el spinner una vez que termina el proceso
-                    $('#pdf-loading-spinner').addClass('d-none');
-                });
+                // Iniciar procesamiento incremental
+                processPage();
             }).catch((error) => {
                 console.error('Error al leer el archivo PDF:', error);
                 alert('Ocurrió un error al leer el archivo PDF.');
