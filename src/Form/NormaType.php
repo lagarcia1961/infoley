@@ -56,9 +56,9 @@ class NormaType extends AbstractType
                 'label_html' => true,
             ])
             ->add('titulo', TextType::class, [
-                'label' => 'Título',
+                'label' => 'Título <span style="color:red">*</span>',
                 'label_html' => true,
-                'required' => false,
+                'required' => true,
                 'attr' => ['maxlength' => 255],
                 'constraints' => [
                     new Length([
