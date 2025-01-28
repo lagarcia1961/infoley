@@ -58,6 +58,7 @@ class NormaType extends AbstractType
             ->add('titulo', TextType::class, [
                 'label' => 'Título',
                 'label_html' => true,
+                'required' => false,
                 'attr' => ['maxlength' => 255],
                 'constraints' => [
                     new Length([
@@ -68,6 +69,7 @@ class NormaType extends AbstractType
             ])
             ->add('fechaPublicacion', DateType::class, [
                 'widget' => 'single_text',
+                'required' => false,
                 'label' => 'Fecha de publicación',
                 'label_html' => true,
             ])

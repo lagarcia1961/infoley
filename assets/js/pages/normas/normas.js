@@ -431,76 +431,103 @@ const readPdf = () => {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Mostrar spinner
-        $('#pdf-loading-spinner').removeClass('d-none');
-        $('#current-page').text('0'); // Resetea la página actual
-        $('#total-pages').text('0'); // Resetea el total de páginas
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const pdfData = new Uint8Array(e.target.result);
-
-            // Utilizamos PDF.js para extraer las páginas
-            pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
-                const totalPages = pdf.numPages;
-                let currentPage = 1;
-
-                // Actualizar el total de páginas en el spinner
-                $('#total-pages').text(totalPages);
-
-                const processPage = () => {
-                    if (currentPage > totalPages) {
-                        // Ocultar spinner cuando termina
-                        $('#pdf-loading-spinner').addClass('d-none');
-                        return;
-                    }
-
-                    // Actualizar la página actual en el spinner
-                    $('#current-page').text(currentPage);
-
-                    pdf.getPage(currentPage).then(function (page) {
-                        const viewport = page.getViewport({ scale: 2.0 });
-                        const canvas = document.createElement('canvas');
-                        const context = canvas.getContext('2d');
-                        canvas.height = viewport.height;
-                        canvas.width = viewport.width;
-
-                        return page.render({ canvasContext: context, viewport }).promise.then(() => {
-                            const imgData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-                            // Usar Tesseract.js para extraer texto
-                            return Tesseract.recognize(canvas, 'spa', {
-                                tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁÉÍÓÚÑáéíóúñ ',
-                                preserve_interword_spaces: '1',
-                                logger: info => console.log(info), // Progreso del OCR
-                            }).then(({ data: { text } }) => {
-                                // Agregar texto extraído al textarea
-                                const textarea = $('#norma_textoCompleto');
-                                textarea.val((textarea.val() || '') + `\n\nPágina ${currentPage}:\n${text}`);
-
-                                // Actualizar Trumbowyg
-                                $('#norma_textoCompletoHtml').trumbowyg('html', textarea.val());
-
-                                currentPage++;
-                                processPage(); // Procesar la siguiente página
-                            });
-                        });
-                    }).catch((err) => {
-                        console.error(`Error procesando la página ${currentPage}:`, err);
-                        currentPage++;
-                        processPage(); // Continuar con la siguiente página en caso de error
-                    });
-                };
-
-                // Iniciar procesamiento incremental
-                processPage();
-            }).catch((error) => {
-                console.error('Error al leer el archivo PDF:', error);
-                alert('Ocurrió un error al leer el archivo PDF.');
-                $('#pdf-loading-spinner').addClass('d-none');
-            });
-        };
-
-        reader.readAsArrayBuffer(file);
+        // Mostrar SweetAlert2 para preguntar al usuario
+        Swal.fire({
+            title: '¿Desea leer el documento PDF?',
+            text: 'Esto puede demorar dependiendo del tamaño del archivo.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, leer',
+            cancelButtonText: 'No, solo subir archivo',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario elige "Sí, leer", comienza la lectura del PDF
+                leerPdf(file);
+            } else {
+                // Si elige "No, solo subir archivo", no se realiza la lectura
+                Swal.fire({
+                    title: 'Archivo subido',
+                    text: 'El archivo se ha subido correctamente sin ser leído.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            }
+        });
     });
 };
+
+const leerPdf = (file) => {
+    // Mostrar spinner
+    $('#pdf-loading-spinner').removeClass('d-none');
+    $('#current-page').text('0'); // Resetea la página actual
+    $('#total-pages').text('0'); // Resetea el total de páginas
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const pdfData = new Uint8Array(e.target.result);
+
+        // Utilizamos PDF.js para extraer las páginas
+        pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
+            const totalPages = pdf.numPages;
+            let currentPage = 1;
+
+            // Actualizar el total de páginas en el spinner
+            $('#total-pages').text(totalPages);
+
+            const processPage = () => {
+                if (currentPage > totalPages) {
+                    // Ocultar spinner cuando termina
+                    $('#pdf-loading-spinner').addClass('d-none');
+                    return;
+                }
+
+                // Actualizar la página actual en el spinner
+                $('#current-page').text(currentPage);
+
+                pdf.getPage(currentPage).then(function (page) {
+                    const viewport = page.getViewport({ scale: 2.0 });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    return page.render({ canvasContext: context, viewport }).promise.then(() => {
+                        const imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+                        // Usar Tesseract.js para extraer texto
+                        return Tesseract.recognize(canvas, 'spa', {
+                            tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁÉÍÓÚÑáéíóúñ ',
+                            preserve_interword_spaces: '1',
+                            logger: info => console.log(info), // Progreso del OCR
+                        }).then(({ data: { text } }) => {
+                            // Agregar texto extraído al textarea
+                            const textarea = $('#norma_textoCompleto');
+                            textarea.val((textarea.val() || '') + `\n\n${text}`);
+
+                            // Actualizar Trumbowyg
+                            $('#norma_textoCompletoHtml').trumbowyg('html', textarea.val());
+
+                            currentPage++;
+                            processPage(); // Procesar la siguiente página
+                        });
+                    });
+                }).catch((err) => {
+                    console.error(`Error procesando la página ${currentPage}:`, err);
+                    currentPage++;
+                    processPage(); // Continuar con la siguiente página en caso de error
+                });
+            };
+
+            // Iniciar procesamiento incremental
+            processPage();
+        }).catch((error) => {
+            console.error('Error al leer el archivo PDF:', error);
+            alert('Ocurrió un error al leer el archivo PDF.');
+            $('#pdf-loading-spinner').addClass('d-none');
+        });
+    };
+
+    reader.readAsArrayBuffer(file);
+};
+
