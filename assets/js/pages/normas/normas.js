@@ -2,7 +2,7 @@ $(document).ready(function () {
     listenTipoNorma();
     listenModals();
     listenEliminarNorma();
-    readPdf();
+    readPdf(IS_NORMA_EDIT);
     loadTrumbowygEditor();
     listenVerTextoModificado();
 
@@ -424,40 +424,47 @@ const resetModals = () => {
 
     limpiarErrores();
 };
-const readPdf = () => {
+const readPdf = (isEdit = false) => {
     pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER;
 
     $('#norma_urlPdf').on('change', function (event) {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Mostrar SweetAlert2 para preguntar al usuario
-        Swal.fire({
-            title: '¿Desea leer el documento PDF?',
-            text: 'Esto puede demorar dependiendo del tamaño del archivo.',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Sí, leer',
-            cancelButtonText: 'No, solo subir archivo',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si el usuario elige "Sí, leer", comienza la lectura del PDF
-                leerPdf(file);
-            } else {
-                // Si elige "No, solo subir archivo", no se realiza la lectura
-                Swal.fire({
-                    title: 'Archivo subido',
-                    text: 'El archivo se ha subido correctamente sin ser leído.',
-                    icon: 'success',
-                    timer: 2000,
-                    showConfirmButton: false,
-                });
-            }
-        });
+        // Limpiar el contenido actual del texto
+        if (isEdit) {
+            // Mostrar SweetAlert2 para preguntar al usuario en modo EDIT
+            Swal.fire({
+                title: '¿Desea leer el documento PDF?',
+                text: 'Esto puede demorar dependiendo del tamaño del archivo.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, leer',
+                cancelButtonText: 'No, solo subir archivo',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario elige "Sí, leer", comienza la lectura del PDF
+                    leerPdf(file);
+                } else {
+                    // Si elige "No, solo subir archivo"
+                    Swal.fire({
+                        title: 'Archivo subido',
+                        text: 'El archivo se ha subido correctamente sin ser leído.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                    });
+                }
+            });
+        } else {
+            // Si es una acción NEW, lee el archivo automáticamente
+            leerPdf(file);
+        }
     });
 };
 
 const leerPdf = (file) => {
+    limpiarTexto();
     // Mostrar spinner
     $('#pdf-loading-spinner').removeClass('d-none');
     $('#current-page').text('0'); // Resetea la página actual
@@ -531,3 +538,8 @@ const leerPdf = (file) => {
     reader.readAsArrayBuffer(file);
 };
 
+const limpiarTexto = () => {
+    // Limpiar el contenido del textarea y del editor Trumbowyg
+    $('#norma_textoCompleto').val('');
+    $('#norma_textoCompletoHtml').trumbowyg('empty');
+};
