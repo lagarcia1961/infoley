@@ -367,7 +367,7 @@ const updateNormas = (selectElement) => {
     choicesOrigen = new Choices(selectElement, {
         placeholder: true,
         placeholderValue: 'Seleccione una norma',
-        shouldSort: false, // Deshabilitar ordenamiento automático
+        shouldSort: true,
         itemSelectText: '', // Quitar texto "Presiona para seleccionar"
         searchFields: ['label'], // Busca solo en los textos visibles (puedes ajustar esto)
         fuseOptions: {
