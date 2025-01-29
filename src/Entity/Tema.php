@@ -27,9 +27,6 @@ class Tema
     #[ORM\Column(options: ["default" => 1])]
     private ?bool $isActive = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $descripcion = null;
-
     #[ORM\OneToOne(mappedBy: 'tema', cascade: ['persist', 'remove'])]
     private ?Seccion $seccion = null;
 
@@ -95,18 +92,6 @@ class Tema
     public function setActive(bool $isActive): static
     {
         $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    public function getDescripcion(): ?string
-    {
-        return $this->descripcion;
-    }
-
-    public function setDescripcion(?string $descripcion): static
-    {
-        $this->descripcion = $descripcion;
 
         return $this;
     }

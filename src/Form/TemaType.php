@@ -25,17 +25,6 @@ class TemaType extends AbstractType
                     ]),
                 ]
             ])
-            ->add('descripcion', TextType::class, [
-                'label' => 'Descripción',
-                'attr' => ['maxlength' => 255],
-                'constraints'=>[
-                    new Length([
-                        'max' => 255,
-                        'maxMessage' => 'El nombre no puede tener más de {{ limit }} caracteres.',
-                    ]),
-                ]
-            ])
-
             ->add('guardar', SubmitType::class, [
                 'label' => 'Guardar',
             ]);
