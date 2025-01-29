@@ -365,15 +365,13 @@ const updateNormas = (selectElement) => {
 
     // Inicializar el plugin Choices.js para el select correspondiente
     choicesOrigen = new Choices(selectElement, {
-        placeholder: true,
-        placeholderValue: 'Seleccione una norma',
-        shouldSort: true,
-        itemSelectText: '', // Quitar texto "Presiona para seleccionar"
-        searchFields: ['label'], // Busca solo en los textos visibles (puedes ajustar esto)
+        searchChoices: true, // Habilitar búsqueda en las opciones
+        shouldSort: false, // No ordenar automáticamente las opciones
+        valueComparer: (inputValue, optionValue) => inputValue.trim() === optionValue.trim(), // Comparación exacta
         fuseOptions: {
-            threshold: 0, // Ajusta la flexibilidad de coincidencia (0 = coincidencia exacta, 1 = todas coinciden)
+            threshold: 0.1, // Búsqueda muy precisa
+            minMatchCharLength: 3 // Requiere al menos 3 caracteres para buscar
         },
-        searchResultLimit: 100, // Muestra hasta 100 opciones filtradas
         classNames: {
             containerOuter: 'choices custom-choices'
         }
