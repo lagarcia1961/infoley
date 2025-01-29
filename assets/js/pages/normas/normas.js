@@ -365,12 +365,13 @@ const updateNormas = (selectElement) => {
 
     // Inicializar el plugin Choices.js para el select correspondiente
     choicesOrigen = new Choices(selectElement, {
-        searchChoices: true, // Habilitar búsqueda en las opciones
-        shouldSort: false, // No ordenar automáticamente las opciones
-        valueComparer: (inputValue, optionValue) => inputValue.trim() === optionValue.trim(), // Comparación exacta
+        searchChoices: true,
+        shouldSort: false,
+        itemSelectText: '',
         fuseOptions: {
-            threshold: 0.1, // Búsqueda muy precisa
-            minMatchCharLength: 3 // Requiere al menos 3 caracteres para buscar
+            threshold: 0.3, // Más flexible en coincidencias
+            minMatchCharLength: 3, // Mínimo de 3 caracteres para buscar
+            distance: 1000 // Aumenta la tolerancia para cadenas largas
         },
         classNames: {
             containerOuter: 'choices custom-choices'
