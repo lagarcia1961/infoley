@@ -371,7 +371,7 @@ const updateNormas = (selectElement) => {
         itemSelectText: '', // Quitar texto "Presiona para seleccionar"
         searchFields: ['label'], // Busca solo en los textos visibles (puedes ajustar esto)
         fuseOptions: {
-            threshold: 0.3, // Ajusta la flexibilidad de coincidencia (0 = coincidencia exacta, 1 = todas coinciden)
+            threshold: 0, // Ajusta la flexibilidad de coincidencia (0 = coincidencia exacta, 1 = todas coinciden)
         },
         searchResultLimit: 100, // Muestra hasta 100 opciones filtradas
         classNames: {
