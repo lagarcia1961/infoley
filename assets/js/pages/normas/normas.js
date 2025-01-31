@@ -20,7 +20,7 @@ $(document).ready(function () {
 });
 
 var tipoNormaId;
-var choicesOrigen;
+var selectNormaOrigen;
 var normasOrigenFetched = [];
 var normasSeleccionadasOrigen = [];
 
@@ -272,11 +272,6 @@ const listenTipoNorma = () => {
         actualizarTablaNormas();
         tipoNormaId = $(this).val();
 
-        // Destruir las instancias de Choices si existen
-        if (choicesOrigen) {
-            choicesOrigen.destroy();
-        }
-
         // Limpiar selects
         clearNormasOrigen();
 
@@ -363,34 +358,32 @@ const updateNormas = (selectElement) => {
     $('#norma_normaOrigen').removeAttr('disabled');
     $('#norma_tipoReferenciaOrigen').removeAttr('disabled');
 
+    selectNormaOrigen = $("#norma_normaOrigen");
     // Inicializar el plugin Choices.js para el select correspondiente
-    choicesOrigen = new Choices(selectElement, {
-        searchChoices: true,
-        shouldSort: false,
-        itemSelectText: '',
-        fuseOptions: {
-            threshold: 0.3, // Más flexible en coincidencias
-            minMatchCharLength: 3, // Mínimo de 3 caracteres para buscar
-            distance: 1000 // Aumenta la tolerancia para cadenas largas
-        },
-        classNames: {
-            containerOuter: 'choices custom-choices'
-        }
+    selectNormaOrigen.empty(); // Limpiar opciones previas
+
+    // Agregar opción por defecto
+    selectNormaOrigen.append(new Option("Seleccione una norma", "", false, false));
+
+    // Agregar normas dinámicamente
+    normasOrigenFetched.forEach(norma => {
+        selectNormaOrigen.append(new Option(`${norma.titulo} - ${norma.numero} - ${norma.fechaSancion}`, norma.id));
     });
 
-    // Limpiar y actualizar el select con las normas obtenidas
-    choicesOrigen.setChoices([], 'value', 'label', true);  // Limpiar las opciones actuales
-    const normasMaped = normasOrigenFetched.map(norma => ({
-        value: norma.id,
-        label: norma.titulo + ' - ' + norma.numero + ' - ' + norma.fechaSancion
-    }));
+    // Inicializar Select2
+    selectNormaOrigen.select2({
+        placeholder: "Seleccione una norma",
+        allowClear: true,
+        width: '100%',
+        language: "es",
+        dropdownParent: $('#modalAgregarNormaOrigen') // Evita problemas en modales
+    });
 
-    normasMaped.unshift({ value: '', label: 'Seleccione una norma', disabled: true, selected: true });
-
-    choicesOrigen.setChoices(normasMaped);
+    // Refrescar Select2
+    selectNormaOrigen.trigger('change');
 
     // Agregar un evento para cuando se selecciona un valor en el combo
-    $(selectElement).on('change', function () {
+    $(selectNormaOrigen).on('change', function () {
         const selectedValue = this.value; // Valor seleccionado
         let selectedNorma;
 
@@ -421,11 +414,7 @@ const resetModals = () => {
     // Limpiar todos los spans de Norma Origen
     $('#spanNormaOrigen_titulo, #spanNormaOrigen_tipoNorma, #spanNormaOrigen_numero, #spanNormaOrigen_fechaSancion, #spanNormaOrigen_fechaPublicacion, #modal_textoCompletoModificadoHtml, #spanNormaOrigen_urlPdf').text('');
 
-    // Resetear selects
-    if (choicesOrigen) {
-        choicesOrigen.setChoiceByValue('');
-    }
-
+    selectNormaOrigen.val(null).trigger('change');
     $('#norma_tipoReferenciaOrigen').val('');
     $('#modal_textoCompletoModificadoHtml').html('');
     $('#modal_textoCompletoModificadoHtml').trumbowyg('empty');

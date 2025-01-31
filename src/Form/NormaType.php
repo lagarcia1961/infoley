@@ -110,7 +110,7 @@ class NormaType extends AbstractType
                 ],
                 'constraints' => [
                     new File([
-                        'maxSize' => '3072k', // Tamaño máximo
+                        'maxSize' => '100M', // Tamaño máximo
                         'mimeTypes' => [
                             'application/pdf',
                         ],
@@ -176,6 +176,9 @@ class NormaType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'disabled' => true,
+                'attr'=>[
+                    'class'=>'form-select'
+                ]
             ])
             ->add('temas', EntityType::class, [
                 'label' => 'Temas',
