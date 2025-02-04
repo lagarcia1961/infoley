@@ -81,7 +81,7 @@ class NormaRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function busquedaAvanzada($tipoNorma, $numero, $anio, $texto, $dependencia, $fechaDesde, $fechaHasta): array
+    public function busquedaAvanzada($tipoNorma, $numero, $anio, $texto, $dependencia, $fechaDesde, $fechaHasta, $tema): array
     {
         $qb = $this->createQueryBuilder('n')
             ->join('n.tipoNorma', 'tn')
@@ -118,6 +118,13 @@ class NormaRepository extends ServiceEntityRepository
                 ->setParameter('dependencia', $dependencia);
         }
 
+        // Filtro por dependencia
+        if ($tema) {
+            $qb->join('n.normaTemas', 'nt')
+            ->andWhere('nt.tema = :tema')
+                ->setParameter('tema', $tema);
+        }
+
         // Filtro por fecha de publicación (desde)
         if ($fechaDesde) {
             $qb->andWhere('n.fechaPublicacion >= :fechaDesde')
@@ -132,6 +139,24 @@ class NormaRepository extends ServiceEntityRepository
 
         // Retornar los resultados
         return $qb->getQuery()
+            ->getResult();
+    }
+
+    public function findActiveNormasByTema(int $temaId): array
+    {
+        return $this->createQueryBuilder('n')
+            ->innerJoin('n.normaTemas', 'tn')
+            ->addSelect('n')
+            ->addSelect('tn')
+            ->innerJoin('tn.tema', 't')
+            ->addSelect('t')
+            ->where('tn.tema = :temaId')
+            ->andWhere('n.isActive = :isActiveNorma')
+            ->andWhere('t.isActive = :isActiveTema')
+            ->setParameter('temaId', $temaId)
+            ->setParameter('isActiveNorma', true)
+            ->setParameter('isActiveTema', true)
+            ->getQuery()
             ->getResult();
     }
 }

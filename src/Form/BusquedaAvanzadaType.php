@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Dependencia;
+use App\Entity\Tema;
 use App\Entity\TipoNorma;
 use App\Repository\DependenciaRepository;
+use App\Repository\TemaRepository;
 use App\Repository\TipoNormaRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -93,6 +95,19 @@ class BusquedaAvanzadaType extends AbstractType
                     'max' => $hoy
                 ],
             ])
+            ->add('tema', EntityType::class, [
+                'class' => Tema::class,
+                'required' => false,
+                'choice_label' => 'nombre',
+                'query_builder' => function (TemaRepository $t) {
+                    return $t->createQueryBuilder('t')
+                        ->where('t.isActive = :isActive')
+                        ->setParameter('isActive', true)
+                        ->orderBy('t.nombre', 'ASC');
+                },
+                'empty_data' => null,
+                'placeholder' => 'Seleccione un tema'
+            ])
             ->add('buscar', SubmitType::class, [
                 'label' => 'Buscar normativa',
             ]);
@@ -120,12 +135,13 @@ class BusquedaAvanzadaType extends AbstractType
                 $form->get('fechaHasta')->addError(new FormError('La fecha "hasta" no puede ser menor que la fecha "desde".'));
             }
 
-            if (empty($data['numero']) && empty($data['anio']) && empty($data['texto']) && empty($data['dependencia']) && empty($data['fechaDesde']) && empty($data['fechaHasta'])) {
+            if (empty($data['numero']) && empty($data['anio']) && empty($data['texto']) && empty($data['dependencia']) && empty($data['tema']) && empty($data['fechaDesde']) && empty($data['fechaHasta'])) {
                 $message = 'Debes completar al menos 2 criterios de búsqueda.';
                 $form->get('numero')->addError(new FormError($message));
                 $form->get('anio')->addError(new FormError($message));
                 $form->get('texto')->addError(new FormError($message));
                 $form->get('dependencia')->addError(new FormError($message));
+                $form->get('tema')->addError(new FormError($message));
                 $form->get('fechaDesde')->addError(new FormError($message));
                 $form->get('fechaHasta')->addError(new FormError($message));
             }

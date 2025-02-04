@@ -46,6 +46,9 @@
 							<td>{{ tema.id }}</td>
 							<td>{{ tema.nombre }}</td>
 							<td>
+								<a class="btn" href="{{ path('app_tema_normas', {'id': tema.id}) }}" title="Ver normas asociadas">
+									<i class="fas fa-eye text-secondary"></i>
+								</a>
 								<a class="btn" href="{{ path('app_tema_edit', {'id': tema.id}) }}" title="Editar Tema">
 									<i class="fas fa-edit text-warning"></i>
 								</a>

@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tema index
+{% endblock %}
+
+{% block body %}
+	<div class="col-12">
+		<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+			<div class="page-title-left">
+				<ol class="breadcrumb m-0">
+					<li class="breadcrumb-item">
+						<a href="javascript: void(0);">Temas</a>
+					</li>
+					<li class="breadcrumb-item">
+						<a href="{{path('app_tema_index')}}">Lista de temas</a>
+					</li>
+					<li class="breadcrumb-item active">normas asociadas</li>
+				</ol>
+			</div>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12 my-4">
+			<h1>Normas asociadas a {{ tema.nombre }}</h1>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<table id="datatable-buttons" data-url-eliminar="{{ path('app_norma_delete') }}" data-url-historico="{{ path('app_secure_auditoria_historico')}}" class="table table-sm table-bordered table-striped datatable-delete datatable-historico">
+				<thead>
+					<tr>
+						<th data-column-type="numeric">Id</th>
+						<th>Tipo de norma</th>
+						<th data-column-type="numeric">Numero</th>
+						<th data-column-type="numeric">Fecha de Sanción</th>
+						<th data-column-type="date">Fecha Publicación</th>
+						<th>Titulo</th>
+						<th>Archivo Actual</th>
+						<th data-orderable="false" class="text-center">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for norma in normas %}
+						<tr>
+							<td>{{ norma.id }}</td>
+							<td>{{ norma.tipoNorma.nombre }}</td>
+							<td>{{ norma.numero }}</td>
+							<td>{{ norma.fechaSancion ? norma.fechaSancion|date('d-m-Y') : '' }}</td>
+							<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('d-m-Y') : '' }}</td>
+							<td>{{ norma.titulo }}</td>
+							<td>
+								{% if norma.urlPdf %}
+									<a href="{{ asset('uploads/normas/' ~ norma.urlPdf) }}" target="_blank">{{ norma.urlPdf }}</a>
+								{% else %}
+									Sin adjuntar documento
+								{% endif %}
+							</td>
+							<td class="text-center">
+								<a class="m-2" href="{{ path('app_norma_edit', {'id': norma.id}) }}" title="Editar Norma">
+									<i class="fas fa-edit text-warning"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row mb-4">
+		<div class="col-xs-12 text-end">
+			<a href="{{ path('app_tema_index')}}" class="btn btn-secondary">Volver</a>
+		</div>
+	</div>
+{% endblock %}

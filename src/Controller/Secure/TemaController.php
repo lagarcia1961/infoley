@@ -4,6 +4,8 @@ namespace App\Controller\Secure;
 
 use App\Entity\Tema;
 use App\Form\TemaType;
+use App\Repository\NormaRepository;
+use App\Repository\NormaTemaRepository;
 use App\Repository\TemaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,9 +22,23 @@ class TemaController extends AbstractController
     public function index(TemaRepository $temaRepository): Response
     {
         $temasActivos = $temaRepository->findBy(['isActive' => 1]);
-    
+
         return $this->render('secure/tema/index.html.twig', [
             'temas' => $temasActivos,
+        ]);
+    }
+
+    #[Route('/{id}/normas', name: 'app_tema_normas', methods: ['GET'])]
+    public function temaNormas($id, NormaRepository $normaRepository, TemaRepository $temaRepository): Response
+    {
+        $tema = $temaRepository->findOneBy(['id' => $id, 'isActive' => true]);
+        if (!$tema) {
+            return $this->redirectToRoute('app_tema_index', [], Response::HTTP_SEE_OTHER);
+        }
+        $normas = $normaRepository->findActiveNormasByTema($id);
+        return $this->render('secure/tema/tema_normas_list.html.twig', [
+            'normas' => $normas,
+            'tema'=> $tema,
         ]);
     }
 
@@ -46,7 +62,7 @@ class TemaController extends AbstractController
         ]);
     }
 
-     #[Route('/{id}/edit', name: 'app_tema_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_tema_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tema $tema, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TemaType::class, $tema);
@@ -64,7 +80,7 @@ class TemaController extends AbstractController
         ]);
     }
 
- 
+
     #[Route('/eliminar', name: 'app_tema_delete', methods: ['POST'])]
     public function eliminar(TemaRepository $temaRepository, Request $request, EntityManagerInterface $em): JsonResponse
     { {
@@ -96,9 +112,5 @@ class TemaController extends AbstractController
                 return new JsonResponse(['success' => false, 'message' => 'Error al eliminar el Tema.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
-    }        
-
-
-
+    }
 }
-
