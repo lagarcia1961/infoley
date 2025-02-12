@@ -140,11 +140,13 @@
 					<table id="datatable-buttons" class="table table-sm table-bordered table-striped">
 						<thead>
 							<tr>
-								<th>Tipo de normativa</th>
-								<th>Normativa/Número</th>
-								<th>Fecha de publicación</th>
-								<th>Descripción</th>
-								<th class="no-sort"></th>
+								<th>Tipo de Norma</th>
+								<th>Título</th>
+								<th>Número</th>
+								<th>Año de Sanción</th>
+								<th>Fecha de Publicación</th>
+								<th>Texto Completo</th>
+								<th class="text-center">Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -153,16 +155,17 @@
 									<td>
 										{{ normativa.tipoNorma.nombre }}
 									</td>
+									<!-- Columna para el Título -->
 									<td>
-										{{ normativa.titulo ~ ' ' ~ 
-										(normativa.numero != 0 
-											? normativa.numero|number_format(0, ',', '.') ~ '/' 
-											: '') 
-										}}
-										{{ normativa.fechaSancion 
-											? normativa.fechaSancion|date('Y') 
-											: '' 
-										}}
+										{{ normativa.titulo }}
+									</td>
+									<!-- Columna para el Número -->
+									<td>
+										{{ normativa.numero != 0 ? normativa.numero|number_format(0, ',', '.') : '-' }}
+									</td>
+									<!-- Columna para el Año de Sanción -->
+									<td>
+										{{ normativa.fechaSancion ? normativa.fechaSancion|date('Y') : '-' }}
 									</td>
 									<td>{{ normativa.fechaPublicacion|date('d/m/Y') }}</td>
 									<td>{{ normativa.textoCompleto|striptags|slice(0, 100) }}...</td>
