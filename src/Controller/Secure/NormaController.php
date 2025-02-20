@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-#[Route('secure/norma')]
+#[Route('/secure/norma')]
 class NormaController extends AbstractController
 {
     #[Route('/', name: 'app_norma_index', methods: ['GET'])]

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/secciones')]
+#[Route('/secure/secciones')]
 class SeccionesController extends AbstractController
 {
     #[Route('/', name: 'app_secure_secciones_index')]

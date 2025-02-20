@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN', message: 'No tienes permisos para acceder a esta sección')]
-#[Route('secure/usuarios')]
+#[Route('/secure/usuarios')]
 class UsuariosController extends AbstractController
 {
     private $security;
