@@ -34,12 +34,12 @@
 			<table id="datatable-buttons" data-url-eliminar="{{ path('app_norma_delete') }}" data-url-historico="{{ path('app_secure_auditoria_historico')}}" class="table table-sm table-bordered table-striped datatable-delete datatable-historico">
 				<thead>
 					<tr>
-						<th data-column-type="numeric">Id</th>
+						<th data-column-type="numeric" style="width:1%;">Id</th>
 						<th>Tipo de norma</th>
 						<th data-column-type="numeric">Numero</th>
 						<th data-column-type="numeric">Fecha de Sanción</th>
 						<th data-column-type="date">Fecha Publicación</th>
-						<th>Titulo</th>
+						<th style="width:95%;">Titulo</th>
 						<th>Archivo Actual</th>
 						<th data-orderable="false" class="text-center">Acciones</th>
 					</tr>
@@ -47,15 +47,28 @@
 				<tbody>
 					{% for norma in normas %}
 						<tr>
-							<td>{{ norma.id }}</td>
+							<td class="text-center">{{ norma.id }}</td>
 							<td>{{ norma.tipoNorma.nombre }}</td>
 							<td>{{ norma.numero }}</td>
-							<td>{{ norma.fechaSancion ? norma.fechaSancion|date('d-m-Y') : '' }}</td>
-							<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('d-m-Y') : '' }}</td>
+							<td>{{ norma.fechaSancion ? norma.fechaSancion|date('d/m/Y') : '' }}</td>
+							<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('d/m/Y') : '' }}</td>
 							<td>{{ norma.titulo }}</td>
 							<td>
 								{% if norma.urlPdf %}
-									<a href="{{ asset('uploads/normas/' ~ norma.urlPdf) }}" target="_blank">{{ norma.urlPdf }}</a>
+								
+								{% set max_length = 20 %}
+								{% set filename = norma.urlPdf %}
+
+								{% if filename|length > max_length %}
+									{% set start = filename|slice(0, 15) %}
+									{% set end = filename|slice(-5, 5) %}
+									{% set shortened = start ~ '...' ~ end %}
+								{% else %}
+									{% set shortened = filename %}
+								{% endif %}
+
+								<a href="{{ asset('uploads/normas/' ~ norma.urlPdf) }}" target="_blank" title="{{ norma.urlPdf }}">{{ shortened }}</a>
+
 								{% else %}
 									Sin adjuntar documento
 								{% endif %}

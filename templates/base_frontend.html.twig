@@ -11,8 +11,8 @@
 		{% endif %}
 	</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta content="Normativas - Gobierno de Tierra del Fuego, Antártida e Islas del Atlántico Sur" name="description" />
-	<meta content="Normativas - Gobierno de Tierra del Fuego, Antártida e Islas del Atlántico Sur" name="author" />
+	<meta content="Digesto Normativo Provincial de Educación - Gobierno de Tierra del Fuego, Antártida e Islas del Atlántico Sur" name="description" />
+	<meta content="Gobierno de Tierra del Fuego, Antártida e Islas del Atlántico Sur" name="author" />
 	<!-- App favicon -->
 	<link rel="shortcut icon" href="{{ asset('images/logos/favicon.ico') }}">
 
@@ -54,7 +54,7 @@
 
 <body>
 	{% block login %}{% endblock %}
-	{% else %}
+{% else %}
 
 	<body data-layout="horizontal">
 		<!-- Begin page -->
@@ -297,7 +297,8 @@
 
 			<!-- Right bar overlay-->
 			<div class="rightbar-overlay"></div>
-			{% endif %}
+		</div>
+{% endif %}
 
 			<!-- JAVASCRIPT -->
 			<script src="{{ asset('libs/jquery/jquery.min.js') }}"></script>
@@ -344,9 +345,4 @@
 			<script src="{{ asset('js/app.js') }}"></script>
 
 	</body>
-
-</html>
-
-</html>
-
 </html>

@@ -145,7 +145,6 @@
 								<th>Número</th>
 								<th>Año de Sanción</th>
 								<th>Fecha de Publicación</th>
-								<th>Texto Completo</th>
 								<th class="text-center">Acciones</th>
 							</tr>
 						</thead>
@@ -168,7 +167,6 @@
 										{{ normativa.fechaSancion ? normativa.fechaSancion|date('Y') : '-' }}
 									</td>
 									<td>{{ normativa.fechaPublicacion|date('d/m/Y') }}</td>
-									<td>{{ normativa.textoCompleto|striptags|slice(0, 100) }}...</td>
 									<td class="text-center">
 										<a href="{{ path('app_show_norma',{'slug':normativa.slug}) }}" target="_blank" title="Ver normativa">
 											<i class="fas fa-eye"></i>

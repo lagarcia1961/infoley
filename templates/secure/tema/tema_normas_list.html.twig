@@ -47,8 +47,8 @@
 							<td>{{ norma.id }}</td>
 							<td>{{ norma.tipoNorma.nombre }}</td>
 							<td>{{ norma.numero }}</td>
-							<td>{{ norma.fechaSancion ? norma.fechaSancion|date('d-m-Y') : '' }}</td>
-							<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('d-m-Y') : '' }}</td>
+							<td>{{ norma.fechaSancion ? norma.fechaSancion|date('d/m/Y') : '' }}</td>
+							<td>{{ norma.fechaPublicacion ? norma.fechaPublicacion|date('d/m/Y') : '' }}</td>
 							<td>{{ norma.titulo }}</td>
 							<td>
 								{% if norma.urlPdf %}
