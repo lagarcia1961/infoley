@@ -8,3 +8,12 @@
 .navbar-header .text-header{
     color: #fff;
 }
+
+@media (max-width: 380px) {
+  .navbar-brand-box {
+    display: block;
+  }
+  .logo-xs{
+    height: 45px;
+  }
+}
