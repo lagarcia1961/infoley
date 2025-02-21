@@ -19,7 +19,7 @@
 	</div>
 	<div class="col-xs-12 mt-4">
 		<div class="row">
-			<div class="col-xs-12 col-md-8">
+			<div class="col-12 col-md-8">
 				<div class="row">
 					<div class="col-12">
 						<h1>{{ norma.titulo }}</h1>
@@ -74,7 +74,7 @@
 
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-4">
+			<div class="col-12 col-md-4 d-none d-md-block">
 				{# SI NO GUSTA LO DE FIX NORMAS COMPLEMETARIAS QUITAR SOLO EL DIV FIXED-SECTION #}
 				<div class="fixed-section">
 					<div class="row">
@@ -117,11 +117,52 @@
 				{# END FIXED-SECTION #}
 
 			</div>
+
+			<div class="col-12 d-block d-md-none">
+				{# SI NO GUSTA LO DE FIX NORMAS COMPLEMETARIAS QUITAR SOLO EL DIV FIXED-SECTION #}
+					<div class="row">
+						{% if norma.normasDestino|length or norma.normasOrigen|length %}
+						<div class="col-12">
+							<h5>
+								Normas complementarias
+							</h5>
+						</div>
+						{% if norma.normasDestino|length %}
+						<div class="col-12 my-2">
+
+							<button type="button" class="btn btn-primary waves-effect waves-light"
+								data-bs-toggle="modal" data-bs-target=".normasOrigen">
+								<i class="far fa-hand-point-left"></i>
+								Esta norma modifica o complementa a {{ norma.normasDestino|length }} norma{{
+								norma.normasDestino|length > 1 ? 's':'' }}
+							</button>
+
+						</div>
+						{% endif %}
+
+
+						{% if norma.normasOrigen|length %}
+						<div class="col-12 my-2">
+							<button type="button" class="btn btn-primary waves-effect waves-light"
+								data-bs-toggle="modal" data-bs-target=".normasDestino">
+								<i class="far fa-hand-point-right"></i>
+								Esta norma es complementada o modificada por {{ norma.normasOrigen|length }} norma{{
+								norma.normasOrigen|length > 1 ? 's':'' }}
+							</button>
+						</div>
+						{% endif %}
+
+
+						{% endif %}
+
+					</div>
+				{# END FIXED-SECTION #}
+
+			</div>
 		</div>
 	</div>
 </div>
 {# INICIO LARGE MODAL #}
-
 <div class="modal fade normasOrigen" tabindex="-1" aria-labelledby="normasOrigenLabel"
 	style="display: none;">
 	<div class="modal-dialog modal-xl modal-dialog-centered">
@@ -132,52 +173,54 @@
 			</div>
 			<div class="modal-body">
 				<div class="col-xs-12">
-					<table class="table table-sm table-bordered table-striped">
-						<thead>
-							<tr>
-								<th>Tipo de normativa</th>
-								<th>Referencia</th>
-								<th>Normativa</th>
-								<th>Fecha de publicación</th>
-								<th>Descripción</th>
-								<th data-orderable="false"></th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for referencia in norma.normasDestino %}
-							<tr>
-								<td>
-									{{ referencia.normaOrigen.tipoNorma.nombre }}
-								</td>
-								<td>
-									{{ referencia.tipoReferencia.nombre }}
-								</td>
-								<td>
-									{{ referencia.normaOrigen.titulo ~ ' ' ~ 
-									(referencia.normaOrigen.numero != 0 
-										? referencia.normaOrigen.numero|number_format(0, ',', '.') ~ '/' 
-										: '') 
-									}}
-									{{ referencia.normaOrigen.fechaSancion 
-										? referencia.normaOrigen.fechaSancion|date('Y') 
-										: '' 
-									}}
-								</td>
-								<td>{{ referencia.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
-								<td>{{ referencia.normaOrigen.textoCompleto|striptags|length > 100 ?
-									referencia.normaOrigen.textoCompleto|striptags|slice(0, 150)
-									~ '...'
-									: referencia.normaOrigen.textoCompleto|striptags }}</td>
-								<td class="text-center">
-									<a href="{{ path('app_show_norma',{'slug':referencia.normaOrigen.slug}) }}"
-										target="_blank" title="Ver normativa">
-										<i class="fas fa-eye"></i>
-									</a>
-								</td>
-							</tr>
-							{% endfor %}
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-sm table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Tipo de normativa</th>
+									<th>Referencia</th>
+									<th>Normativa</th>
+									<th>Fecha de publicación</th>
+									<th>Descripción</th>
+									<th data-orderable="false"></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for referencia in norma.normasDestino %}
+								<tr>
+									<td>
+										{{ referencia.normaOrigen.tipoNorma.nombre }}
+									</td>
+									<td>
+										{{ referencia.tipoReferencia.nombre }}
+									</td>
+									<td>
+										{{ referencia.normaOrigen.titulo ~ ' ' ~ 
+										(referencia.normaOrigen.numero != 0 
+											? referencia.normaOrigen.numero|number_format(0, ',', '.') ~ '/' 
+											: '') 
+										}}
+										{{ referencia.normaOrigen.fechaSancion 
+											? referencia.normaOrigen.fechaSancion|date('Y') 
+											: '' 
+										}}
+									</td>
+									<td>{{ referencia.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
+									<td>{{ referencia.normaOrigen.textoCompleto|striptags|length > 100 ?
+										referencia.normaOrigen.textoCompleto|striptags|slice(0, 150)
+										~ '...'
+										: referencia.normaOrigen.textoCompleto|striptags }}</td>
+									<td class="text-center">
+										<a href="{{ path('app_show_norma',{'slug':referencia.normaOrigen.slug}) }}"
+											target="_blank" title="Ver normativa">
+											<i class="fas fa-eye"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div><!-- /.modal-content -->
@@ -195,58 +238,59 @@
 			</div>
 			<div class="modal-body">
 				<div class="col-xs-12">
-					<table class="table table-sm table-bordered table-striped">
-						<thead>
-							<tr>
-								<th>Tipo de normativa</th>
-								<th>Referencia</th>
-								<th>Normativa</th>
-								<th>Fecha de publicación</th>
-								<th>Descripción</th>
-								<th class="no-sort"></th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for referencia in norma.normasOrigen %}
-							<tr>
-								<td>
-									{{ referencia.normaDestino.tipoNorma.nombre }}
-								</td>
-								<td>
-									{{ referencia.tipoReferencia.nombre }}
-								</td>
-								<td>
-									{{ referencia.normaDestino.titulo ~ ' ' ~ 
-									(referencia.normaDestino.numero != 0 
-										? referencia.normaDestino.numero|number_format(0, ',', '.') ~ '/' 
-										: '') 
-									}}
-									{{ referencia.normaDestino.fechaSancion 
-										? referencia.normaDestino.fechaSancion|date('Y') 
-										: '' 
-									}}
-								</td>
-								<td>{{ referencia.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
-								<td>{{ referencia.normaDestino.textoCompleto|striptags|length > 100 ?
-									referencia.normaDestino.textoCompleto|striptags|slice(0, 150)
-									~ '...'
-									: referencia.normaDestino.textoCompleto|striptags }}</td>
-								<td class="text-center">
-									<a href="{{ path('app_show_norma',{'slug':referencia.normaDestino.slug}) }}"
-										target="_blank" title="Ver normativa">
-										<i class="fas fa-eye"></i>
-									</a>
-								</td>
-							</tr>
-							{% endfor %}
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-sm table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Tipo de normativa</th>
+									<th>Referencia</th>
+									<th>Normativa</th>
+									<th>Fecha de publicación</th>
+									<th>Descripción</th>
+									<th class="no-sort"></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for referencia in norma.normasOrigen %}
+								<tr>
+									<td>
+										{{ referencia.normaDestino.tipoNorma.nombre }}
+									</td>
+									<td>
+										{{ referencia.tipoReferencia.nombre }}
+									</td>
+									<td>
+										{{ referencia.normaDestino.titulo ~ ' ' ~ 
+										(referencia.normaDestino.numero != 0 
+											? referencia.normaDestino.numero|number_format(0, ',', '.') ~ '/' 
+											: '') 
+										}}
+										{{ referencia.normaDestino.fechaSancion 
+											? referencia.normaDestino.fechaSancion|date('Y') 
+											: '' 
+										}}
+									</td>
+									<td>{{ referencia.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
+									<td>{{ referencia.normaDestino.textoCompleto|striptags|length > 100 ?
+										referencia.normaDestino.textoCompleto|striptags|slice(0, 150)
+										~ '...'
+										: referencia.normaDestino.textoCompleto|striptags }}</td>
+									<td class="text-center">
+										<a href="{{ path('app_show_norma',{'slug':referencia.normaDestino.slug}) }}"
+											target="_blank" title="Ver normativa">
+											<i class="fas fa-eye"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 {# FIN LARGE MODAL #}
 <script>
     function viewFullScreen() {
