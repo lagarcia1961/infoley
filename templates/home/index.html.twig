@@ -1,10 +1,151 @@
 {% extends 'base_frontend.html.twig' %}
 
 {% block body %}
+	<style>
+		/* Estilo para los indicadores del carrusel */
+		.carousel-indicators button {
+			background-color: #fff!important; /* Color blanco para los puntos */
+			border-color: #fff; /* Bordes blancos */
+			opacity: 0.7; /* Transparencia opcional */
+		}
+
+		.carousel-indicators button.active {
+			background-color: #fff!important; /* Blanco sólido para el indicador activo */
+			opacity: 1; /* Sin transparencia para el activo */
+		}
+
+		/* Efecto hover para los indicadores */
+		.carousel-indicators button:hover {
+			opacity: 1; /* Quita la transparencia al pasar el cursor */
+		}
+
+		.carousel-inner {
+			background-image: url('{{ asset("images/auth-bg.jpg") }}');
+			background-size: cover;
+			background-position: center;
+			width: 100%;
+			height: 200px;
+			position: relative;
+			z-index: 0; /* Fondo fijo detrás del texto */
+		}
+
+		.carousel-caption {
+			height: 200px;
+			background-color: rgba(0, 0, 0, 0.5); /* Fondo negro semitransparente para el texto */
+			z-index: 1; /* Asegura que el texto esté por encima del fondo */
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			display: flex; /* Flex para centrar verticalmente */
+			align-items: center; /* Centrado vertical */
+			justify-content: center; /* Centrado horizontal */
+			text-align: center;
+		}
+
+		.carousel-caption h2 {
+			font-size: 16px;
+			color: #FFFFFF;
+			margin: 0; /* Elimina márgenes que puedan descentrar el texto */
+			padding: 0 10px; /* Opcional: padding para evitar que el texto toque los bordes */
+		}
+
+		/* Tablets verticales y móviles grandes (≥576px) */
+		@media(min-width: 576px) {
+			.carousel-inner,
+			.carousel-caption {
+				height: 300px;
+			}
+			.carousel-caption h2 {
+				font-size: 24px;
+			}
+		}
+
+		/* Tablets horizontales y dispositivos medianos (≥768px) */
+		@media(min-width: 768px) {
+			.carousel-inner,
+			.carousel-caption {
+				height: 280px;
+			}
+			.carousel-caption h2 {
+				font-size: 24px;
+			}
+		}
+
+		/* Escritorios pequeños y dispositivos grandes (≥992px) */
+		@media(min-width: 992px) {
+			.carousel-inner,
+			.carousel-caption {
+				height: 280px;
+			}
+			.carousel-caption h2 {
+				font-size: 26px;
+			}
+		}
+
+		/* Escritorios grandes y pantallas extra grandes (≥1200px) */
+		@media(min-width: 1200px) {
+			.carousel-inner,
+			.carousel-caption {
+				height: 350px;
+			}
+			.carousel-caption h2 {
+				font-size: 40px;
+			}
+		}
+
+		/* Pantallas muy grandes (≥1400px) */
+		@media(min-width: 1400px) {
+			.carousel-inner,
+			.carousel-caption {
+				height: 550px;
+			}
+			.carousel-caption h2 {
+				font-size: 50px;
+			}
+		}
+	</style>
+
+	<!-- Carousel inicio -->
+	<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+		<div class="carousel-indicators">
+			<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+			<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+		</div>
+		<div class="carousel-inner">
+			<div class="carousel-item active" data-bs-interval="10000">
+				<div class="carousel-caption">
+					<h2>Digesto Normativo Provincial de Educación</h2>
+					{# <p></p> #}
+				</div>
+			</div>
+			<div class="carousel-item" data-bs-interval="10000">
+				<div class="carousel-caption">
+					<h2>Compilación sistemática, ordenamiento y publicidad de toda la normativa existente vigente y aplicable del Ministerio de Educación de la provincia de Tierra del Fuego, Antártida e Islas del Atlántico Sur</h2>
+					{# <p></p> #}
+				</div>
+			</div>
+			<div class="carousel-item" data-bs-interval="10000">
+				<div class="carousel-caption">
+					<h2>Herramienta online que permite a la comunidad educativa y a toda la sociedad en general una consulta integral intuitiva y amigable de información jurídica</h2>
+					{# <p></p> #}
+				</div>
+			</div>
+		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+			<span class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+			<span class="visually-hidden">Next</span>
+		</button>
+	</div>
+	<!-- Carousel fin -->
+
 
 	<div class="row">
 		<div class="col-xs-12 my-4">
-			<h2>Búsqueda de normativas</h2>
+			<h2 id="busqueda-normativas">Búsqueda de normativas</h2>
 		</div>
 		<div class="col-xs-12">
 
@@ -24,7 +165,7 @@
 			<!-- Tab panes -->
 			<div class="tab-content p-3 text-muted">
 				<div class="tab-pane {{ form_avanzado_active? '':'active' }}" id="simple" role="tabpanel">
-					{{ form_start (form_simple) }}
+					{{ form_start (form_simple, {'method': 'GET', 'action': path('app_home_front') ~ '#busqueda-normativas'}) }}
 					<div class="row">
 						<div class="col-12 col-md-4">
 
@@ -55,7 +196,7 @@
 					{{ form_end (form_simple) }}
 				</div>
 				<div class="tab-pane {{ form_avanzado_active? 'active':'' }}" id="avanzado" role="tabpanel">
-					{{ form_start (form_avanzado) }}
+					{{ form_start (form_avanzado, {'method': 'GET', 'action': path('app_home_front') ~ '#busqueda-normativas'}) }}
 					<div class="row">
 						<div class="col-12 col-md-4">
 
@@ -97,11 +238,9 @@
 						</div>
 
 						<div class="col-12 col-md-6 my-2">
-
 							{{ form_label (form_avanzado.tema) }}
 							{{ form_widget (form_avanzado.tema) }}
-							{{ form_errors (form_avanzado.tema)}}
-
+							{{ form_errors (form_avanzado.tema) }}
 						</div>
 
 
@@ -194,7 +333,6 @@
 				<div class="card border border-primary" style="min-height: 200px;">
 					<div class="card-header bg-transparent border-primary" style="min-height: 85px;">
 						<h5 class="my-0 text-primary">
-							<i class="fas fa-file-signature"></i>
 							{{seccion.tema.nombre}}
 						</h5>
 					</div>

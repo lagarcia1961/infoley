@@ -81,7 +81,7 @@ class NormaRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function busquedaAvanzada($tipoNorma, $numero, $anio, $texto, $dependencia, $fechaDesde, $fechaHasta, $tema): array
+    public function busquedaAvanzada($tipoNorma, $numero, $anio, $texto, $dependencia, $fechaDesde, $fechaHasta, $temas): array
     {
         $qb = $this->createQueryBuilder('n')
             ->join('n.tipoNorma', 'tn')
@@ -108,7 +108,12 @@ class NormaRepository extends ServiceEntityRepository
 
         // Filtro por texto en el campo "textoCompleto"
         if ($texto) {
-            $qb->andWhere('n.textoCompleto LIKE :texto')
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like('n.textoCompleto', ':texto'),
+                    $qb->expr()->like('n.titulo', ':texto')
+                )
+            )
                 ->setParameter('texto', '%' . $texto . '%');  // Búsqueda parcial en cualquier parte del texto
         }
 
@@ -119,10 +124,15 @@ class NormaRepository extends ServiceEntityRepository
         }
 
         // Filtro por dependencia
-        if ($tema) {
+        if ($temas) {
+            $temaCount = count($temas);
             $qb->join('n.normaTemas', 'nt')
-            ->andWhere('nt.tema = :tema')
-                ->setParameter('tema', $tema);
+               ->join('nt.tema', 't')
+               ->groupBy('n.id')  // Agrupamos por la norma
+               ->having('COUNT(DISTINCT t.id) = :temaCount')  // Exigimos que coincida con la cantidad de temas seleccionados
+               ->setParameter('temaCount', $temaCount)
+               ->andWhere('t.id IN (:temas)')
+               ->setParameter('temas', $temas);
         }
 
         // Filtro por fecha de publicación (desde)

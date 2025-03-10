@@ -98,6 +98,8 @@ class BusquedaAvanzadaType extends AbstractType
             ->add('tema', EntityType::class, [
                 'class' => Tema::class,
                 'required' => false,
+                'multiple' => true,
+                'expanded' => false,
                 'choice_label' => 'nombre',
                 'query_builder' => function (TemaRepository $t) {
                     return $t->createQueryBuilder('t')
@@ -105,9 +107,13 @@ class BusquedaAvanzadaType extends AbstractType
                         ->setParameter('isActive', true)
                         ->orderBy('t.nombre', 'ASC');
                 },
-                'empty_data' => null,
-                'placeholder' => 'Seleccione un tema'
+                'placeholder' => 'Seleccione uno o varios temas',
+                'attr' => [
+                    'class' => 'select2-multiple',
+                    'aria-label' => 'Seleccione uno o varios temas'
+                ],
             ])
+            
             ->add('buscar', SubmitType::class, [
                 'label' => 'Buscar normativa',
             ]);

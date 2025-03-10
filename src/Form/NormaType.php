@@ -176,9 +176,6 @@ class NormaType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'disabled' => true,
-                'attr'=>[
-                    'class'=>'form-select'
-                ]
             ])
             ->add('temas', EntityType::class, [
                 'label' => 'Temas',
@@ -186,7 +183,7 @@ class NormaType extends AbstractType
                 'choice_label' => 'nombre',
                 'required' => false,
                 'multiple' => true,
-                'expanded' => false, // Cambiar a false para usar select en lugar de checkboxes
+                'expanded' => false,
                 'mapped' => false,
                 'query_builder' => function (TemaRepository $t) {
                     return $t->createQueryBuilder('t')
@@ -196,7 +193,7 @@ class NormaType extends AbstractType
                 },
                 'placeholder' => 'Seleccione uno o varios temas',
                 'attr' => [
-                    'class' => 'choice_multiple_default',
+                    'class' => 'select2-multiple', // Asegúrate de tener esta clase
                     'placeholder' => 'Seleccione uno o varios temas',
                     'aria-label' => 'Seleccione uno o varios temas'
                 ],

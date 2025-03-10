@@ -18,7 +18,6 @@ class TemaFixtures extends Fixture implements FixtureGroupInterface
         foreach ($temas as $temaData) {
             $tema = new Tema();
             $tema->setNombre($temaData['nombre']);
-            $tema->setDescripcion($temaData['descripcion']);
 
             $manager->persist($tema);
         }

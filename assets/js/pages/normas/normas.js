@@ -6,6 +6,24 @@ $(document).ready(function () {
     loadTrumbowygEditor();
     listenVerTextoModificado();
 
+    // Configuración para select2 de normaOrigen (ya lo tenías)
+    $('#norma_normaOrigen').select2({
+        placeholder: "Seleccione una norma",
+        allowClear: true,
+        width: '100%',
+        language: "es",
+        dropdownParent: $('#modalAgregarNormaOrigen')
+    });
+
+    // 🟢 Configuración para select2 de temas (opción múltiple)
+    $('#norma_temas').select2({
+        placeholder: "Seleccione uno o varios temas",
+        allowClear: true,
+        width: '100%',
+        language: "es",
+        multiple: true
+    });
+
     // Escucha cuando el modal se oculta
     $('#modalAgregarNormaOrigen, #modalAgregarNormaDestino').on('hidden.bs.modal', function () {
         resetModals();
@@ -18,6 +36,7 @@ $(document).ready(function () {
 
     deleteSpinner();
 });
+
 
 var tipoNormaId;
 var selectNormaOrigen;

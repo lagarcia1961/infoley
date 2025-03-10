@@ -18,8 +18,15 @@ class HomeController extends AbstractController
     public function index(Request $request, NormaRepository $normaRepository, SeccionRepository $seccionRepository): Response
     {
 
-        $data['form_simple'] = $this->createForm(BusquedaSimpleType::class);
-        $data['form_avanzado'] = $this->createForm(BusquedaAvanzadaType::class);
+        $data['form_simple'] = $this->createForm(BusquedaSimpleType::class, null, [
+            'method' => 'GET'
+        ]);
+        $data['form_avanzado'] = $this->createForm(BusquedaAvanzadaType::class, null, [
+            'method' => 'GET'
+        ]);
+        $data['files_js'] = [
+            'home/home.js'
+        ];
 
 
         $data['form_simple']->handleRequest($request);
@@ -46,11 +53,14 @@ class HomeController extends AbstractController
             $anio = $data['form_avanzado']->get('anio')->getData();
             $texto = $data['form_avanzado']->get('texto')->getData();
             $dependencia = $data['form_avanzado']->get('dependencia')->getData();
-            $tema = $data['form_avanzado']->get('tema')->getData();
+            $temas = $data['form_avanzado']->get('tema')->getData();  // 🟢 Ajustado para múltiples temas
             $fechaDesde = $data['form_avanzado']->get('fechaDesde')->getData();
             $fechaHasta = $data['form_avanzado']->get('fechaHasta')->getData();
-            $data['normativas'] = $normaRepository->busquedaAvanzada($tipoNorma, $numero, $anio, $texto, $dependencia, $fechaDesde, $fechaHasta, $tema);
+        
+            // Pasar el array de temas al repositorio
+            $data['normativas'] = $normaRepository->busquedaAvanzada($tipoNorma, $numero, $anio, $texto, $dependencia, $fechaDesde, $fechaHasta, $temas);
         }
+        
 
         $data['secciones'] = $seccionRepository->findActiveSeccionesWithActiveNormas();
 

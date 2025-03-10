@@ -27,7 +27,6 @@ class TipoNormaFixtures extends Fixture implements FixtureGroupInterface
         foreach ($tiposNorma as $data) {
             $tipoNorma = new TipoNorma();
             $tipoNorma->setNombre($data[0]);
-            $tipoNorma->setDescripcion($data[1]);
             $tipoNorma->setRango($data[2]);
             $manager->persist($tipoNorma);
         }

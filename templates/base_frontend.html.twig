@@ -28,6 +28,9 @@
 		type="text/css" />
 
 
+	<!-- SELECT2-->
+	<link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
+
 	<!-- plugin css -->
 	<link href="{{ asset('libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') }}" rel="stylesheet"
 		type="text/css" />
@@ -336,13 +339,24 @@
 			<script src="{{ asset('libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
 			<script src="{{ asset('libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
 
-
+			<!-- SELECT2-->
+			<script src="{{ asset('select2/select2.min.js') }}"></script>
+			
 			<!-- Custom init js -->
 			<script src="{{ asset('js/datatable/datatable_buttons.js') }}"></script>
 			<script src="{{ asset('js/datatable/datatable_simple.js') }}"></script>
 			<script src="{{ asset('js/sweetalert2/sweetalert2_delete.js') }}"></script>
 
 			<script src="{{ asset('js/app.js') }}"></script>
+
+			
+			{% if files_js is defined %}
+
+				{% for file_js in files_js %}
+				<script src="{{ asset('js/pages/'~ file_js) }}"></script>
+				{% endfor %}
+
+			{% endif %}
 
 	</body>
 </html>

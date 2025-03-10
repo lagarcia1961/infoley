@@ -387,9 +387,9 @@
 
 	{% if files_js is defined %}
 
-	{% for file_js in files_js %}
-	<script src="{{ asset('js/pages/'~ file_js) }}"></script>
-	{% endfor %}
+		{% for file_js in files_js %}
+		<script src="{{ asset('js/pages/'~ file_js) }}"></script>
+		{% endfor %}
 
 	{% endif %}
 

@@ -26,7 +26,7 @@
 						<h5 class="text-muted mt-4">Fecha de publicación: {{ norma.fechaPublicacion|date('d/m/Y') }}
 						</h5>
 					</div>
-					<div class="col-12">
+					{# <div class="col-12">
 						<!-- Accordions Bordered -->
 						<div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-secondary" id="accordionBordered1">
 							<div class="accordion-item material-shadow">
@@ -42,9 +42,9 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> #}
 
-					{% if norma.modificado %}
+					{# {% if norma.modificado %}
 					<div class="col-12">
 						<div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-secondary" id="accordionBordered2">
 
@@ -63,7 +63,7 @@
 						</div>
 					</div>
 						
-					{% endif %}
+					{% endif %} #}
 
 					{% if norma.urlPdf %}
 					<div class="col-12">
@@ -181,7 +181,7 @@
 									<th>Referencia</th>
 									<th>Normativa</th>
 									<th>Fecha de publicación</th>
-									<th>Descripción</th>
+									{# <th>Descripción</th> #}
 									<th data-orderable="false"></th>
 								</tr>
 							</thead>
@@ -206,10 +206,10 @@
 										}}
 									</td>
 									<td>{{ referencia.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
-									<td>{{ referencia.normaOrigen.textoCompleto|striptags|length > 100 ?
+									{# <td>{{ referencia.normaOrigen.textoCompleto|striptags|length > 100 ?
 										referencia.normaOrigen.textoCompleto|striptags|slice(0, 150)
 										~ '...'
-										: referencia.normaOrigen.textoCompleto|striptags }}</td>
+										: referencia.normaOrigen.textoCompleto|striptags }}</td> #}
 									<td class="text-center">
 										<a href="{{ path('app_show_norma',{'slug':referencia.normaOrigen.slug}) }}"
 											target="_blank" title="Ver normativa">
@@ -246,7 +246,7 @@
 									<th>Referencia</th>
 									<th>Normativa</th>
 									<th>Fecha de publicación</th>
-									<th>Descripción</th>
+									{# <th>Descripción</th> #}
 									<th class="no-sort"></th>
 								</tr>
 							</thead>
@@ -271,10 +271,10 @@
 										}}
 									</td>
 									<td>{{ referencia.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
-									<td>{{ referencia.normaDestino.textoCompleto|striptags|length > 100 ?
+									{# <td>{{ referencia.normaDestino.textoCompleto|striptags|length > 100 ?
 										referencia.normaDestino.textoCompleto|striptags|slice(0, 150)
 										~ '...'
-										: referencia.normaDestino.textoCompleto|striptags }}</td>
+										: referencia.normaDestino.textoCompleto|striptags }}</td> #}
 									<td class="text-center">
 										<a href="{{ path('app_show_norma',{'slug':referencia.normaDestino.slug}) }}"
 											target="_blank" title="Ver normativa">

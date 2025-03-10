@@ -192,96 +192,110 @@
 	<script>
 
 		// grafico de pie
-document.addEventListener('DOMContentLoaded', function () {
-        const chartDom = document.getElementById('normasPorTipoPie');
-        const myChart = echarts.init(chartDom);
+		document.addEventListener('DOMContentLoaded', function () {
+			const chartDom = document.getElementById('normasPorTipoPie');
+			const myChart = echarts.init(chartDom);
 
-        const data = [
-            {% for item in normas_por_tipo %}
-                {value: {{ item.total }}, name: "{{ item.tipo }}"}{% if not loop.last %},{% endif %}
-            {% endfor %}
-        ];
+			const data = [
+				{% for item in normas_por_tipo %}
+					{value: {{ item.total }}, name: "{{ item.tipo }}"}{% if not loop.last %},{% endif %}
+				{% endfor %}
+			];
 
-        const option = {
-            tooltip: {
-                trigger: 'item',
-                formatter: '{a} <br/>{b}: {c} ({d}%)'
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                formatter: function (name) {
-                    // Buscar el valor correspondiente al nombre en los datos
-                    const item = data.find(d => d.name === name);
-                    return `${name} (${item.value})`;
-                },
-                data: [
-                    {% for item in normas_por_tipo %}
-                        "{{ item.tipo }}"{% if not loop.last %},{% endif %}
-                    {% endfor %}
-                ]
-            },
-            series: [
-                {
-                    name: 'Normas',
-                    type: 'pie',
-                    radius: '50%',
-                    data: data,
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
-        };
+			const option = {
+				tooltip: {
+					trigger: 'item',
+					formatter: '{a} <br/>{b}: {c} ({d}%)'
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'right',
+					formatter: function (name) {
+						// Buscar el valor correspondiente al nombre en los datos
+						const item = data.find(d => d.name === name);
+						return `${name} (${item.value})`;
+					},
+					data: [
+						{% for item in normas_por_tipo %}
+							"{{ item.tipo }}"{% if not loop.last %},{% endif %}
+						{% endfor %}
+					]
+				},
+				series: [
+					{
+						name: 'Normas',
+						type: 'pie',
+						radius: '50%',
+						data: data,
+						emphasis: {
+							itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						}
+					}
+				]
+			};
 
-        myChart.setOption(option);
-    });
+			myChart.setOption(option);
+		});
 
 
-// grafico de barras
-document.addEventListener('DOMContentLoaded', function () {
-        // Configuración del gráfico de barras con ECharts
-        const chartDom = document.getElementById('normasPorTemaBar');
-        const myBarChart = echarts.init(chartDom);
+		// grafico de barras
+		document.addEventListener('DOMContentLoaded', function () {
+				// Configuración del gráfico de barras con ECharts
+				const chartDom = document.getElementById('normasPorTemaBar');
+				const myBarChart = echarts.init(chartDom);
 
-        const option = {
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow',
-                },
-            },
-            xAxis: {
-                type: 'category',
-                data: {{ normas_por_tema|map(item => item.tema)|json_encode|raw }}, // Etiquetas dinámicas desde Twig
-                axisLabel: {
-                    interval: 0,
-                    rotate: 30, // Rotación para evitar solapamiento si hay muchas etiquetas
-                },
-            },
-            yAxis: {
-                type: 'value',
-                name: 'Cantidad',
-                minInterval: 1, // Siempre mostrar valores enteros
-            },
-            series: [
-                {
-                    name: 'Cantidad de Normas',
-                    type: 'bar',
-                    data: {{ normas_por_tema|map(item => item.total)|json_encode|raw }}, // Datos dinámicos desde Twig
-                    itemStyle: {
-                        color: '#fd9830', // Color personalizado para las barras
-                    },
-                },
-            ],
-        };
+				const option = {
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'shadow',
+					},
+				},
+				grid: {
+					left: '3%',
+					right: '3%',
+					bottom: '20%',  // Aumenta el espacio inferior para las etiquetas
+					containLabel: true
+				},
+				xAxis: {
+					type: 'category',
+					data: {{ normas_por_tema|map(item => item.tema)|json_encode|raw }},
+					axisLabel: {
+						interval: 0,
+						rotate: 45,  // Incrementa el ángulo de rotación para evitar que se encimen
+						margin: 10,   // Margen adicional para mejorar la visibilidad
+						formatter: function(value) {
+							if (value.length > 15) {
+								return value.substring(0, 15) + '...';  // Acorta etiquetas muy largas
+							}
+							return value;
+						}
+					},
+				},
+				yAxis: {
+					type: 'value',
+					name: 'Cantidad',
+					minInterval: 1,
+				},
+				series: [
+					{
+						name: 'Cantidad de Normas',
+						type: 'bar',
+						data: {{ normas_por_tema|map(item => item.total)|json_encode|raw }},
+						itemStyle: {
+							color: '#fd9830',
+						},
+					},
+				],
+			};
 
-        myBarChart.setOption(option);
-    });
+			myBarChart.setOption(option);
+
+		});
 
 	</script>
 {% endblock %}
