@@ -122,17 +122,16 @@ class NormaRepository extends ServiceEntityRepository
             $qb->andWhere('n.dependencia = :dependencia')
                 ->setParameter('dependencia', $dependencia);
         }
-
         // Filtro por dependencia
-        if ($temas) {
+        if (count($temas) > 0) {
             $temaCount = count($temas);
             $qb->join('n.normaTemas', 'nt')
-               ->join('nt.tema', 't')
-               ->groupBy('n.id')  // Agrupamos por la norma
-               ->having('COUNT(DISTINCT t.id) = :temaCount')  // Exigimos que coincida con la cantidad de temas seleccionados
-               ->setParameter('temaCount', $temaCount)
-               ->andWhere('t.id IN (:temas)')
-               ->setParameter('temas', $temas);
+                ->join('nt.tema', 't')
+                ->groupBy('n.id')  // Agrupamos por la norma
+                ->having('COUNT(DISTINCT t.id) = :temaCount')  // Exigimos que coincida con la cantidad de temas seleccionados
+                ->setParameter('temaCount', $temaCount)
+                ->andWhere('t.id IN (:temas)')
+                ->setParameter('temas', $temas);
         }
 
         // Filtro por fecha de publicación (desde)
