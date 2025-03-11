@@ -52,7 +52,20 @@
 							<td>{{ norma.titulo }}</td>
 							<td>
 								{% if norma.urlPdf %}
-									<a href="{{ asset('uploads/normas/' ~ norma.urlPdf) }}" target="_blank">{{ norma.urlPdf }}</a>
+								
+								{% set max_length = 20 %}
+								{% set filename = norma.urlPdf %}
+
+								{% if filename|length > max_length %}
+									{% set start = filename|slice(0, 15) %}
+									{% set end = filename|slice(-5, 5) %}
+									{% set shortened = start ~ '...' ~ end %}
+								{% else %}
+									{% set shortened = filename %}
+								{% endif %}
+
+								<a href="{{ asset('uploads/normas/' ~ norma.urlPdf) }}" target="_blank" title="{{ norma.urlPdf }}">{{ shortened }}</a>
+
 								{% else %}
 									Sin adjuntar documento
 								{% endif %}

@@ -81,7 +81,7 @@ class BusquedaAvanzadaType extends AbstractType
             ])
             ->add('fechaDesde', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Fecha publicación desde',
+                'label' => 'Fecha sanción desde',
                 'required' => false,
                 'attr' => [
                     'max' => $hoy
@@ -89,7 +89,7 @@ class BusquedaAvanzadaType extends AbstractType
             ])
             ->add('fechaHasta', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Fecha publicación hasta',
+                'label' => 'Fecha sanción hasta',
                 'required' => false,
                 'attr' => [
                     'max' => $hoy

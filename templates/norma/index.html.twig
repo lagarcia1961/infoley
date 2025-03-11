@@ -11,7 +11,7 @@
 {# FIN FIXED-SECTION STYLE #}
 <div class="row">
 	<div class="col-xs-12 mt-4">
-		<h2>{{ norma.tipoNorma.nombre ~ ' ' ~ (norma.numero != 0 ? norma.numero|number_format(0, ',', '.') ~ '/':'') ~ norma.fechaSancion|date('Y')}}</h2>
+		<h2> {{ norma.tipoNorma.nombre ~ ' ' ~ ((norma.tipoNorma.nombre == 'Constitución Nacional' or norma.tipoNorma.nombre == 'Constitución Provincial') ? '' : norma.numero|number_format(0, ',', '.') ~ '/' ~ norma.fechaSancion|date('Y') )}}</h2>
 		<h5 class="text-muted">{{ norma.dependencia.nombre }}</h5>
 	</div>
 	<div class="col-xs-12">
@@ -23,7 +23,7 @@
 				<div class="row">
 					<div class="col-12">
 						<h1>{{ norma.titulo }}</h1>
-						<h5 class="text-muted mt-4">Fecha de publicación: {{ norma.fechaPublicacion|date('d/m/Y') }}
+						<h5 class="text-muted mt-4">Fecha de sanción: {{ norma.fechaSancion|date('d/m/Y') }}
 						</h5>
 					</div>
 					{# <div class="col-12">
@@ -177,17 +177,30 @@
 						<table class="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
+									<th>Nro/Año</th>
 									<th>Tipo de normativa</th>
 									<th>Referencia</th>
 									<th>Normativa</th>
-									<th>Fecha de publicación</th>
+									<th>Fecha de sanción</th>
 									{# <th>Descripción</th> #}
-									<th data-orderable="false"></th>
+									<th data-orderable="false" class="no-sort"></th>
 								</tr>
 							</thead>
 							<tbody>
 								{% for referencia in norma.normasDestino %}
 								<tr>
+									<td>
+										{{ 
+											referencia.normaOrigen.numero != 0 
+											? referencia.normaOrigen.numero|number_format(0, ',', '.') ~ '/' 
+											: ''
+										}}
+										{{ 
+											referencia.normaOrigen.fechaSancion 
+											? referencia.normaOrigen.fechaSancion|date('Y') 
+											: '' 
+										}}
+									</td>
 									<td>
 										{{ referencia.normaOrigen.tipoNorma.nombre }}
 									</td>
@@ -195,15 +208,7 @@
 										{{ referencia.tipoReferencia.nombre }}
 									</td>
 									<td>
-										{{ referencia.normaOrigen.titulo ~ ' ' ~ 
-										(referencia.normaOrigen.numero != 0 
-											? referencia.normaOrigen.numero|number_format(0, ',', '.') ~ '/' 
-											: '') 
-										}}
-										{{ referencia.normaOrigen.fechaSancion 
-											? referencia.normaOrigen.fechaSancion|date('Y') 
-											: '' 
-										}}
+										{{ referencia.normaOrigen.titulo}} 
 									</td>
 									<td>{{ referencia.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
 									{# <td>{{ referencia.normaOrigen.textoCompleto|striptags|length > 100 ?
@@ -242,17 +247,30 @@
 						<table class="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
+									<th>Nro/Año</th>
 									<th>Tipo de normativa</th>
 									<th>Referencia</th>
 									<th>Normativa</th>
-									<th>Fecha de publicación</th>
+									<th>Fecha de sanción</th>
 									{# <th>Descripción</th> #}
-									<th class="no-sort"></th>
+									<th data-orderable="false" class="no-sort"></th>
 								</tr>
 							</thead>
 							<tbody>
 								{% for referencia in norma.normasOrigen %}
 								<tr>
+									<td>
+										{{ 
+											referencia.normaDestino.numero != 0 
+											? referencia.normaDestino.numero|number_format(0, ',', '.') ~ '/' 
+											: ''
+										}}
+										{{ 
+											referencia.normaDestino.fechaSancion 
+											? referencia.normaDestino.fechaSancion|date('Y') 
+											: '' 
+										}}
+									</td>
 									<td>
 										{{ referencia.normaDestino.tipoNorma.nombre }}
 									</td>
@@ -260,15 +278,7 @@
 										{{ referencia.tipoReferencia.nombre }}
 									</td>
 									<td>
-										{{ referencia.normaDestino.titulo ~ ' ' ~ 
-										(referencia.normaDestino.numero != 0 
-											? referencia.normaDestino.numero|number_format(0, ',', '.') ~ '/' 
-											: '') 
-										}}
-										{{ referencia.normaDestino.fechaSancion 
-											? referencia.normaDestino.fechaSancion|date('Y') 
-											: '' 
-										}}
+										{{ referencia.normaDestino.titulo }} 
 									</td>
 									<td>{{ referencia.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
 									{# <td>{{ referencia.normaDestino.textoCompleto|striptags|length > 100 ?

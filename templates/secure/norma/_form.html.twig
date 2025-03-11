@@ -245,12 +245,11 @@
 		<table id="tablaNormasOrigen" class="table table-bordered table-striped">
 			<thead>
 				<tr>
+					<th>Nro/Año</th>
 					<th>Tipo</th>
 					<th>Norma</th>
 					<th>Tipo de referencia</th>
-					<th>Número</th>
-					<th>Año</th>
-					<th>Fecha de Publicación</th>
+					<th>Fecha de Sanción</th>
 					<th class="text-center"></th>
 				</tr>
 			</thead>
@@ -258,12 +257,11 @@
 				{% for normaOrigen in norma.normasDestino %}
 
 				<tr id="row-norma-{{ normaOrigen.normaOrigen.id }}-origen">
+					<td>{{ normaOrigen.normaOrigen.fechaSancion|date('Y') ~ '/' ~ normaOrigen.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
 					<td>{{ normaOrigen.normaOrigen.tipoNorma.nombre }}</td>
 					<td>{{ normaOrigen.normaOrigen.titulo }}</td>
 					<td>{{ normaOrigen.tipoReferencia.nombre }}</td>
 					<td>{{ normaOrigen.normaOrigen.numero }}</td>
-					<td>{{ normaOrigen.normaOrigen.fechaSancion|date('Y') }}</td>
-					<td>{{ normaOrigen.normaOrigen.fechaPublicacion|date('d/m/Y') }}</td>
 					<td class="text-center">
 						<a href="javascript:void(0);" class="verTextoModificado text-secondary m-2" title="Ver texto modificado">
 							<i class="fas fa-eye"></i>
@@ -296,12 +294,11 @@
 		<table id="tablaNormasDestino" class="table table-bordered table-striped">
 			<thead>
 				<tr>
+					<th>Nro/Año</th>
 					<th>Tipo</th>
 					<th>Norma</th>
 					<th>Tipo de referencia</th>
-					<th>Número</th>
-					<th>Año</th>
-					<th>Fecha de Publicación</th>
+					<th>Fecha de Sanción</th>
 					<th class="text-center"></th>
 				</tr>
 			</thead>
@@ -309,12 +306,11 @@
 				{% for normaDestino in norma.normasOrigen %}
 
 				<tr id="row-norma-{{ normaDestino.normaDestino.id }}-destino">
+					<td>{{ normaDestino.normaDestino.numero ~ '/' ~ normaDestino.normaDestino.fechaSancion|date('Y') }}</td>
 					<td>{{ normaDestino.normaDestino.tipoNorma.nombre }}</td>
 					<td>{{ normaDestino.normaDestino.titulo }}</td>
 					<td>{{ normaDestino.tipoReferencia.nombre }}</td>
-					<td>{{ normaDestino.normaDestino.numero }}</td>
-					<td>{{ normaDestino.normaDestino.fechaSancion|date('Y') }}</td>
-					<td>{{ normaDestino.normaDestino.fechaPublicacion|date('d/m/Y') }}</td>
+					<td>{{ normaDestino.normaDestino.fechaSancion|date('d/m/Y') }}</td>
 					<td class="text-center">
 						<a href="{{ path('app_norma_edit', {'id':normaDestino.normaDestino.id})  }}" target="_blank" class="text-edit">
 							<i class="fas fa-edit"></i>

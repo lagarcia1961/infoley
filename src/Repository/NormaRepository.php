@@ -136,13 +136,13 @@ class NormaRepository extends ServiceEntityRepository
 
         // Filtro por fecha de publicación (desde)
         if ($fechaDesde) {
-            $qb->andWhere('n.fechaPublicacion >= :fechaDesde')
+            $qb->andWhere('n.fechaSancion >= :fechaDesde')
                 ->setParameter('fechaDesde', $fechaDesde);
         }
 
         // Filtro por fecha de publicación (hasta)
         if ($fechaHasta) {
-            $qb->andWhere('n.fechaPublicacion <= :fechaHasta')
+            $qb->andWhere('n.fechaSancion <= :fechaHasta')
                 ->setParameter('fechaHasta', $fechaHasta);
         }
 
