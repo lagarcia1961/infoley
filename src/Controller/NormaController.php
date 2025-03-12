@@ -25,6 +25,14 @@ class NormaController extends AbstractController
         if (!$data['norma']) {
             throw new NotFoundHttpException('La norma no fue encontrada.');
         }
+
+        $data['normasDestino'] = $data['norma']->getNormasDestino()->toArray();
+        $data['normasOrigen'] = $data['norma']->getNormasOrigen()->toArray();
+
+        usort($data['normasDestino'], fn($a, $b) => $a->getNormaOrigen()->getFechaSancion() <=> $b->getNormaOrigen()->getFechaSancion());
+        usort($data['normasOrigen'], fn($a, $b) => $a->getNormaDestino()->getFechaSancion() <=> $b->getNormaDestino()->getFechaSancion());
+
+
         return $this->render('norma/index.html.twig', $data);
     }
 }
