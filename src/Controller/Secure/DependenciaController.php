@@ -5,6 +5,7 @@ namespace App\Controller\Secure;
 use App\Entity\Dependencia;
 use App\Form\DependenciaType;
 use App\Repository\DependenciaRepository;
+use App\Repository\NormaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,6 +26,21 @@ class DependenciaController extends AbstractController
             'dependencias' => $dependenciasActivas,
         ]);
     }
+
+    #[Route('/{id}/normas', name: 'app_dependencia_normas', methods: ['GET'])]
+    public function dependenciaNormas($id, NormaRepository $normaRepository, DependenciaRepository $dependenciaRepository): Response
+    {
+        $dependencia = $dependenciaRepository->findOneBy(['id' => $id, 'isActive' => true]);
+        if (!$dependencia) {
+            return $this->redirectToRoute('app_dependencia_index', [], Response::HTTP_SEE_OTHER);
+        }
+        $normas = $normaRepository->findActiveNormasByDependencia($id);
+        return $this->render('secure/dependencia/dependencia_normas_list.html.twig', [
+            'normas' => $normas,
+            'dependencia'=> $dependencia,
+        ]);
+    }
+
 
     #[Route('/new', name: 'app_dependencia_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

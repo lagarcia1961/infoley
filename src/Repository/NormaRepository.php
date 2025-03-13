@@ -168,4 +168,19 @@ class NormaRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findActiveNormasByDependencia(int $dependenciaId): array
+    {
+        return $this->createQueryBuilder('n')
+            ->innerJoin('n.dependencia', 'd')
+            ->addSelect('n')
+            ->addSelect('d')
+            ->where('n.dependencia = :dependenciaId')
+            ->andWhere('n.isActive = :isActiveNorma')
+            ->andWhere('d.isActive = :isActiveDependencia')
+            ->setParameter('dependenciaId', $dependenciaId)
+            ->setParameter('isActiveNorma', true)
+            ->setParameter('isActiveDependencia', true)
+            ->getQuery()
+            ->getResult();
+    }
 }

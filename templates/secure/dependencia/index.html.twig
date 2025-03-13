@@ -48,6 +48,9 @@
 							<td>{{ dependencia.id }}</td>
 							<td>{{ dependencia.nombre }}</td>
 							<td>
+								<a class="btn" href="{{ path('app_dependencia_normas', {'id': dependencia.id}) }}" title="Ver normas asociadas">
+									<i class="fas fa-eye text-secondary"></i>
+								</a>
 								<a class="btn" href="{{ path('app_dependencia_edit', {'id': dependencia.id}) }}" title="Editar Dependencia">
 									<i class="fas fa-edit text-warning"></i>
 								</a>
