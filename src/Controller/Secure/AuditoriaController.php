@@ -29,7 +29,7 @@ class AuditoriaController extends AbstractController
 
     #[Route('/historico', name: 'app_secure_auditoria_historico', methods: ['POST'])]
     public function historico(AuditoriaRepository $auditoriaRepository, Request $request): JsonResponse
-    { {
+    { 
             // Obtener el ID desde el cuerpo de la solicitud
             $id = $request->request->get('id') ?? null;
             $entidad = $request->request->get('entidad') ?? null;
@@ -53,6 +53,5 @@ class AuditoriaController extends AbstractController
             }
 
             return new JsonResponse(['success' => true, 'data' => $historicoArray]);
-        }
     }
 }

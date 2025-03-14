@@ -66,7 +66,7 @@ class TipoReferenciaController extends AbstractController
  
     #[Route('/eliminar', name: 'app_tipo_referencia_delete', methods: ['POST'])]
     public function eliminar(TipoReferenciaRepository $tipoReferenciaRepository, Request $request, EntityManagerInterface $em): JsonResponse
-    { {
+    { 
             // Obtener el ID desde el cuerpo de la solicitud
             $id = $request->request->get('id') ?? null;
 
@@ -94,9 +94,6 @@ class TipoReferenciaController extends AbstractController
                 // Manejo de errores
                 return new JsonResponse(['success' => false, 'message' => 'Error al eliminar el Tipo de Referencia.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
-        }
     }        
-
-
 
 }

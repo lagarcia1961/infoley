@@ -83,7 +83,7 @@ class DependenciaController extends AbstractController
  
     #[Route('/eliminar', name: 'app_dependencia_delete', methods: ['POST'])]
     public function eliminar(DependenciaRepository $dependenciaRepository, Request $request, EntityManagerInterface $em): JsonResponse
-    { {
+    {
             // Obtener el ID desde el cuerpo de la solicitud
             $id = $request->request->get('id') ?? null;
 
@@ -111,7 +111,6 @@ class DependenciaController extends AbstractController
                 // Manejo de errores
                 return new JsonResponse(['success' => false, 'message' => 'Error al eliminar la Dependencia.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
-        }
     }        
 
 

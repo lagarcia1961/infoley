@@ -83,7 +83,7 @@ class TemaController extends AbstractController
 
     #[Route('/eliminar', name: 'app_tema_delete', methods: ['POST'])]
     public function eliminar(TemaRepository $temaRepository, Request $request, EntityManagerInterface $em): JsonResponse
-    { {
+    { 
             // Obtener el ID desde el cuerpo de la solicitud
             $id = $request->request->get('id') ?? null;
 
@@ -111,6 +111,5 @@ class TemaController extends AbstractController
                 // Manejo de errores
                 return new JsonResponse(['success' => false, 'message' => 'Error al eliminar el Tema.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
-        }
     }
 }

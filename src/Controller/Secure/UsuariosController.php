@@ -142,7 +142,7 @@ class UsuariosController extends AbstractController
 
     #[Route('/eliminar', name: 'app_eliminar_usuario', methods: ['POST'])]
     public function eliminar(UserRepository $userRepository, Request $request, EntityManagerInterface $em): JsonResponse
-    { {
+    { 
             // Obtener el ID desde el cuerpo de la solicitud
             $id = $request->request->get('id') ?? null;
 
@@ -170,7 +170,6 @@ class UsuariosController extends AbstractController
                 // Manejo de errores
                 return new JsonResponse(['success' => false, 'message' => 'Error al eliminar el usuario.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
-        }
     }
 
 

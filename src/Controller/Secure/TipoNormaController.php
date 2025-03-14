@@ -66,7 +66,7 @@ class TipoNormaController extends AbstractController
  
     #[Route('/eliminar', name: 'app_tipo_norma_delete', methods: ['POST'])]
     public function eliminar(TipoNormaRepository $tipoNormaRepository, Request $request, EntityManagerInterface $em): JsonResponse
-    { {
+    { 
             // Obtener el ID desde el cuerpo de la solicitud
             $id = $request->request->get('id') ?? null;
 
@@ -94,7 +94,6 @@ class TipoNormaController extends AbstractController
                 // Manejo de errores
                 return new JsonResponse(['success' => false, 'message' => 'Error al eliminar el Tipo de Norma.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
-        }
     }        
 
 

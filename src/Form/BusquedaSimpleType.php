@@ -58,17 +58,17 @@ class BusquedaSimpleType extends AbstractType
                 'label' => 'Buscar normativa',
             ]);
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $form = $event->getForm();
-            $data = $event->getData();
+        // $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        //     $form = $event->getForm();
+        //     $data = $event->getData();
 
-            // Verificamos si ambos campos 'numero' y 'anio' están vacíos
-            if (empty($data['numero']) && empty($data['anio'])) {
-                $message = 'Debes completar el campo Número o el campo Año.';
-                $form->get('numero')->addError(new FormError($message));
-                $form->get('anio')->addError(new FormError($message));
-            }
-        });
+        //     // Verificamos si ambos campos 'numero' y 'anio' están vacíos
+        //     if (empty($data['numero']) && empty($data['anio'])) {
+        //         $message = 'Debes completar el campo Número o el campo Año.';
+        //         $form->get('numero')->addError(new FormError($message));
+        //         $form->get('anio')->addError(new FormError($message));
+        //     }
+        // });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -199,41 +199,41 @@ class NormaController extends AbstractController
     }
 
     #[Route('/eliminar', name: 'app_norma_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function eliminar(NormaRepository $normaRepository, Request $request, EntityManagerInterface $em): JsonResponse
-    { {
-            // Obtener el ID desde el cuerpo de la solicitud
-            $id = $request->request->get('id') ?? null;
+    {
+        // Obtener el ID desde el cuerpo de la solicitud
+        $id = $request->request->get('id') ?? null;
 
-            // Verificar si se proporcionó un ID
-            if (!$id) {
-                return new JsonResponse(['success' => false, 'message' => 'ID no proporcionado.'], JsonResponse::HTTP_BAD_REQUEST);
-            }
+        // Verificar si se proporcionó un ID
+        if (!$id) {
+            return new JsonResponse(['success' => false, 'message' => 'ID no proporcionado.'], JsonResponse::HTTP_BAD_REQUEST);
+        }
 
-            // Buscar la norma por ID
-            $norma = $normaRepository->findOneBy(['id' => $id, 'isActive' => true]);
+        // Buscar la norma por ID
+        $norma = $normaRepository->findOneBy(['id' => $id, 'isActive' => true]);
 
-            // Verificar si la norma existe
-            if (!$norma) {
-                return new JsonResponse(['success' => false, 'message' => 'Norma no encontrada.'], JsonResponse::HTTP_NOT_FOUND);
-            }
+        // Verificar si la norma existe
+        if (!$norma) {
+            return new JsonResponse(['success' => false, 'message' => 'Norma no encontrada.'], JsonResponse::HTTP_NOT_FOUND);
+        }
 
-            try {
-                // Eliminar la norma
-                $norma->setActive(false);
-                $em->persist($norma);
-                $em->flush();
+        try {
+            // Eliminar la norma
+            $norma->setActive(false);
+            $em->persist($norma);
+            $em->flush();
 
-                return new JsonResponse(['success' => true, 'message' => 'Norma eliminada con éxito.', 'title' => 'Eliminada!']);
-            } catch (\Exception $e) {
-                // Manejo de errores
-                return new JsonResponse(['success' => false, 'message' => 'Error al eliminar la Norma.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
-            }
+            return new JsonResponse(['success' => true, 'message' => 'Norma eliminada con éxito.', 'title' => 'Eliminada!']);
+        } catch (\Exception $e) {
+            // Manejo de errores
+            return new JsonResponse(['success' => false, 'message' => 'Error al eliminar la Norma.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     #[Route('/getNormas', name: 'app_get_normas', methods: ['POST'])]
     public function getNormas(NormaRepository $normaRepository, Request $request, EntityManagerInterface $em): JsonResponse
-    { {
+    { 
             $data = json_decode($request->getContent(), true);
             // Obtener el ID desde el cuerpo de la solicitud
             $tipoNormaId = $data['tipoNormaId'] ?? null;
@@ -255,7 +255,6 @@ class NormaController extends AbstractController
             }
 
             return new JsonResponse(['success' => true, 'normas' => $normasData]);
-        }
     }
 
     private function sanitizeFileName(string $filename): string

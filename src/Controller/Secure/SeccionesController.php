@@ -151,7 +151,7 @@ class SeccionesController extends AbstractController
 
     #[Route('/eliminar', name: 'app_secure_secciones_delete', methods: ['POST'])]
     public function eliminar(SeccionRepository $seccionRepository, Request $request, EntityManagerInterface $em): JsonResponse
-    { {
+    { 
             // Obtener el ID desde el cuerpo de la solicitud
             $id = $request->request->get('id') ?? null;
 
@@ -179,12 +179,11 @@ class SeccionesController extends AbstractController
                 // Manejo de errores
                 return new JsonResponse(['success' => false, 'message' => 'Error al eliminar la Sección.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
-        }
     }
 
     #[Route('/eliminar/seccion_norma', name: 'app_secure_seccion_norma_delete', methods: ['POST'])]
     public function eliminarSeccionNorma(SeccionNormaRepository $seccionNormaRepository, Request $request, EntityManagerInterface $em): JsonResponse
-    { {
+    { 
             // Obtener el ID desde el cuerpo de la solicitud
             $id = $request->request->get('id') ?? null;
 
@@ -212,6 +211,5 @@ class SeccionesController extends AbstractController
                 // Manejo de errores
                 return new JsonResponse(['success' => false, 'message' => 'Error al eliminar la Sección.', 'title' => 'Error!'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
-        }
     }
 }
