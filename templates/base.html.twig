@@ -382,7 +382,8 @@
 	<script>
 		const PDF_WORKER = "{{ asset('js/pdf/pdf.worker.min.js') }}";
 		const ICONS_PATH = "{{ asset('libs/text-editor/ui/icons.svg') }}";;
-		const BASE_URL = "{{ absolute_url('/') }}";
+		{% set baseUrl = absolute_url('/')|replace({'http://': 'https://'}) %}
+		const BASE_URL = "{{ baseUrl }}";
 	</script>
 
 	{% if files_js is defined %}
